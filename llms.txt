@@ -1,0 +1,19 @@
+# llm-note
+
+llm-note is a local-first note engine for LLM agents. It provides a SQLite note store, plain-text notebook inboxes, a small CLI, and an agent skill.
+
+Important files:
+
+- `llm_note/store.py`: core SQLite and file notebook logic.
+- `llm_note/cli.py`: command line interface.
+- `llm_note/locales/*.json`: six standard message locales.
+- `skills/llm-note/SKILL.md`: standalone agent skill.
+- `references/bach-export/`: raw BACH Notizblock skill export.
+- `references/bach-source/`: source snapshots used during extraction.
+
+Run checks:
+
+```bash
+python -m pytest -q
+python -m py_compile llm_note/store.py llm_note/cli.py llm_note/i18n.py
+```

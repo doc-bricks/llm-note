@@ -1,0 +1,11 @@
+{
+  "name": "llm-note",
+  "version": "1.0.0",
+  "description": "Local-first notes and notebooks for LLM agents",
+  "skills": [
+    "skills/llm-note/SKILL.md"
+  ],
+  "entry_points": {
+    "cli": "llm-note"
+  }
+}

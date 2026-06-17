@@ -1,0 +1,6 @@
+{
+  "saved": "saved note #{id} ({category})",
+  "no_results": "no notes found",
+  "brainstorm_saved": "brainstorm note #{id} created",
+  "stats_total": "notes: {total}; promoted: {promoted}"
+}

@@ -1,0 +1,6 @@
+{
+  "saved": "заметка #{id} сохранена ({category})",
+  "no_results": "заметки не найдены",
+  "brainstorm_saved": "заметка для мозгового штурма #{id} создана",
+  "stats_total": "заметок: {total}; повышено: {promoted}"
+}

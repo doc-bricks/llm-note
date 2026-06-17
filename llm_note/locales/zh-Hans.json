@@ -1,0 +1,6 @@
+{
+  "saved": "已保存笔记 #{id}（{category}）",
+  "no_results": "未找到笔记",
+  "brainstorm_saved": "已创建头脑风暴笔记 #{id}",
+  "stats_total": "笔记：{total}；已提升：{promoted}"
+}

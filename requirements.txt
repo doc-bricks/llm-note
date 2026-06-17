@@ -1,0 +1,1 @@
+# llm-note has no runtime dependencies.

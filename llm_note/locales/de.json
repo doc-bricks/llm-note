@@ -1,0 +1,6 @@
+{
+  "saved": "Notiz #{id} gespeichert ({category})",
+  "no_results": "keine Notizen gefunden",
+  "brainstorm_saved": "Brainstorm-Notiz #{id} erstellt",
+  "stats_total": "Notizen: {total}; befördert: {promoted}"
+}

@@ -1,0 +1,6 @@
+{
+  "saved": "ノート #{id} を保存しました（{category}）",
+  "no_results": "ノートが見つかりません",
+  "brainstorm_saved": "ブレインストームノート #{id} を作成しました",
+  "stats_total": "ノート: {total}; 昇格済み: {promoted}"
+}

@@ -1,0 +1,6 @@
+{
+  "saved": "nota #{id} guardada ({category})",
+  "no_results": "no se encontraron notas",
+  "brainstorm_saved": "nota de lluvia de ideas #{id} creada",
+  "stats_total": "notas: {total}; promovidas: {promoted}"
+}

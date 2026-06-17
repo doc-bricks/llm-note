@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 520" role="img" aria-labelledby="title desc">
+  <title id="title">llm-note banner</title>
+  <desc id="desc">A dark workspace with notebook lines, local database nodes, and agent routing marks.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#12211f"/>
+      <stop offset="0.46" stop-color="#253044"/>
+      <stop offset="1" stop-color="#2f2334"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffaf0"/>
+      <stop offset="1" stop-color="#dcebf2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="520" fill="url(#bg)"/>
+  <g opacity="0.28" fill="none" stroke="#7bdff2" stroke-width="2">
+    <path d="M1020 86 C1160 142 1228 220 1368 178"/>
+    <path d="M1010 230 C1164 196 1254 324 1448 288"/>
+    <path d="M940 392 C1118 326 1268 430 1518 352"/>
+  </g>
+  <g transform="translate(170 78)">
+    <rect x="0" y="0" width="520" height="360" rx="28" fill="#0d151f" opacity="0.55"/>
+    <rect x="38" y="32" width="444" height="296" rx="18" fill="url(#paper)"/>
+    <rect x="84" y="72" width="124" height="20" rx="10" fill="#ffb86b"/>
+    <rect x="84" y="120" width="310" height="14" rx="7" fill="#4a6678" opacity="0.65"/>
+    <rect x="84" y="158" width="260" height="14" rx="7" fill="#4a6678" opacity="0.55"/>
+    <rect x="84" y="196" width="338" height="14" rx="7" fill="#4a6678" opacity="0.48"/>
+    <rect x="84" y="234" width="190" height="14" rx="7" fill="#4a6678" opacity="0.45"/>
+    <circle cx="408" cy="250" r="34" fill="#2f80ed" opacity="0.9"/>
+    <path d="M393 251 h30 M408 236 v30" stroke="#fffaf0" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(822 102)">
+    <rect x="0" y="0" width="500" height="300" rx="24" fill="#101923" opacity="0.72"/>
+    <g fill="none" stroke="#f9f7f3" stroke-width="5" stroke-linecap="round">
+      <path d="M78 74 h238"/>
+      <path d="M78 132 h322"/>
+      <path d="M78 190 h174"/>
+    </g>
+    <g fill="#7bdff2">
+      <circle cx="356" cy="72" r="16"/>
+      <circle cx="420" cy="132" r="16"/>
+      <circle cx="300" cy="190" r="16"/>
+    </g>
+    <g stroke="#ffb86b" stroke-width="4" fill="none">
+      <path d="M356 72 L420 132 L300 190 L356 72"/>
+    </g>
+  </g>
+  <text x="170" y="468" fill="#f9f7f3" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="62" font-weight="800">llm-note</text>
+  <text x="498" y="468" fill="#b8d8d8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30">local-first notes for LLM agents</text>
+</svg>

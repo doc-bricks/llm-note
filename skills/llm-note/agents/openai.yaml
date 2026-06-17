@@ -1,0 +1,4 @@
+interface:
+  display_name: "LLM Note"
+  short_description: "Use local-first notes for agent work."
+  default_prompt: "Use llm-note to capture, search, and promote local agent notes."
