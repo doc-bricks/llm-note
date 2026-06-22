@@ -12,6 +12,17 @@
 
 The project was extracted from BACH's Notizblock and Denkarium patterns, then cleaned into a standalone Python package for public use.
 
+## Start Here
+
+Use llm-note when you need a small, auditable memory layer for agents, coding assistants, research workflows, or private notebooks:
+
+| Need | Use llm-note for |
+| --- | --- |
+| Agent memory | Record decisions, observations, and follow-up markers in local SQLite. |
+| Notebook inbox | Keep plain-text notes that can be reviewed, transferred, or archived later. |
+| Privacy-first workflow | Avoid hosted note services, accounts, embeddings, and background network calls. |
+| Skill packaging | Ship a reusable note-taking skill beside the Python package. |
+
 ## What It Does
 
 - Store structured notes, logbook entries, categories, mood values, and promotion markers in SQLite.
@@ -67,6 +78,12 @@ notebooks.transfer_marked_entries()
 ## Agent Skill
 
 The standalone skill lives in [`skills/llm-note/SKILL.md`](skills/llm-note/SKILL.md). The raw BACH export that seeded it is preserved under [`references/bach-export/`](references/bach-export/) for provenance.
+
+## Positioning
+
+llm-note is intentionally smaller than full knowledge-base systems such as Obsidian, Joplin, NotebookLM, vector databases, or MCP notebook servers. It is a local Python package for agent notes, CLI notebooks, and reproducible logbooks that should stay inspectable in Git and easy to embed in another tool.
+
+Useful search phrases for this repository include `local-first LLM notes`, `SQLite note store for agents`, `agent notebook CLI`, `private AI notebook`, `LLM memory logbook`, and `BACH Notizblock extraction`.
 
 ## Repository Layout
 

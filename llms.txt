@@ -2,6 +2,29 @@
 
 llm-note is a local-first note engine for LLM agents. It provides a SQLite note store, plain-text notebook inboxes, a small CLI, and an agent skill.
 
+Last-checked: 2026-06-22
+
+Audience:
+
+- Agent framework builders who need an embeddable local memory/logbook layer.
+- Developers who want a zero-service CLI notebook for agent runs.
+- Researchers and maintainers who need privacy-first, inspectable note storage.
+
+Search phrases:
+
+- local-first LLM notes
+- SQLite note store for agents
+- agent notebook CLI
+- private AI notebook
+- LLM memory logbook
+- BACH Notizblock extraction
+
+Disambiguation:
+
+- Not Google NotebookLM, Obsidian, Joplin, a vector database, or a hosted AI notebook.
+- Not an MCP server; the package is a Python library, CLI, and reusable agent skill.
+- Runtime storage is local SQLite plus plain text files.
+
 Important files:
 
 - `llm_note/store.py`: core SQLite and file notebook logic.

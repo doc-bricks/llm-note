@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 authors = [{ name = "Lukas Geiger" }]
-keywords = ["llm", "agents", "notes", "sqlite", "local-first"]
+keywords = ["llm", "agents", "notes", "sqlite", "local-first", "agent-memory", "notebooks", "privacy-first", "cli"]
 classifiers = [
   "Development Status :: 4 - Beta",
   "License :: OSI Approved :: MIT License",
