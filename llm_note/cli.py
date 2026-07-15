@@ -5,11 +5,25 @@ from __future__ import annotations
 import argparse
 
 from .i18n import load_messages
-from .store import NoteStore
+from .store import MAX_QUERY_LIMIT, NoteStore
+
+
+def _query_limit(value: str) -> int:
+    try:
+        limit = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("limit must be an integer") from exc
+    if not 0 <= limit <= MAX_QUERY_LIMIT:
+        raise argparse.ArgumentTypeError(
+            f"limit must be between 0 and {MAX_QUERY_LIMIT}"
+        )
+    return limit
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="llm-note", description="Local-first notes for LLM agents")
+    parser = argparse.ArgumentParser(
+        prog="llm-note", description="Local-first notes for LLM agents"
+    )
     parser.add_argument("--db", default="llm-note.db", help="SQLite database path")
     parser.add_argument("--locale", default="en", help="Message locale")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -24,7 +38,7 @@ def build_parser() -> argparse.ArgumentParser:
     read = sub.add_parser("read", help="Read recent notes")
     read.add_argument("--type", dest="entry_type")
     read.add_argument("--cat", dest="category")
-    read.add_argument("--limit", type=int, default=10)
+    read.add_argument("--limit", type=_query_limit, default=10)
 
     search = sub.add_parser("search", help="Search notes")
     search.add_argument("term")
@@ -82,7 +96,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "stats":
         stats = store.stats()
-        print(msg["stats_total"].format(total=stats["total"], promoted=stats["promoted"]))
+        print(
+            msg["stats_total"].format(total=stats["total"], promoted=stats["promoted"])
+        )
         return 0
 
     parser.print_help()

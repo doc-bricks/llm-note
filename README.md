@@ -75,6 +75,15 @@ notebooks.write("Buy milk\n#NB: Shopping List")
 notebooks.transfer_marked_entries()
 ```
 
+Search terms are literal: `%` and `_` do not act as SQL wildcards. API and CLI
+query limits accept values from `0` through `1000`.
+
+`FileNotebookStore` keeps Unicode notebook names and serializes reads, writes,
+and transfers across local processes. It leaves a small `.llm-note.lock` file in
+the notebook root for coordination; keep that file in place while clients may be
+running. Pending transfers receive a `#LLM-NOTE-ID` line so a retry after an
+interrupted file operation cannot duplicate the entry.
+
 ## Agent Skill
 
 The standalone skill lives in [`skills/llm-note/SKILL.md`](skills/llm-note/SKILL.md). The raw BACH export that seeded it is preserved under [`references/bach-export/`](references/bach-export/) for provenance.
@@ -100,7 +109,10 @@ assets/banner.svg          Repository banner
 
 ## Privacy Model
 
-llm-note never talks to a network service by itself. Databases and notebook folders are local files, and `.gitignore` excludes them by default. Public releases should commit code, docs, tests, and skill metadata only.
+llm-note never talks to a network service by itself. Databases, notebook folders,
+and notebook lock files are local data, and `.gitignore` excludes the default
+locations. Public releases should commit code, docs, tests, and skill metadata
+only.
 
 ## License
 

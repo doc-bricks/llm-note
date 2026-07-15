@@ -4,13 +4,23 @@ build-backend = "hatchling.build"
 
 [project]
 name = "llm-note"
-version = "1.0.0"
+version = "1.0.1"
 description = "Local-first notes and notebooks for LLM agents"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 authors = [{ name = "Lukas Geiger" }]
-keywords = ["llm", "agents", "notes", "sqlite", "local-first", "agent-memory", "notebooks", "privacy-first", "cli"]
+keywords = [
+  "llm",
+  "agents",
+  "notes",
+  "sqlite",
+  "local-first",
+  "agent-memory",
+  "notebooks",
+  "privacy-first",
+  "cli",
+]
 classifiers = [
   "Development Status :: 4 - Beta",
   "License :: OSI Approved :: MIT License",
@@ -18,6 +28,7 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
 ]
 
 [project.scripts]

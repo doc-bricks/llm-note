@@ -27,3 +27,11 @@ def test_cli_write_and_search(tmp_path: Path) -> None:
     search = run_cli(tmp_path, "search", "portable")
     assert search.returncode == 0
     assert "portable note" in search.stdout
+
+
+def test_cli_rejects_negative_read_limit(tmp_path: Path) -> None:
+    result = run_cli(tmp_path, "read", "--limit", "-1")
+
+    assert result.returncode == 2
+    assert "limit must be between 0 and 1000" in result.stderr
+    assert "Traceback" not in result.stderr

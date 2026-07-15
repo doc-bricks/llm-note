@@ -6,7 +6,10 @@ Thanks for considering a contribution.
 
 ```bash
 pip install -e .
+python -m pip install pytest build ruff
+ruff check llm_note tests
 python -m pytest -q
+python -m build
 ```
 
 Keep the package local-first and dependency-light. Do not add network calls, telemetry, or hosted services unless they are optional and documented.
@@ -16,4 +19,4 @@ Keep the package local-first and dependency-light. Do not add network calls, tel
 - Include tests for behavior changes.
 - Keep user-facing strings in all bundled locales.
 - Do not commit local databases, notebook data, `.env` files, or credentials.
-- Run `python -m pytest -q` before opening a pull request.
+- Run lint, tests, and a clean package build before opening a pull request.

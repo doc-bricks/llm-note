@@ -1,6 +1,6 @@
 # Pre-Release TODO: llm-note
 
-**Audit Date:** 2026-06-18
+**Audit Date:** 2026-07-15
 **Auditor:** Codex
 **Target Repo:** `doc-bricks/llm-note`
 
@@ -21,6 +21,9 @@
 - [x] Basic tests added.
 - [x] CLI usage documented.
 - [x] i18n coverage for six standard languages.
+- [x] Cross-process notebook writes and retry-safe transfers verified.
+- [x] Unicode notebook names preserved without cross-language collisions.
+- [x] SQLite connections close deterministically; searches and limits are bounded.
 
 ## MEDIUM PRIORITY
 
@@ -28,6 +31,7 @@
 - [x] CONTRIBUTING.md added.
 - [x] SECURITY.md added.
 - [x] GitHub Actions CI workflow added.
+- [x] CI actions pinned; Windows/Linux tests, Ruff, builds, and Dependabot enabled.
 
 ## LOW PRIORITY
 
@@ -47,7 +51,7 @@
 | Database Files | :green_circle: | Ignored |
 | README.md | :green_circle: | Present |
 | LICENSE | :green_circle: | MIT |
-| **Overall** | **READY** | Gate check pending/fresh-run required before public release |
+| **Overall** | **READY** | 10/10 gate checks, 16/16 tests, independent review 0×P0/P1/P2 |
 
-**Audit Date:** 2026-06-18
+**Audit Date:** 2026-07-15
 **Gate Check Exit Code:** `0`

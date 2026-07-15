@@ -47,6 +47,8 @@ notebooks.transfer_marked_entries()
 ## Safety Rules
 
 - Keep `.db`, notebook folders, and `.env` files out of git.
+- Keep `.llm-note.lock` in the notebook root while clients may be running.
+- Treat `#LLM-NOTE-ID` as transfer-recovery metadata; do not edit it during a pending transfer.
 - Do not store secrets or private user data in public repo fixtures.
 - When adding user-facing messages, add the same key to all six locale JSON files.
 - Run `python -m pytest -q` after code or locale changes.

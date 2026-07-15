@@ -29,6 +29,13 @@ llm-note --locale de write "Öffentliche README prüfen" --cat release
 llm-note --locale de search README
 ```
 
+Suchbegriffe werden wörtlich behandelt; `%` und `_` sind keine SQL-Wildcards.
+Abfragelimits dürfen zwischen `0` und `1000` liegen. Text-Notizbücher behalten
+Unicode-Namen und koordinieren parallele lokale Prozesse über die Datei
+`.llm-note.lock` im Notizbuchordner. Offene Transfers erhalten eine
+`#LLM-NOTE-ID`, damit ein Retry nach einem Dateifehler den Eintrag nicht
+verdoppelt.
+
 ## Datenschutz
 
 llm-note sendet selbst keine Daten ins Netz. Datenbanken und Notizordner bleiben lokale Dateien und sind in `.gitignore` ausgeschlossen.
