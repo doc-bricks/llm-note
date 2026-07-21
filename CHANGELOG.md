@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2 - 2026-07-22
+
+- Added `pythonpath = .` to `pytest.ini` to support direct `pytest` invocation without manual `PYTHONPATH` configuration.
+- Synchronized `llms.txt` Last-checked header and `TODO.md` audit timestamp to 2026-07-22.
+- Verified test suite execution (16/16 tests passing) and `ruff` linting.
+
 ## 1.0.1 - 2026-07-15
 
 - Improved README and German README positioning for local-first agent notes, private AI notebooks, and SQLite logbook use cases.

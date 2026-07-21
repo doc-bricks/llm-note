@@ -1,6 +1,6 @@
 # Pre-Release TODO: llm-note
 
-**Audit Date:** 2026-07-15
+**Audit Date:** 2026-07-22
 **Auditor:** Codex
 **Target Repo:** `doc-bricks/llm-note`
 
@@ -53,5 +53,5 @@
 | LICENSE | :green_circle: | MIT |
 | **Overall** | **READY** | 10/10 gate checks, 16/16 tests, independent review 0×P0/P1/P2 |
 
-**Audit Date:** 2026-07-15
+**Audit Date:** 2026-07-22
 **Gate Check Exit Code:** `0`
