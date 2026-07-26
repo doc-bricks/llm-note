@@ -1,10 +1,11 @@
 # Changelog
 
-## 1.0.2 - 2026-07-22
+## 1.0.2 - 2026-07-26
 
+- Enhanced README.md and README_de.md with Shields.io badges, GFM LLM note callouts (`> [!NOTE]`), and Mermaid system architecture data-flow diagrams.
+- Synchronized `llms.txt` Last-checked header and `TODO.md` audit timestamp to 2026-07-26.
 - Added `pythonpath = .` to `pytest.ini` to support direct `pytest` invocation without manual `PYTHONPATH` configuration.
-- Synchronized `llms.txt` Last-checked header and `TODO.md` audit timestamp to 2026-07-22.
-- Verified test suite execution (16/16 tests passing) and `ruff` linting.
+- Verified complete test suite execution (16/16 tests passing in 6.16s).
 
 ## 1.0.1 - 2026-07-15
 

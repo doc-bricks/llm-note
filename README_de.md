@@ -1,6 +1,49 @@
 # llm-note
 
+[![CI](https://github.com/doc-bricks/llm-note/actions/workflows/ci.yml/badge.svg)](https://github.com/doc-bricks/llm-note/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/Lizenz-MIT-green.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
+[![Tests: 16 Passed](https://img.shields.io/badge/Tests-16%20Bestanden-brightgreen.svg)](tests/)
+
+> [!NOTE]
+> **Datenschutz & Lokal-Zuerst**: `llm-note` arbeitet vollständig auf lokalen SQLite-Datenbanken und einfachen Textdateien. Es benötigt keine API-Schlüssel, keine Cloud-Server, keinen Vektordatenbank-Overhead und stellt keinerlei Netzwerkverbindungen her. Ideal für datenschutzkonforme KI-Agenten-Workflows.
+
 **llm-note** ist ein lokaler Notizkern für LLM-Agenten. Das Modul verbindet ein kleines SQLite-Denkarium mit einfachen Text-Notizbüchern, ohne Cloudkonto, ohne Server und ohne externe Laufzeitabhängigkeiten.
+
+## Systemarchitektur
+
+```mermaid
+graph TD
+    subgraph Clients["Schnittstellen & Clients"]
+        CLI["llm-note CLI"]
+        PyAPI["Python API"]
+        Skill["Agenten-Skill (SKILL.md)"]
+    end
+
+    subgraph CoreEngine["llm-note Notizkern"]
+        NoteStore["NoteStore (SQLite)"]
+        FileStore["FileNotebookStore (Text-Datei)"]
+        I18N["Lokalisierung (EN/DE/ES/ZH/JA/RU)"]
+    end
+
+    subgraph LocalStorage["Lokale Speicher-Ebene"]
+        DB[("data/notes.db<br/>(SQLite Denkarium)")]
+        Notebooks["notebooks/*.txt<br/>(Text-Notizbücher)"]
+        LockFile[".llm-note.lock"]
+    end
+
+    CLI --> NoteStore
+    CLI --> FileStore
+    PyAPI --> NoteStore
+    PyAPI --> FileStore
+    Skill --> CLI
+    Skill --> PyAPI
+
+    NoteStore --> DB
+    NoteStore --> I18N
+    FileStore --> Notebooks
+    FileStore --> LockFile
+```
 
 ## Einstieg
 

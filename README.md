@@ -5,12 +5,51 @@
 [![CI](https://github.com/doc-bricks/llm-note/actions/workflows/ci.yml/badge.svg)](https://github.com/doc-bricks/llm-note/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
+[![Tests: 16 Passed](https://img.shields.io/badge/Tests-16%20Passed-brightgreen.svg)](tests/)
 
 [Deutsch](README_de.md) · [Español](README_es.md) · [简体中文](README_zh-Hans.md) · [日本語](README_ja.md) · [Русский](README_ru.md)
+
+> [!NOTE]
+> **Privacy-First & Local-Only**: `llm-note` operates entirely on local SQLite and plain-text files. It requires zero API keys, no cloud servers, no vector database overhead, and makes no network connections. Ideal for secure, privacy-conscious AI agent workflows.
 
 **llm-note** is a local-first note engine for LLM agents. It gives agents and humans a small SQLite thought log plus plain-text notebook inboxes without hosted services, accounts, or external runtime dependencies.
 
 The project was extracted from BACH's Notizblock and Denkarium patterns, then cleaned into a standalone Python package for public use.
+
+## System Architecture
+
+```mermaid
+graph TD
+    subgraph Clients["Clients & Interfaces"]
+        CLI["llm-note CLI"]
+        PyAPI["Python API"]
+        Skill["Agent Skill (SKILL.md)"]
+    end
+
+    subgraph CoreEngine["llm-note Core Engine"]
+        NoteStore["NoteStore (SQLite)"]
+        FileStore["FileNotebookStore (Plain-Text)"]
+        I18N["Locales (EN/DE/ES/ZH/JA/RU)"]
+    end
+
+    subgraph LocalStorage["Local Storage Layer"]
+        DB[("data/notes.db<br/>(SQLite Thought Log)")]
+        Notebooks["notebooks/*.txt<br/>(Plain-Text Inboxes)"]
+        LockFile[".llm-note.lock"]
+    end
+
+    CLI --> NoteStore
+    CLI --> FileStore
+    PyAPI --> NoteStore
+    PyAPI --> FileStore
+    Skill --> CLI
+    Skill --> PyAPI
+
+    NoteStore --> DB
+    NoteStore --> I18N
+    FileStore --> Notebooks
+    FileStore --> LockFile
+```
 
 ## Start Here
 
