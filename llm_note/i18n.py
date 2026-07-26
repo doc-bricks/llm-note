@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from importlib import resources
 import json
+from importlib import resources
 
 STANDARD_LOCALES = ("de", "en", "es", "zh-Hans", "ja", "ru")
 

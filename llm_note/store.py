@@ -2,19 +2,18 @@
 
 from __future__ import annotations
 
-from contextlib import contextmanager
-from dataclasses import dataclass
-from datetime import datetime
 import os
-from pathlib import Path
 import re
 import sqlite3
 import tempfile
 import time
-from typing import Iterator
 import unicodedata
+from collections.abc import Iterator
+from contextlib import contextmanager
+from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
 from uuid import uuid4
-
 
 MAX_QUERY_LIMIT = 1000
 _WINDOWS_RESERVED_NAMES = {
@@ -179,7 +178,7 @@ class NoteStore:
         mood: int | None = None,
         source: str = "user",
     ) -> Entry:
-        now = datetime.now().strftime("%Y-%m-%d %H:%M")
+        now = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M")
         if entry_type == "logbook" and not title:
             title = f"Log {now}"
 
@@ -261,7 +260,7 @@ class NoteStore:
     def promote(self, entry_id: int, target: str) -> Entry:
         if target not in {"task", "wiki", "issue"}:
             raise ValueError("target must be task, wiki, or issue")
-        now = datetime.now().isoformat(timespec="seconds")
+        now = datetime.now().astimezone().isoformat(timespec="seconds")
         with self._connect() as conn:
             conn.execute(
                 "UPDATE note_entries SET promoted_to = ?, updated_at = ? WHERE id = ?",
@@ -326,10 +325,12 @@ class FileNotebookStore:
 
     def write(self, content: str, notebook: str | None = None) -> Path:
         path = self.notebook_path(notebook)
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
-        with _exclusive_file_lock(self._lock_path):
-            with path.open("a", encoding="utf-8", newline="") as handle:
-                handle.write(f"---\n[{timestamp}]\n{content.rstrip()}\n\n")
+        timestamp = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M")
+        with (
+            _exclusive_file_lock(self._lock_path),
+            path.open("a", encoding="utf-8", newline="") as handle,
+        ):
+            handle.write(f"---\n[{timestamp}]\n{content.rstrip()}\n\n")
         return path
 
     def read(self, notebook: str | None = None) -> str:
