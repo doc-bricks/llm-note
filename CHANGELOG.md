@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.3 - 2026-07-27
+
+- Enhanced `README_de.md` with top banner image, full multi-language navigation bar, Ecosystem & Umbrella badges (`doc-bricks` / `open-bricks`), and verified test status.
+- Added Ecosystem (`doc-bricks`) and Umbrella (`open-bricks`) badges to `README.md`.
+- Synchronized `llms.txt` Last-checked header to 2026-07-27.
+- Verified 100% test suite execution (16/16 tests passing in 4.86s).
+
 ## 1.0.2 - 2026-07-26
 
 - Enhanced README.md and README_de.md with Shields.io badges, GFM LLM note callouts (`> [!NOTE]`), and Mermaid system architecture data-flow diagrams.

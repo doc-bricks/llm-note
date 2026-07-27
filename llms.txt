@@ -2,7 +2,7 @@
 
 llm-note is a local-first note engine for LLM agents. It provides a SQLite note store, plain-text notebook inboxes, a small CLI, and an agent skill.
 
-Last-checked: 2026-07-26
+Last-checked: 2026-07-27
 
 Audience:
 
