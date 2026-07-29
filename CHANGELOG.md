@@ -2,6 +2,7 @@
 
 ## 1.0.3 - 2026-07-27
 
+- Aligned package, plugin, and portable module metadata with the documented 1.0.3 release line.
 - Enhanced `README_de.md` with top banner image, full multi-language navigation bar, Ecosystem & Umbrella badges (`doc-bricks` / `open-bricks`), and verified test status.
 - Added Ecosystem (`doc-bricks`) and Umbrella (`open-bricks`) badges to `README.md`.
 - Synchronized `llms.txt` Last-checked header to 2026-07-27.

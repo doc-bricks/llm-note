@@ -2,7 +2,7 @@
   "schema": "ellmos.module.v2",
   "id": "llm-note",
   "display_name": "llm-note",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Local-first notes and notebooks an LLM assistant keeps for its user (capture, organize, recall) - SQLite + plain text, extracted from BACH Notizblock/Denkarium.",
   "category": "memory",
   "kind": "library",
