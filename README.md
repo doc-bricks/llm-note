@@ -1,4 +1,4 @@
-<img src="assets/banner.svg" width="100%" alt="llm-note banner">
+<img src="assets/banner.png" width="100%" alt="llm-note banner">
 
 # llm-note
 
@@ -145,7 +145,7 @@ plugin/                    Lightweight plugin metadata
 references/bach-export/    Raw BACH skill export
 references/bach-source/    Source snapshots used during extraction
 docs/                      Additional documentation
-assets/banner.svg          Repository banner
+assets/banner.png          Repository banner
 ```
 
 ## Privacy Model
