@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="__GUI_LANG__">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>llm-note Denkarium</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #292722;
+      --ink-soft: #68635b;
+      --ink-faint: #928b80;
+      --paper: #fffefa;
+      --paper-warm: #f8f4ec;
+      --rule: #ded7cc;
+      --accent: #7c4326;
+      --accent-blue: #315f7a;
+      --accent-red: #8a3535;
+      --shadow: rgba(54, 43, 32, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    body.sans { font-family: "Segoe UI", Arial, sans-serif; }
+    body.mono { font-family: Consolas, "Courier New", monospace; }
+
+    main {
+      width: min(760px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 3rem 0 5rem;
+    }
+    header {
+      margin-bottom: 2.25rem;
+      padding-bottom: 1.35rem;
+      border-bottom: 1px solid var(--rule);
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+      color: var(--accent);
+      font-size: clamp(2.4rem, 8vw, 4rem);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: -0.035em;
+    }
+    .subtitle {
+      margin: 0.4rem 0 0;
+      color: var(--ink-faint);
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 0.76rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .ornament { margin-top: 0.7rem; color: var(--rule); }
+
+    .settings,
+    .filters,
+    .compose-controls,
+    .stats {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .settings {
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      color: var(--ink-faint);
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 0.78rem;
+    }
+    .font-choice,
+    button,
+    input,
+    select,
+    textarea { font: inherit; }
+    button,
+    .font-choice {
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--ink-soft);
+      cursor: pointer;
+    }
+    button:hover,
+    button:focus-visible,
+    .font-choice:hover { border-color: var(--ink-soft); color: var(--ink); }
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 2px; }
+    .font-choice { padding: 0.3rem 0.55rem; }
+    .font-choice.active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+    .compose {
+      margin-bottom: 2rem;
+      padding: 1.3rem;
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      background: var(--paper-warm);
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+    textarea {
+      width: 100%;
+      min-height: 8.5rem;
+      padding: 0.8rem 0.25rem;
+      resize: vertical;
+      border: 0;
+      border-bottom: 1px solid var(--rule);
+      background: repeating-linear-gradient(
+        transparent,
+        transparent 1.8rem,
+        var(--rule) 1.8rem,
+        var(--rule) calc(1.8rem + 1px)
+      );
+      color: var(--ink);
+      font-size: 1.04rem;
+      line-height: 1.8rem;
+    }
+    textarea::placeholder,
+    input::placeholder { color: var(--ink-faint); }
+    .compose-controls { margin-top: 0.85rem; }
+    input,
+    select {
+      min-width: 8rem;
+      padding: 0.5rem 0.6rem;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      background: var(--paper);
+      color: var(--ink);
+    }
+    #title { flex: 1; }
+    .primary {
+      margin-left: auto;
+      padding: 0.52rem 1rem;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .primary:hover { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+
+    .filters { margin: 0 0 1.7rem; }
+    #search {
+      flex: 1;
+      min-width: 12rem;
+      border-width: 0 0 1px;
+      border-radius: 0;
+      background: transparent;
+    }
+    .chip { padding: 0.38rem 0.75rem; }
+    .chip.active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+    #status {
+      min-height: 1.3rem;
+      margin: -0.8rem 0 1rem;
+      color: var(--accent-red);
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 0.82rem;
+    }
+    .entry {
+      padding: 0 0 1.4rem;
+      margin-bottom: 1.4rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .entry-meta {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-bottom: 0.4rem;
+      color: var(--ink-faint);
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 0.76rem;
+    }
+    .entry-type {
+      color: var(--accent-blue);
+      font-size: 0.67rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .entry-type.logbook { color: var(--accent-red); }
+    .entry-category { font-style: italic; }
+    .entry-title { margin-bottom: 0.3rem; font-size: 1.1rem; font-weight: 600; }
+    .entry-content { line-height: 1.72; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .mood { margin-left: auto; color: var(--accent); letter-spacing: 0.08em; }
+    .empty { padding: 3.5rem 1rem; text-align: center; color: var(--ink-faint); }
+    .empty strong { display: block; margin-bottom: 0.4rem; font-size: 1.4rem; font-style: italic; }
+
+    @media (max-width: 620px) {
+      main { padding-top: 1.6rem; }
+      .compose { padding: 1rem; }
+      .compose-controls > * { flex: 1; }
+      .primary { margin-left: 0; }
+      .mood { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1 id="heading">Denkarium</h1>
+      <p class="subtitle" id="subtitle"></p>
+      <div class="ornament" aria-hidden="true">— ◈ —</div>
+    </header>
+
+    <section class="settings" aria-label="Display settings">
+      <div>
+        <button class="font-choice active" data-font="serif" type="button">Serif</button>
+        <button class="font-choice" data-font="sans" type="button">Sans</button>
+        <button class="font-choice" data-font="mono" type="button">Mono</button>
+      </div>
+      <div class="stats" id="stats"></div>
+    </section>
+
+    <form class="compose" id="compose">
+      <textarea id="content" required></textarea>
+      <div class="compose-controls">
+        <select id="entry-type">
+          <option value="note"></option>
+          <option value="logbook"></option>
+        </select>
+        <input id="category" maxlength="100" value="note">
+        <input id="title" maxlength="200">
+        <select id="mood">
+          <option value=""></option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+        <button class="primary" id="save" type="submit"></button>
+      </div>
+    </form>
+
+    <section class="filters" aria-label="Note filters">
+      <input id="search" type="search">
+      <button class="chip active" data-type="" type="button"></button>
+      <button class="chip" data-type="note" type="button"></button>
+      <button class="chip" data-type="logbook" type="button"></button>
+    </section>
+
+    <div id="status" role="status" aria-live="polite"></div>
+    <section id="entries" aria-live="polite"></section>
+  </main>
+
+  <script>
+    const copy = __GUI_COPY_JSON__;
+    let currentType = "";
+    let searchTimer;
+
+    const byId = (id) => document.getElementById(id);
+    const escapeHtml = (value) => String(value ?? "").replace(/[&<>'"]/g, (char) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
+    })[char]);
+
+    function applyCopy() {
+      document.title = copy.document_title;
+      byId("heading").textContent = copy.heading;
+      byId("subtitle").textContent = copy.subtitle;
+      byId("content").placeholder = copy.compose_placeholder;
+      byId("entry-type").options[0].textContent = copy.note;
+      byId("entry-type").options[1].textContent = copy.logbook;
+      byId("category").placeholder = copy.category;
+      byId("title").placeholder = copy.optional_title;
+      byId("mood").options[0].textContent = copy.mood;
+      byId("save").textContent = copy.save;
+      byId("search").placeholder = copy.search;
+      const chips = document.querySelectorAll(".chip");
+      chips[0].textContent = copy.all;
+      chips[1].textContent = copy.notes;
+      chips[2].textContent = copy.logbook;
+      byId("entries").innerHTML = `<div class="empty">${escapeHtml(copy.loading)}</div>`;
+    }
+
+    function renderStats(stats) {
+      byId("stats").innerHTML =
+        `<strong>${stats.total}</strong> ${escapeHtml(copy.entries)} · ` +
+        `<strong>${stats.notes}</strong> ${escapeHtml(copy.notes)} · ` +
+        `<strong>${stats.logbook}</strong> ${escapeHtml(copy.logbook)}`;
+    }
+
+    function renderEntries(entries) {
+      if (!entries.length) {
+        byId("entries").innerHTML = `<div class="empty"><strong>${escapeHtml(copy.empty_title)}</strong>${escapeHtml(copy.empty_body)}</div>`;
+        return;
+      }
+      byId("entries").innerHTML = entries.map((entry) => {
+        const isLogbook = entry.entry_type === "logbook";
+        const typeLabel = isLogbook ? copy.logbook : copy.note;
+        const mood = entry.mood ? "★".repeat(entry.mood) + "☆".repeat(5 - entry.mood) : "";
+        return `<article class="entry">
+          <div class="entry-meta">
+            <span class="entry-type ${isLogbook ? "logbook" : ""}">${escapeHtml(typeLabel)}</span>
+            <span class="entry-category">${escapeHtml(entry.category)}</span>
+            <time>${escapeHtml(entry.created_at)}</time>
+            ${mood ? `<span class="mood" aria-label="${escapeHtml(copy.mood)} ${entry.mood}">${mood}</span>` : ""}
+          </div>
+          ${entry.title ? `<div class="entry-title">${escapeHtml(entry.title)}</div>` : ""}
+          <div class="entry-content">${escapeHtml(entry.content)}</div>
+        </article>`;
+      }).join("");
+    }
+
+    async function loadEntries() {
+      const params = new URLSearchParams({limit: "100"});
+      if (currentType) params.set("entry_type", currentType);
+      const term = byId("search").value.trim();
+      if (term) params.set("search", term);
+      try {
+        const response = await fetch(`/api/entries?${params}`);
+        if (!response.ok) throw new Error("load failed");
+        const data = await response.json();
+        renderStats(data.stats);
+        renderEntries(data.entries);
+        byId("status").textContent = "";
+      } catch (error) {
+        byId("status").textContent = copy.load_error;
+      }
+    }
+
+    document.querySelectorAll(".font-choice").forEach((button) => {
+      button.addEventListener("click", () => {
+        const font = button.dataset.font;
+        document.body.className = font === "serif" ? "" : font;
+        document.querySelectorAll(".font-choice").forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        localStorage.setItem("llm-note-font", font);
+      });
+    });
+
+    document.querySelectorAll(".chip").forEach((button) => {
+      button.addEventListener("click", () => {
+        currentType = button.dataset.type;
+        document.querySelectorAll(".chip").forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        loadEntries();
+      });
+    });
+
+    byId("search").addEventListener("input", () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(loadEntries, 250);
+    });
+
+    byId("compose").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const mood = byId("mood").value;
+      const payload = {
+        content: byId("content").value,
+        entry_type: byId("entry-type").value,
+        category: byId("category").value,
+        title: byId("title").value || null,
+        mood: mood ? Number(mood) : null
+      };
+      try {
+        const response = await fetch("/api/entries", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error("save failed");
+        byId("content").value = "";
+        byId("title").value = "";
+        byId("mood").value = "";
+        await loadEntries();
+        byId("content").focus();
+      } catch (error) {
+        byId("status").textContent = copy.save_error;
+      }
+    });
+
+    applyCopy();
+    const savedFont = localStorage.getItem("llm-note-font");
+    const savedButton = document.querySelector(`.font-choice[data-font="${savedFont}"]`);
+    if (savedButton) savedButton.click();
+    loadEntries();
+  </script>
+</body>
+</html>

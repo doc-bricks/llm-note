@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased - 2026-08-03
+
+- Added a standalone, loopback-only Denkarium web interface based on Python's
+  standard-library `http.server` and the existing `NoteStore`.
+- Added the `llm-note gui` entry point with database, locale, port, and
+  `--no-browser` support.
+- Added HTTP and CLI regression coverage for page delivery, note reads and
+  writes, and combined search/type filters.
+- Documented the BACH GUI provenance and the integrations intentionally left
+  behind.
+
 ## 1.0.3 - 2026-07-27
 
 - Aligned package, plugin, and portable module metadata with the documented 1.0.3 release line.

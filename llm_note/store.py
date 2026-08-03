@@ -228,24 +228,39 @@ class NoteStore:
             rows = conn.execute(query, params).fetchall()
         return [self._row_to_entry(row) for row in rows]
 
-    def search(self, term: str, *, limit: int = 20) -> list[Entry]:
+    def search(
+        self,
+        term: str,
+        *,
+        entry_type: str | None = None,
+        category: str | None = None,
+        limit: int = 20,
+    ) -> list[Entry]:
         limit = _validate_limit(limit)
         escaped_term = (
             term.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
         )
         pattern = f"%{escaped_term}%"
+        where = [
+            "(content LIKE ? ESCAPE '\\' "
+            "OR title LIKE ? ESCAPE '\\' "
+            "OR category LIKE ? ESCAPE '\\' "
+            "OR tags LIKE ? ESCAPE '\\')"
+        ]
+        params: list[object] = [pattern, pattern, pattern, pattern]
+        if entry_type:
+            where.append("entry_type = ?")
+            params.append(entry_type)
+        if category:
+            where.append("category = ?")
+            params.append(category)
+        params.append(limit)
         with self._connect() as conn:
             rows = conn.execute(
-                """
-                SELECT * FROM note_entries
-                WHERE content LIKE ? ESCAPE '\\'
-                   OR title LIKE ? ESCAPE '\\'
-                   OR category LIKE ? ESCAPE '\\'
-                   OR tags LIKE ? ESCAPE '\\'
-                ORDER BY created_at DESC, id DESC
-                LIMIT ?
-                """,
-                (pattern, pattern, pattern, pattern, limit),
+                "SELECT * FROM note_entries WHERE "
+                + " AND ".join(where)
+                + " ORDER BY created_at DESC, id DESC LIMIT ?",
+                params,
             ).fetchall()
         return [self._row_to_entry(row) for row in rows]
 

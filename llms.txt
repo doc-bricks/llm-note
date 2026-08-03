@@ -1,8 +1,8 @@
 # llm-note
 
-llm-note is a local-first note engine for LLM agents. It provides a SQLite note store, plain-text notebook inboxes, a small CLI, and an agent skill.
+llm-note is a local-first note engine for LLM agents. It provides a SQLite note store, plain-text notebook inboxes, a CLI, a loopback-only web GUI, and an agent skill.
 
-Last-checked: 2026-07-27
+Last-checked: 2026-08-03
 
 Audience:
 
@@ -16,19 +16,23 @@ Search phrases:
 - SQLite note store for agents
 - agent notebook CLI
 - private AI notebook
+- local LLM note GUI
 - LLM memory logbook
 - BACH Notizblock extraction
 
 Disambiguation:
 
 - Not Google NotebookLM, Obsidian, Joplin, a vector database, or a hosted AI notebook.
-- Not an MCP server; the package is a Python library, CLI, and reusable agent skill.
+- Not an MCP server or hosted web service; the package is a Python library, CLI, loopback-only GUI, and reusable agent skill.
 - Runtime storage is local SQLite plus plain text files.
+- The GUI uses only Python `http.server`, bundled HTML, and system fonts.
 
 Important files:
 
 - `llm_note/store.py`: core SQLite and file notebook logic.
 - `llm_note/cli.py`: command line interface.
+- `llm_note/gui.py`: loopback HTTP server and JSON API.
+- `llm_note/templates/denkarium.html`: bundled browser interface adapted from BACH.
 - `llm_note/locales/*.json`: six standard message locales.
 - `ellmos-module.v2.json`: portable module catalog metadata.
 - `skills/llm-note/SKILL.md`: standalone agent skill.
@@ -41,5 +45,5 @@ Run checks:
 python -m pytest -q
 ruff check llm_note tests
 python -m build
-python -m py_compile llm_note/store.py llm_note/cli.py llm_note/i18n.py
+python -m py_compile llm_note/store.py llm_note/cli.py llm_note/gui.py llm_note/i18n.py
 ```

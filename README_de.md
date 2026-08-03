@@ -5,16 +5,16 @@
 [![CI](https://github.com/doc-bricks/llm-note/actions/workflows/ci.yml/badge.svg)](https://github.com/doc-bricks/llm-note/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/Lizenz-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests: 16 Passed](https://img.shields.io/badge/Tests-16%20Bestanden-brightgreen.svg)](tests/)
+[![Tests: 19 Passed](https://img.shields.io/badge/Tests-19%20Bestanden-brightgreen.svg)](tests/)
 [![Ecosystem: doc-bricks](https://img.shields.io/badge/Ecosystem-doc--bricks-0055ff.svg)](https://github.com/doc-bricks)
 [![Umbrella: open-bricks](https://img.shields.io/badge/Umbrella-open--bricks-blueviolet.svg)](https://github.com/open-bricks)
 
 [Deutsch](README_de.md) · [English](README.md) · [Español](README_es.md) · [简体中文](README_zh-Hans.md) · [日本語](README_ja.md) · [Русский](README_ru.md)
 
 > [!NOTE]
-> **Datenschutz & Lokal-Zuerst**: `llm-note` arbeitet vollständig auf lokalen SQLite-Datenbanken und einfachen Textdateien. Es benötigt keine API-Schlüssel, keine Cloud-Server, keinen Vektordatenbank-Overhead und stellt keinerlei Netzwerkverbindungen her. Ideal für datenschutzkonforme KI-Agenten-Workflows.
+> **Datenschutz & Lokal-Zuerst**: `llm-note` arbeitet vollständig auf lokalen SQLite-Datenbanken und einfachen Textdateien. Es benötigt keine API-Schlüssel, keine Cloud-Server, keinen Vektordatenbank-Overhead und stellt keine ausgehenden Netzwerkverbindungen her. Ideal für datenschutzkonforme KI-Agenten-Workflows.
 
-**llm-note** ist ein lokaler Notizkern für LLM-Agenten. Das Modul verbindet ein kleines SQLite-Denkarium mit einfachen Text-Notizbüchern, ohne Cloudkonto, ohne Server und ohne externe Laufzeitabhängigkeiten.
+**llm-note** ist ein lokaler Notizkern für LLM-Agenten. Das Modul verbindet ein kleines SQLite-Denkarium mit einfachen Text-Notizbüchern, ohne Cloudkonto, ohne externen Server und ohne externe Laufzeitabhängigkeiten.
 
 ## Systemarchitektur
 
@@ -22,6 +22,7 @@
 graph TD
     subgraph Clients["Schnittstellen & Clients"]
         CLI["llm-note CLI"]
+        GUI["Lokale Weboberfläche"]
         PyAPI["Python API"]
         Skill["Agenten-Skill (SKILL.md)"]
     end
@@ -29,6 +30,7 @@ graph TD
     subgraph CoreEngine["llm-note Notizkern"]
         NoteStore["NoteStore (SQLite)"]
         FileStore["FileNotebookStore (Text-Datei)"]
+        HTTP["http.server (127.0.0.1)"]
         I18N["Lokalisierung (EN/DE/ES/ZH/JA/RU)"]
     end
 
@@ -39,6 +41,8 @@ graph TD
     end
 
     CLI --> NoteStore
+    GUI --> HTTP
+    HTTP --> NoteStore
     CLI --> FileStore
     PyAPI --> NoteStore
     PyAPI --> FileStore
@@ -67,6 +71,7 @@ Nutze llm-note, wenn ein Agent, Coding-Assistent oder lokaler Forschungsworkflow
 - Strukturierte Notizen, Logbuch-Einträge, Kategorien, Stimmung und Beförderungsmarker speichern.
 - Schnelle Text-Notizbücher mit `#NB:`-Transfermarkierungen führen.
 - Notizen per Python oder CLI durchsuchen.
+- Notizen in einer lokalen Browseroberfläche schreiben, filtern, suchen und lesen.
 - Brainstorm-Einträge anlegen und später in Aufgaben, Wiki-Seiten oder Issues überführen.
 - Nutzertexte in sechs Sprachen bündeln: Deutsch, Englisch, Spanisch, vereinfachtes Chinesisch, Japanisch und Russisch.
 
@@ -78,6 +83,26 @@ llm-note --locale de write "Öffentliche README prüfen" --cat release
 llm-note --locale de search README
 ```
 
+## Lokale Weboberfläche
+
+Die Oberfläche verwendet denselben Standard-Datenbankpfad wie die CLI:
+
+```bash
+llm-note --locale de gui
+```
+
+Der Befehl öffnet `http://127.0.0.1:8000/` im Standardbrowser. Eine andere
+Datenbank oder einen anderen Port wählst du so:
+
+```bash
+llm-note --db data/notes.db --locale de gui --port 8765
+```
+
+Mit `--no-browser` startet nur der Server. Er ist ausschließlich über die
+lokale Loopback-Adresse erreichbar und basiert auf `http.server`, gebündeltem
+HTML und Systemschriften. Dadurch bleiben die Laufzeitabhängigkeiten auf die
+Python-Standardbibliothek beschränkt; es gibt keine ausgehenden Anfragen.
+
 Suchbegriffe werden wörtlich behandelt; `%` und `_` sind keine SQL-Wildcards.
 Abfragelimits dürfen zwischen `0` und `1000` liegen. Text-Notizbücher behalten
 Unicode-Namen und koordinieren parallele lokale Prozesse über die Datei
@@ -87,7 +112,9 @@ verdoppelt.
 
 ## Datenschutz
 
-llm-note sendet selbst keine Daten ins Netz. Datenbanken und Notizordner bleiben lokale Dateien und sind in `.gitignore` ausgeschlossen.
+llm-note sendet selbst keine Daten an externe Dienste. Die optionale Oberfläche
+lauscht nur auf `127.0.0.1` und stellt keine ausgehenden Anfragen. Datenbanken
+und Notizordner bleiben lokale Dateien und sind in `.gitignore` ausgeschlossen.
 
 ## Einordnung
 

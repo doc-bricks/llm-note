@@ -20,6 +20,16 @@ def _query_limit(value: str) -> int:
     return limit
 
 
+def _port(value: str) -> int:
+    try:
+        port = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("port must be an integer") from exc
+    if not 0 <= port <= 65535:
+        raise argparse.ArgumentTypeError("port must be between 0 and 65535")
+    return port
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="llm-note", description="Local-first notes for LLM agents"
@@ -47,12 +57,32 @@ def build_parser() -> argparse.ArgumentParser:
     brainstorm.add_argument("topic")
 
     sub.add_parser("stats", help="Show statistics")
+
+    gui = sub.add_parser("gui", help="Open the local web interface")
+    gui.add_argument("--port", type=_port, default=8000)
+    gui.add_argument(
+        "--no-browser",
+        action="store_true",
+        help="Start the server without opening a browser",
+    )
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+
+    if args.command == "gui":
+        from .gui import run_server
+
+        run_server(
+            args.db,
+            port=args.port,
+            locale=args.locale,
+            open_browser=not args.no_browser,
+        )
+        return 0
+
     msg = load_messages(args.locale)
     store = NoteStore(args.db)
 

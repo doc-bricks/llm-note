@@ -5,14 +5,14 @@
 [![CI](https://github.com/doc-bricks/llm-note/actions/workflows/ci.yml/badge.svg)](https://github.com/doc-bricks/llm-note/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests: 16 Passed](https://img.shields.io/badge/Tests-16%20Passed-brightgreen.svg)](tests/)
+[![Tests: 19 Passed](https://img.shields.io/badge/Tests-19%20Passed-brightgreen.svg)](tests/)
 [![Ecosystem: doc-bricks](https://img.shields.io/badge/Ecosystem-doc--bricks-0055ff.svg)](https://github.com/doc-bricks)
 [![Umbrella: open-bricks](https://img.shields.io/badge/Umbrella-open--bricks-blueviolet.svg)](https://github.com/open-bricks)
 
 [Deutsch](README_de.md) · [English](README.md) · [Español](README_es.md) · [简体中文](README_zh-Hans.md) · [日本語](README_ja.md) · [Русский](README_ru.md)
 
 > [!NOTE]
-> **Privacy-First & Local-Only**: `llm-note` operates entirely on local SQLite and plain-text files. It requires zero API keys, no cloud servers, no vector database overhead, and makes no network connections. Ideal for secure, privacy-conscious AI agent workflows.
+> **Privacy-First & Local-Only**: `llm-note` operates entirely on local SQLite and plain-text files. It requires zero API keys, no cloud servers, no vector database overhead, and makes no outbound network requests. Ideal for secure, privacy-conscious AI agent workflows.
 
 **llm-note** is a local-first note engine for LLM agents. It gives agents and humans a small SQLite thought log plus plain-text notebook inboxes without hosted services, accounts, or external runtime dependencies.
 
@@ -24,6 +24,7 @@ The project was extracted from BACH's Notizblock and Denkarium patterns, then cl
 graph TD
     subgraph Clients["Clients & Interfaces"]
         CLI["llm-note CLI"]
+        GUI["Local Web GUI"]
         PyAPI["Python API"]
         Skill["Agent Skill (SKILL.md)"]
     end
@@ -31,6 +32,7 @@ graph TD
     subgraph CoreEngine["llm-note Core Engine"]
         NoteStore["NoteStore (SQLite)"]
         FileStore["FileNotebookStore (Plain-Text)"]
+        HTTP["http.server (127.0.0.1)"]
         I18N["Locales (EN/DE/ES/ZH/JA/RU)"]
     end
 
@@ -41,6 +43,8 @@ graph TD
     end
 
     CLI --> NoteStore
+    GUI --> HTTP
+    HTTP --> NoteStore
     CLI --> FileStore
     PyAPI --> NoteStore
     PyAPI --> FileStore
@@ -69,6 +73,7 @@ Use llm-note when you need a small, auditable memory layer for agents, coding as
 - Store structured notes, logbook entries, categories, mood values, and promotion markers in SQLite.
 - Keep portable plain-text notebooks for quick inbox notes and topic notebooks.
 - Search notes from Python or the CLI.
+- Write, filter, search, and read notes in a local browser interface.
 - Start brainstorm entries that can later become tasks, wiki pages, or issues in a host system.
 - Use six bundled message locales: German, English, Spanish, Simplified Chinese, Japanese, and Russian.
 - Ship an agent skill that explains when and how to use the note workflow.
@@ -100,6 +105,26 @@ Use a custom database or locale:
 ```bash
 llm-note --db data/notes.db --locale de write "Öffentliche README prüfen" --cat release
 ```
+
+## Local Web GUI
+
+Start the interface with the same default database path as the CLI:
+
+```bash
+llm-note gui
+```
+
+The command opens `http://127.0.0.1:8000/` in the default browser. Select a
+different database, German interface text, or another port with:
+
+```bash
+llm-note --db data/notes.db --locale de gui --port 8765
+```
+
+Use `--no-browser` when another process will open the page. The server binds to
+the local loopback interface only. It uses `http.server`, bundled HTML, and
+system fonts, so the GUI adds no runtime dependency and makes no outbound
+requests.
 
 ## Python API
 
@@ -139,6 +164,8 @@ Useful search phrases for this repository include `local-first LLM notes`, `SQLi
 
 ```text
 llm_note/                  Python package
+llm_note/gui.py            Loopback HTTP server and JSON API
+llm_note/templates/        Bundled standalone GUI
 tests/                     Pytest suite
 skills/llm-note/           Agent skill
 plugin/                    Lightweight plugin metadata
@@ -150,10 +177,11 @@ assets/banner.png          Repository banner
 
 ## Privacy Model
 
-llm-note never talks to a network service by itself. Databases, notebook folders,
-and notebook lock files are local data, and `.gitignore` excludes the default
-locations. Public releases should commit code, docs, tests, and skill metadata
-only.
+llm-note never talks to an external network service by itself. The optional GUI
+listens only on `127.0.0.1` and performs no outbound requests. Databases,
+notebook folders, and notebook lock files are local data, and `.gitignore`
+excludes the default locations. Public releases should commit code, docs, tests,
+and skill metadata only.
 
 ## License
 
