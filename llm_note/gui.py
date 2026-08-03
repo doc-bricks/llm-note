@@ -86,7 +86,7 @@ class NoteRequestHandler(BaseHTTPRequestHandler):
 
     server: NoteHTTPServer
 
-    def do_HEAD(self) -> None:  # noqa: N802 - stdlib handler API
+    def do_HEAD(self) -> None:
         path = urlsplit(self.path).path
         if path in {"/", "/index.html"}:
             self._send_bytes(
@@ -98,7 +98,7 @@ class NoteRequestHandler(BaseHTTPRequestHandler):
             return
         self._send_json(HTTPStatus.NOT_FOUND, {"error": "not found"}, False)
 
-    def do_GET(self) -> None:  # noqa: N802 - stdlib handler API
+    def do_GET(self) -> None:
         parsed = urlsplit(self.path)
         if parsed.path in {"/", "/index.html"}:
             self._send_bytes(
@@ -117,7 +117,7 @@ class NoteRequestHandler(BaseHTTPRequestHandler):
             return
         self._send_json(HTTPStatus.NOT_FOUND, {"error": "not found"})
 
-    def do_POST(self) -> None:  # noqa: N802 - stdlib handler API
+    def do_POST(self) -> None:
         if urlsplit(self.path).path != "/api/entries":
             self._send_json(HTTPStatus.NOT_FOUND, {"error": "not found"})
             return

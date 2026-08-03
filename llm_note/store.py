@@ -242,10 +242,12 @@ class NoteStore:
         )
         pattern = f"%{escaped_term}%"
         where = [
-            "(content LIKE ? ESCAPE '\\' "
-            "OR title LIKE ? ESCAPE '\\' "
-            "OR category LIKE ? ESCAPE '\\' "
-            "OR tags LIKE ? ESCAPE '\\')"
+            (
+                "(content LIKE ? ESCAPE '\\' "
+                "OR title LIKE ? ESCAPE '\\' "
+                "OR category LIKE ? ESCAPE '\\' "
+                "OR tags LIKE ? ESCAPE '\\')"
+            )
         ]
         params: list[object] = [pattern, pattern, pattern, pattern]
         if entry_type:
