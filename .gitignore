@@ -25,3 +25,17 @@ dist/
 .vscode/
 desktop.ini
 Thumbs.db
+
+# Notebook and multi-agent coordination locks
+.llm-note.lock
+LOCK
+LOCK.*
+*.lock
+LOCK*.txt
+LOCK.permissions.json
+
+# Cloud-sync conflict artifacts
+*-conflict-*
+*.sync-temp-*
+*-ASUS-GEI.*
+*-WORKSTATION-LG.*
