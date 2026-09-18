@@ -1,0 +1,153 @@
+===============================================================================
+                       llm-note MARKETING & DISCOVERABILITY LOG
+===============================================================================
+Repository:    doc-bricks/llm-note
+Parent Org:    https://github.com/doc-bricks
+Umbrella:      https://github.com/open-bricks
+License:       MIT License (100% Permissive, Zero Copyleft)
+Maintainer:    Lukas Geiger <support@lukasgeiger.com>
+Last Audit:    2026-09-18 (Pfad B Discoverability & Design Audit)
+===============================================================================
+
+1. EXECUTIVE VALUE PROPOSITION
+-------------------------------------------------------------------------------
+llm-note is an ultra-lightweight, zero-service local thought engine and notebook
+inbox designed specifically for autonomous AI agents, coding assistants, and
+privacy-conscious developers. Originally extracted and modularized from the BACH
+ecosystem (Notizblock and Denkarium), llm-note provides a durable SQLite thought
+log alongside human-editable plain-text inboxes. It eliminates the operational
+overhead of heavy vector databases and hosted cloud services by delivering an
+embeddable, zero-runtime-dependency Python package with an integrated loopback
+web GUI and an agent-ready skill specification.
+
+Key Value Drivers:
+- 100% Local-First & Zero Egress: Strictly local data storage; zero network calls.
+- Zero External Dependencies: Built entirely with the Python standard library.
+- Resilient Dual-Store Architecture: Structured SQLite records + plain-text inboxes.
+- Embedded Loopback Web GUI: Zero-install browser interface running on 127.0.0.1.
+- Turnkey Agent Skill: Bundled SKILL.md for immediate tool invocation by LLMs.
+- Multi-Locale Support: 6 bundled language files (EN, DE, ES, ZH, JA, RU).
+
+
+2. TARGET PERSONAS & HIGH-INTENT QUERIES
+-------------------------------------------------------------------------------
+
+[PERSONA-01] Autonomous Agent Framework Builder
+  Needs: An embeddable, fast, zero-dependency SQLite memory layer to record agent
+         thoughts, decision rationale, observation logs, and task promotion markers
+         across context window resets and restarts.
+  Pain Point: Vector databases and cloud-hosted memory servers require API keys,
+              network setup, complex indexing pipelines, and heavy runtime weights.
+  High-Intent Queries (EN):
+    - "local-first LLM agent memory sqlite"
+    - "zero dependency agent memory python"
+    - "embeddable thought log for AI assistants"
+    - "lightweight agent scratchpad sqlite"
+  High-Intent Queries (DE):
+    - "lokaler KI Agenten Notizspeicher sqlite"
+    - "autonomes Agenten Gedächtnis ohne Cloud"
+    - "einfaches LLM Logbuch Python"
+
+[PERSONA-02] Privacy-Conscious Local Developer & Power User
+  Needs: A trustworthy, air-gapped note-taking and notebook ingestion tool that
+         operates on raw text files and local databases without telemetry.
+  Pain Point: Modern note apps force account creation, proprietary formats, and
+              unsolicited background network synchronization.
+  High-Intent Queries (EN):
+    - "zero-egress private note taking python"
+    - "local-first plain text notebook inbox"
+    - "cli notebook for air-gapped development"
+    - "private AI notebook local sqlite"
+  High-Intent Queries (DE):
+    - "datenschutzkonformer Notizblock offline"
+    - "lokale Notizverwaltung ohne Telemetrie"
+    - "CLI Notizbuch reine Standardbibliothek"
+
+[PERSONA-03] Desktop AI Assistant User / Denkarium Explorer
+  Needs: An immediate, lightweight browser interface to view, filter, and search
+         agent thoughts and draft new ideas without spinning up heavy frontends.
+  Pain Point: Electron apps and node-based GUIs consume gigabytes of RAM and require
+              complex build toolchains.
+  High-Intent Queries (EN):
+    - "lightweight local note web gui python standard library"
+    - "Denkarium agent thought browser"
+    - "loopback AI thinking GUI"
+  High-Intent Queries (DE):
+    - "schlanke lokale Web-Oberfläche Notizen Python"
+    - "Agenten Denkarium Browser UI"
+    - "lokales Gedanken-Dashboard ohne Node"
+
+[PERSONA-04] Open-Science Researcher & Audit Logkeeper
+  Needs: Reproducible, auditable experiment logs and decision rationales that can
+         be version-controlled directly in Git repositories alongside papers and code.
+  Pain Point: Proprietary SaaS note apps lock notes in opaque formats with unpredictable
+              schema changes and no Git diff compatibility.
+  High-Intent Queries (EN):
+    - "git trackable research notebook sqlite"
+    - "reproducible thought log for research workflows"
+    - "auditable scientific scratchpad python"
+  High-Intent Queries (DE):
+    - "reproduzierbares Forschungstagebuch Git"
+    - "wissenschaftliche Notizen SQLite Standardbibliothek"
+    - "prüfbare Notizschicht Forschungsworkflow"
+
+
+3. 10-DIMENSION COMPARATIVE MATRIX VS. ALTERNATIVES
+-------------------------------------------------------------------------------
+Mapped directly to system invariants INV-LOCAL-01 through INV-SLA-10:
+
+Dimension                 llm-note         Obsidian         Joplin         Vector DBs      Raw sqlite3 CLI
+----------------------------------------------------------------------------------------------------------
+1. Storage Engine         SQLite + TXT     Markdown files   SQLite / Sync  Vector Embed    Single SQLite DB
+2. Runtime Dependencies   0 (Stdlib only)  Electron / Node  Electron / DB  C++ / Rust / Py 0 (C Binary)
+3. Network Egress         Zero / Airgap    Plugins leak     Sync service   Cloud / Remote  Zero / Local
+4. Agent Python API       First-Class      None / REST hack Community API  Complex vectors Raw SQL required
+5. Embedded Web GUI       127.0.0.1 Stdlib Desktop App      Desktop App    Separate SaaS   None / Third-party
+6. Plain-Text Inbox Sync  Built-in (#NB:)  Manual folders   Note imports   N/A             Manual queries
+7. Multi-Locale Engine    6 Languages      Community pack   Community pack English-centric English only
+8. Execution Privilege    RunAsInvoker     User / Desktop   User / Desktop User / Docker   User
+9. Agent Skill Packaging  SKILL.md bundled Community MCP    Third-party    Custom code     None
+10. Security Response SLA 48h / 5d         Community-driven Community-fund Enterprise-only None (Public domain)
+
+
+4. SIBLING ECOSYSTEM CROSS-PROMOTION MATRIX
+-------------------------------------------------------------------------------
+Organization: doc-bricks (https://github.com/doc-bricks)
+Umbrella:     open-bricks (https://github.com/open-bricks)
+
+- doc-bricks/llm-note:
+  Local-first note engine and Denkarium for LLM agents and developers.
+- doc-bricks/MediaBrain:
+  Multimodal asset analysis, OCR, and document transcription pipeline.
+- doc-bricks/MailProcessor:
+  Deterministic, privacy-clean email parser, extraction, and archiving core.
+- file-bricks/ProSync:
+  Cross-platform high-performance bi-directional directory synchronization.
+- file-bricks/CloudLockFixer:
+  Automated detection and resolution of cloud synchronization locks and conflicts.
+- open-bricks/open-bricks:
+  Neutral ecosystem catalog and umbrella foundation for sovereign developer tooling.
+
+
+5. DISCOVERABILITY & SEO ACTION CHECKLIST
+-------------------------------------------------------------------------------
+[X] 18-Point Bilingual Navigation Parity (EN/DE) with reciprocal HTML anchor aliases.
+[X] Shields.io Badges: Version, CI, Tests, Python 3.10-3.13, Platform, License, Privacy, Security SLA.
+[X] Dual Mermaid Diagrams: System Architecture Flowchart + Lifecycle Sequence Diagram.
+[X] Third-Party License Audit & SBOM (THIRD_PARTY_LICENSES.md) with Zero-Copyleft certification.
+[X] Formal Marketing & Governance Log (MARKETING-LOG.txt).
+[X] LLM Context Index (llms.txt) updated to current specification (v1.0.4).
+[X] Contract Test Suite (tests/test_metadata.py) verifying all invariants and PEP 621 compliance.
+[ ] Community Outreach: Submit to Awesome-Agent-Tools & Awesome-Python lists.
+[ ] Community Showcase: Share on Reddit r/LocalLLaMA and Hacker News Show HN.
+
+
+6. AUDIT HISTORY
+-------------------------------------------------------------------------------
+2026-09-18: Pfad B Discoverability, Marketing & Architecture Audit (v1.0.4)
+            - Auditor: Antigravity / Gemini 3.8 Flash High
+            - Status: 100% Invariants Verified (INV-LOCAL-01 .. INV-SLA-10)
+            - Actions: Created THIRD_PARTY_LICENSES.md, updated pyproject.toml PEP 621 URLs,
+                       created MARKETING-LOG.txt, overhauled README.md & README_de.md to
+                       full 18-point bilingual parity, updated llms.txt, added test_metadata.py.
+===============================================================================

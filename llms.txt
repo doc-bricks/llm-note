@@ -1,14 +1,19 @@
-# llm-note
+# llm-note (v1.0.4)
 
-llm-note is a local-first note engine for LLM agents. It provides a SQLite note store, plain-text notebook inboxes, a CLI, a loopback-only web GUI, and an agent skill.
+llm-note is an ultra-lightweight, zero-service local thought repository and notebook engine designed specifically for autonomous AI agents, coding assistants, and local developers. It provides a durable SQLite thought store (`data/notes.db`), human-editable plain-text inboxes (`notebooks/*.txt`), a command-line interface (`llm-note`), an embedded loopback-only web GUI (`Denkarium` at `127.0.0.1`), and an agent-ready skill definition (`skills/llm-note/SKILL.md`).
 
-Last-checked: 2026-08-03
+Version: 1.0.4
+Last-checked: 2026-09-18
+License: MIT (100% Permissive, Zero Copyleft, PSF Standard Library)
+Ecosystem: doc-bricks (https://github.com/doc-bricks)
+Umbrella: open-bricks (https://github.com/open-bricks)
 
-Audience:
+Audience & Personas:
 
-- Agent framework builders who need an embeddable local memory/logbook layer.
-- Developers who want a zero-service CLI notebook for agent runs.
-- Researchers and maintainers who need privacy-first, inspectable note storage.
+- [PERSONA-01] Autonomous Agent Framework Builders who need an embeddable, fast, zero-dependency SQLite memory/thought log.
+- [PERSONA-02] Privacy-Conscious Developers & Power Users who demand zero-egress, air-gapped note capture and notebook inboxes.
+- [PERSONA-03] Desktop AI Assistant Users / Denkarium Explorers who want an instant loopback web UI to browse thoughts.
+- [PERSONA-04] Open-Science Researchers & Audit Logkeepers who require Git-trackable, auditable scratchpads and SQLite records.
 
 Search phrases:
 
@@ -18,32 +23,36 @@ Search phrases:
 - private AI notebook
 - local LLM note GUI
 - LLM memory logbook
+- Denkarium thought browser
+- zero-egress agent scratchpad
 - BACH Notizblock extraction
+- zero-dependency python agent storage
 
 Disambiguation:
 
-- Not Google NotebookLM, Obsidian, Joplin, a vector database, or a hosted AI notebook.
-- Not an MCP server or hosted web service; the package is a Python library, CLI, loopback-only GUI, and reusable agent skill.
-- Runtime storage is local SQLite plus plain text files.
-- The GUI uses only Python `http.server`, bundled HTML, and system fonts.
+- Not Google NotebookLM, Obsidian, Joplin, a vector database, or a hosted AI cloud service.
+- Not an MCP server or cloud SaaS; the package is a pure Python library, CLI, loopback-only GUI, and reusable agent skill.
+- Runtime storage is strictly local SQLite (`data/notes.db`) plus plain text files (`notebooks/*.txt`).
+- The GUI uses exclusively Python standard library `http.server`, bundled HTML, and system fonts. Zero node/npm dependencies.
 
 Important files:
 
-- `llm_note/store.py`: core SQLite and file notebook logic.
-- `llm_note/cli.py`: command line interface.
-- `llm_note/gui.py`: loopback HTTP server and JSON API.
+- `llm_note/store.py`: core SQLite and file notebook logic (`NoteStore`, `FileNotebookStore`).
+- `llm_note/cli.py`: command line interface (`write`, `read`, `search`, `brainstorm`, `stats`, `gui`).
+- `llm_note/gui.py`: loopback HTTP server and JSON API (binds strictly to `127.0.0.1`).
 - `llm_note/templates/denkarium.html`: bundled browser interface adapted from BACH.
-- `llm_note/locales/*.json`: six standard message locales.
+- `llm_note/locales/*.json`: six standard message locales (en, de, es, zh-Hans, ja, ru).
+- `THIRD_PARTY_LICENSES.md`: formal SBOM, standard-library licensing audit, and 10 system invariants (`INV-LOCAL-01`..`INV-SLA-10`).
+- `MARKETING-LOG.txt`: marketing and discoverability register with personas, comparative matrix, and sister repo links.
+- `SECURITY.md`: zero-egress policy, unprivileged `RunAsInvoker` execution, and 48h vulnerability response SLA.
 - `ellmos-module.v2.json`: portable module catalog metadata.
-- `skills/llm-note/SKILL.md`: standalone agent skill.
-- `references/bach-export/`: raw BACH Notizblock skill export.
-- `references/bach-source/`: source snapshots used during extraction.
+- `skills/llm-note/SKILL.md`: standalone agent skill specification.
+- `tests/test_metadata.py`: automated contract tests for PEP 621 compliance, version alignment, and invariant verification.
 
 Run checks:
 
 ```bash
-python -m pytest -q
+python -m pytest -ra -v
 ruff check llm_note tests
-python -m build
 python -m py_compile llm_note/store.py llm_note/cli.py llm_note/gui.py llm_note/i18n.py
 ```

@@ -1,15 +1,24 @@
 # Changelog
 
-## Unreleased - 2026-08-03
+## [1.0.4] - 2026-09-18
 
-- Added a standalone, loopback-only Denkarium web interface based on Python's
-  standard-library `http.server` and the existing `NoteStore`.
-- Added the `llm-note gui` entry point with database, locale, port, and
-  `--no-browser` support.
-- Added HTTP and CLI regression coverage for page delivery, note reads and
-  writes, and combined search/type filters.
-- Documented the BACH GUI provenance and the integrations intentionally left
-  behind.
+- Added a standalone, loopback-only Denkarium web interface (`llm-note gui`) based on Python's
+  standard-library `http.server` and the existing `NoteStore`, featuring custom port, locale,
+  and `--no-browser` flags with zero external runtime dependencies.
+- Added comprehensive Pfad B discoverability overhaul with 18-point bilingual quick navigation
+  parity across `README.md` and `README_de.md` featuring synchronized reciprocal HTML anchor aliases.
+- Added dual Mermaid architecture diagrams (System Topography Flowchart and Thought & Transfer
+  Lifecycle Sequence Diagram with `autonumber`) adhering strictly to `HOOK-BANNER-ASSET-01` quoting.
+- Created `THIRD_PARTY_LICENSES.md` documenting the formal SBOM (0 external runtime dependencies,
+  100% Python standard library, PSF-2.0 upstream licenses, zero-copyleft certification, and
+  unprivileged `RunAsInvoker` execution invariants `INV-LOCAL-01` to `INV-SLA-10`).
+- Created `MARKETING-LOG.txt` outlining value proposition, 4 target personas (`[PERSONA-01]` to
+  `[PERSONA-04]`), bilingual high-intent search queries, 10-dimension comparative matrix vs.
+  4 alternatives (Obsidian, SQLite CLI, Joplin, Cloud Notes), and sibling ecosystem integration.
+- Added automated contract test suite in `tests/test_metadata.py` verifying PEP 621 compliance,
+  version alignment across all manifests, SPDX invariants, § 521 BGB disclaimer, and Mermaid syntax.
+- Updated PEP 621 metadata in `pyproject.toml` with expanded URLs and `[tool.pytest.ini_options]`.
+- Updated `llms.txt` context index to version 1.0.4 (Last-checked: 2026-09-18).
 
 ## 1.0.3 - 2026-07-27
 

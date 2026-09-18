@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "llm-note"
-version = "1.0.3"
+version = "1.0.4"
 description = "Local-first notes and notebooks for LLM agents"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -20,15 +20,22 @@ keywords = [
   "notebooks",
   "privacy-first",
   "cli",
+  "denkarium",
 ]
 classifiers = [
   "Development Status :: 4 - Beta",
   "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: MacOS",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Text Processing :: General",
 ]
 
 [project.urls]
@@ -42,12 +49,18 @@ Security = "https://github.com/doc-bricks/llm-note/blob/main/SECURITY.md"
 "Marketing Log" = "https://github.com/doc-bricks/llm-note/blob/main/MARKETING-LOG.txt"
 "Parent Organization" = "https://github.com/doc-bricks"
 "Umbrella Ecosystem" = "https://github.com/open-bricks"
+"LLM Ready" = "https://github.com/doc-bricks/llm-note/blob/main/llms.txt"
 
 [project.scripts]
 llm-note = "llm_note.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["llm_note"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+addopts = "-ra -v"
 
 [tool.ruff]
 line-length = 100
