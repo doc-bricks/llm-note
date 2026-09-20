@@ -54,9 +54,9 @@
 <a id="ueberblick--warum-dieses-projekt-existiert"></a>
 ## 1. Überblick & Warum dieses Projekt existiert
 
-**llm-note** ist ein extrem schlanker, dienstloser lokaler Notiz- und Gedankenspeicher für autonome KI-Agenten, Coding-Assistenten und Entwickler.
+**llm-note** ist ein extrem schlanker, dienstloser lokaler Notizbuch-Kern — in erster Linie ein Notizbuch für Menschen, in das KI-Assistenten und Coding-Agenten für ihre Nutzerin oder ihren Nutzer schreiben, und je nach Einsatz auch ein gemeinsam genutztes Notizbuch.
 
-Autonome Agenten und LLMs benötigen während komplexer Arbeitsläufe fortlaufend einen schnellen Notizblock: zur Dokumentation von Entwurfsentscheidungen, für Zwischenbeobachtungen, Brainstorming-Einträge oder zur Ablage in dauerhaften Themen-Notizbüchern. Herkömmliche Lösungen setzen häufig schwere Vektordatenbanken, kostenpflichtige SaaS-Dienste oder ressourcenintensive Electron-Apps voraus, die Telemetriedaten übertragen.
+Autonome Agenten und LLMs müssen während komplexer Arbeitsläufe fortlaufend Entwurfsentscheidungen, Zwischenbeobachtungen und Ideen festhalten, damit ihr Nutzer sie später lesen kann — und, bei gemeinsamer Nutzung, damit Mensch und Agent beide darauf zurückgreifen können. Herkömmliche Lösungen setzen häufig schwere Vektordatenbanken, kostenpflichtige SaaS-Dienste oder ressourcenintensive Electron-Apps voraus, die Telemetriedaten übertragen.
 
 `llm-note` schließt diese Lücke:
 - **Null externe Laufzeitabhängigkeiten**: 100% reine Python-Standardbibliothek (`sqlite3`, `http.server`, `urllib`, `argparse`, `json`, `pathlib`).

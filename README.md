@@ -54,9 +54,9 @@
 <a id="ueberblick--warum-dieses-projekt-existiert"></a>
 ## 1. Overview & Why This Exists
 
-**llm-note** is an ultra-lightweight, zero-service local thought repository and notebook engine designed specifically for autonomous AI agents, coding assistants, and local developers.
+**llm-note** is an ultra-lightweight, zero-service local notebook engine — primarily a notebook for humans that AI assistants and coding agents write into for their user, and, depending on how it's used, a notebook shared by both.
 
-AI assistants and LLM agents frequently need a scratchpad to record decisions, capture context observations, brainstorm ideas, and transfer notes into persistent notebooks. Traditional solutions require heavy vector databases, hosted SaaS subscriptions, or bloated Electron applications that consume system resources and leak telemetry.
+AI assistants and LLM agents frequently need a place to record decisions, capture context observations, and brainstorm ideas so their user can read them later — and, in shared use, so human and agent can both refer back to them. Traditional solutions require heavy vector databases, hosted SaaS subscriptions, or bloated Electron applications that consume system resources and leak telemetry.
 
 `llm-note` provides the ideal architectural middle ground:
 - **Zero External Runtime Dependencies**: Built entirely upon the Python standard library (`sqlite3`, `http.server`, `urllib`, `argparse`, `json`, `pathlib`).

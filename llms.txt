@@ -1,6 +1,6 @@
 # llm-note (v1.0.4)
 
-llm-note is an ultra-lightweight, zero-service local thought repository and notebook engine designed specifically for autonomous AI agents, coding assistants, and local developers. It provides a durable SQLite thought store (`data/notes.db`), human-editable plain-text inboxes (`notebooks/*.txt`), a command-line interface (`llm-note`), an embedded loopback-only web GUI (`Denkarium` at `127.0.0.1`), and an agent-ready skill definition (`skills/llm-note/SKILL.md`).
+llm-note is an ultra-lightweight, zero-service local notebook engine — primarily a notebook for humans that AI assistants and coding agents write into for their user, and, depending on how it's used, a notebook shared by both. It provides a durable SQLite thought store (`data/notes.db`), human-editable plain-text inboxes (`notebooks/*.txt`), a command-line interface (`llm-note`), an embedded loopback-only web GUI (`Denkarium` at `127.0.0.1`), and an agent-ready skill definition (`skills/llm-note/SKILL.md`).
 
 Version: 1.0.4
 Last-checked: 2026-09-18
