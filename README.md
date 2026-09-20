@@ -58,6 +58,14 @@
 
 AI assistants and LLM agents frequently need a place to record decisions, capture context observations, and brainstorm ideas so their user can read them later — and, in shared use, so human and agent can both refer back to them. Traditional solutions require heavy vector databases, hosted SaaS subscriptions, or bloated Electron applications that consume system resources and leak telemetry.
 
+### Modes
+
+`llm-note` doesn't enforce a mode — it's the same plain notebook used in whichever of these ways fits the moment:
+
+- **For humans, from LLMs** (default): the human reads; their AI assistant writes notes for them.
+- **From humans, for LLMs**: the human leaves notes for their assistant to read.
+- **Shared cowork space**: human and AI assistants write into the same notebook — your LLMs share your space.
+
 `llm-note` provides the ideal architectural middle ground:
 - **Zero External Runtime Dependencies**: Built entirely upon the Python standard library (`sqlite3`, `http.server`, `urllib`, `argparse`, `json`, `pathlib`).
 - **Dual-Store Flexibility**: Combines structured SQLite thought entries (`data/notes.db`) with human-editable plain-text inboxes (`notebooks/*.txt`).

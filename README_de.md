@@ -58,6 +58,14 @@
 
 Autonome Agenten und LLMs müssen während komplexer Arbeitsläufe fortlaufend Entwurfsentscheidungen, Zwischenbeobachtungen und Ideen festhalten, damit ihr Nutzer sie später lesen kann — und, bei gemeinsamer Nutzung, damit Mensch und Agent beide darauf zurückgreifen können. Herkömmliche Lösungen setzen häufig schwere Vektordatenbanken, kostenpflichtige SaaS-Dienste oder ressourcenintensive Electron-Apps voraus, die Telemetriedaten übertragen.
 
+### Modi
+
+`llm-note` erzwingt keinen Modus — es ist dasselbe schlichte Notizbuch, ganz gleich, welche dieser Nutzungsweisen gerade passt:
+
+- **Für Menschen, von LLMs** (Standard): der Mensch liest, sein KI-Assistent schreibt Notizen für ihn.
+- **Von Menschen, für LLMs**: der Mensch hinterlässt Notizen, die sein Assistent liest.
+- **Gemeinsamer Cowork-Space**: Mensch und KI-Assistenten schreiben in dasselbe Notizbuch — deine LLMs teilen sich deinen Raum.
+
 `llm-note` schließt diese Lücke:
 - **Null externe Laufzeitabhängigkeiten**: 100% reine Python-Standardbibliothek (`sqlite3`, `http.server`, `urllib`, `argparse`, `json`, `pathlib`).
 - **Duale Speicherarchitektur**: Verbindet strukturierte SQLite-Gedanken (`data/notes.db`) mit flexiblen, Git-fähigen Klartext-Notizbüchern (`notebooks/*.txt`).
