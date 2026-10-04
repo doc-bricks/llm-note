@@ -267,6 +267,19 @@ llm-note gui --port 8765 --no-browser
 <a id="cli-befehlsreferenz--beispiele"></a>
 ## 9. CLI Complete Reference & Examples
 
+### Installation
+
+`llm-note` is not published on PyPI yet. Install it from the repository (Python 3.10+, no third-party runtime dependencies):
+
+```bash
+pip install git+https://github.com/doc-bricks/llm-note.git
+# or from a local clone
+git clone https://github.com/doc-bricks/llm-note.git && cd llm-note && pip install .
+```
+
+This provides the `llm-note` command and the `llm_note` Python package.
+
+
 ```bash
 # Write a note with category and mood
 llm-note write "Refactor caching layer" --cat dev --mood focused
