@@ -176,11 +176,10 @@ def test_zero_external_runtime_dependencies():
                     root_mod = alias.name.split(".")[0]
                     if root_mod != "llm_note" and root_mod not in stdlib:
                         external_imports.add(f"{root_mod} in {f.name}")
-            elif isinstance(node, ast.ImportFrom):
-                if node.level == 0 and node.module:
-                    root_mod = node.module.split(".")[0]
-                    if root_mod != "llm_note" and root_mod not in stdlib:
-                        external_imports.add(f"{root_mod} in {f.name}")
+            elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
+                root_mod = node.module.split(".")[0]
+                if root_mod != "llm_note" and root_mod not in stdlib:
+                    external_imports.add(f"{root_mod} in {f.name}")
 
     assert not external_imports, f"Discovered external runtime imports: {external_imports}"
 
