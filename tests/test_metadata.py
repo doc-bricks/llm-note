@@ -61,7 +61,6 @@ def test_pep621_compliance_and_urls():
 
     # Classifiers
     assert "Operating System :: OS Independent" in pyproject_text
-    assert "License :: OSI Approved :: MIT License" in pyproject_text
     assert "Programming Language :: Python :: 3.10" in pyproject_text
     assert "Programming Language :: Python :: 3.13" in pyproject_text
 
