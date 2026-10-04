@@ -9,29 +9,29 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
 def test_version_consistency():
-    """Verify that version 1.0.4 is synchronized across all manifests."""
+    """Verify that version 1.0.5 is synchronized across all manifests."""
     pyproject_text = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
     version_match = re.search(r'version\s*=\s*"([^"]+)"', pyproject_text)
     assert version_match, "Could not find version in pyproject.toml"
     version = version_match.group(1)
-    assert version == "1.0.4", f"Expected version 1.0.4 in pyproject.toml, got {version}"
+    assert version == "1.0.5", f"Expected version 1.0.5 in pyproject.toml, got {version}"
 
     # Check __version__ in package __init__.py
     import llm_note
 
-    assert getattr(llm_note, "__version__", None) == "1.0.4"
+    assert getattr(llm_note, "__version__", None) == "1.0.5"
 
     # Check ellmos-module.v2.json
     module_data = json.loads((REPO_ROOT / "ellmos-module.v2.json").read_text(encoding="utf-8"))
-    assert module_data.get("version") == "1.0.4"
+    assert module_data.get("version") == "1.0.5"
 
     # Check plugin/plugin.json
     plugin_data = json.loads((REPO_ROOT / "plugin" / "plugin.json").read_text(encoding="utf-8"))
-    assert plugin_data.get("version") == "1.0.4"
+    assert plugin_data.get("version") == "1.0.5"
 
     # Check CHANGELOG.md entry
     changelog_text = (REPO_ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
-    assert "## [1.0.4] - 2026-09-18" in changelog_text
+    assert "## [1.0.5] - 2026-10-04" in changelog_text
 
 
 def test_pep621_compliance_and_urls():
@@ -107,7 +107,7 @@ def test_llms_txt_integrity():
     assert llms_file.exists(), "llms.txt must exist"
     text = llms_file.read_text(encoding="utf-8")
 
-    assert "Version: 1.0.4" in text
+    assert "Version: 1.0.5" in text
     assert "Last-checked: 2026-09-18" in text
     assert "doc-bricks" in text
     assert "open-bricks" in text

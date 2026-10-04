@@ -1,8 +1,8 @@
-# llm-note (v1.0.4)
+# llm-note (v1.0.5)
 
 llm-note is an ultra-lightweight, zero-service local notebook engine — primarily a notebook for humans that AI assistants and coding agents write into for their user, and, depending on how it's used, a notebook shared by both. It provides a durable SQLite thought store (`data/notes.db`), human-editable plain-text inboxes (`notebooks/*.txt`), a command-line interface (`llm-note`), an embedded loopback-only web GUI (`Denkarium` at `127.0.0.1`), and an agent-ready skill definition (`skills/llm-note/SKILL.md`).
 
-Version: 1.0.4
+Version: 1.0.5
 Last-checked: 2026-09-18
 License: MIT (100% Permissive, Zero Copyleft, PSF Standard Library)
 Ecosystem: doc-bricks (https://github.com/doc-bricks)

@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+## [1.0.5] - 2026-10-04
+
+- Fixed packaging metadata: removed the OSI license classifier that conflicts with the PEP 639 `license=` expression (#6).
+- Combined nested `if` statements to satisfy Ruff SIM102 (#7).
+- Added an installation section to `README.md` and `README_de.md`.
+- Completed the full translations of the README in Spanish, Chinese (Simplified), Japanese and Russian.
+- Version `1.0.4` was never tagged; its changes below are released together with `1.0.5`.
+
 ## [1.0.4] - 2026-09-18
 
 - Added a standalone, loopback-only Denkarium web interface (`llm-note gui`) based on Python's

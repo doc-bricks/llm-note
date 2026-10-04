@@ -1,6 +1,6 @@
 """Local-first notes for LLM agents."""
 
-__version__ = "1.0.4"
+__version__ = "1.0.5"
 
 from .store import Entry, FileNotebookStore, NoteStore
 

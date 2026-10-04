@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "llm-note"
-version = "1.0.4"
+version = "1.0.5"
 description = "Local-first notes and notebooks an LLM assistant keeps for its user"
 readme = "README.md"
 requires-python = ">=3.10"
