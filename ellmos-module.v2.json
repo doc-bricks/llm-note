@@ -22,7 +22,7 @@
   "surfaces": [
     "library",
     "cli",
-    "gui"
+    "ui"
   ],
   "state": {
     "ownership": "module",
