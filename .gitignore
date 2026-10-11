@@ -24,7 +24,12 @@ dist/
 .idea/
 .vscode/
 desktop.ini
+Desktop.ini
 Thumbs.db
+ehthumbs.db
+*.swo
+*.swp
+TASKPLAN_*.md
 
 # Notebook and multi-agent coordination locks
 .llm-note.lock
@@ -32,6 +37,9 @@ LOCK
 LOCK.*
 *.lock
 LOCK*.txt
+LOCK.dev.*
+LOCK.antigravity.*
+LOCK.bugsearch.*
 LOCK.permissions.json
 
 # Cloud-sync conflict artifacts
@@ -39,3 +47,9 @@ LOCK.permissions.json
 *.sync-temp-*
 *-ASUS-GEI.*
 *-WORKSTATION-LG.*
+*-IDEAPAD*
+*-IDEAPAD-GEI*
+*_WORKSTATION*
+*_WORKSTATION-LG*
+*conflicted copy*
+* (Kopie)*

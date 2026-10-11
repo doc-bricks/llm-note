@@ -3,7 +3,7 @@
 llm-note is an ultra-lightweight, zero-service local notebook engine — primarily a notebook for humans that AI assistants and coding agents write into for their user, and, depending on how it's used, a notebook shared by both. It provides a durable SQLite thought store (`data/notes.db`), human-editable plain-text inboxes (`notebooks/*.txt`), a command-line interface (`llm-note`), an embedded loopback-only web GUI (`Denkarium` at `127.0.0.1`), and an agent-ready skill definition (`skills/llm-note/SKILL.md`).
 
 Version: 1.0.5
-Last-checked: 2026-09-18
+Last-checked: 2026-10-11
 License: MIT (100% Permissive, Zero Copyleft, PSF Standard Library)
 Ecosystem: doc-bricks (https://github.com/doc-bricks)
 Umbrella: open-bricks (https://github.com/open-bricks)
@@ -43,10 +43,13 @@ Important files:
 - `llm_note/templates/denkarium.html`: bundled browser interface adapted from BACH.
 - `llm_note/locales/*.json`: six standard message locales (en, de, es, zh-Hans, ja, ru).
 - `THIRD_PARTY_LICENSES.md`: formal SBOM, standard-library licensing audit, and 10 system invariants (`INV-LOCAL-01`..`INV-SLA-10`).
+- `THIRD_PARTY_LICENSES.txt`: Level 1 SBOM plain-text companion file with invariant matrix.
+- `CONTRIBUTING.md`: bilingual developer guide, Plan D workflow, and Quality Gates.
 - `MARKETING-LOG.txt`: marketing and discoverability register with personas, comparative matrix, and sister repo links.
 - `SECURITY.md`: zero-egress policy, unprivileged `RunAsInvoker` execution, and 48h vulnerability response SLA.
 - `ellmos-module.v2.json`: portable module catalog metadata.
 - `skills/llm-note/SKILL.md`: standalone agent skill specification.
+- `.github/workflows/`: CI testing across platforms (`ci.yml`), automated PR assignment (`auto-assign.yml`), and label synchronization (`label-sync.yml`).
 - `tests/test_metadata.py`: automated contract tests for PEP 621 compliance, version alignment, and invariant verification.
 
 Run checks:

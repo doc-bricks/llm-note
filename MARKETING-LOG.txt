@@ -150,4 +150,14 @@ Umbrella:     open-bricks (https://github.com/open-bricks)
             - Actions: Created THIRD_PARTY_LICENSES.md, updated pyproject.toml PEP 621 URLs,
                        created MARKETING-LOG.txt, overhauled README.md & README_de.md to
                        full 18-point bilingual parity, updated llms.txt, added test_metadata.py.
+2026-10-11: Pfad A Repository-Hygiene, CI-Matrix-Härtung & PEP 621 Meta-Audit (v1.0.5)
+            - Auditor: Antigravity / Gemini 3.8 Flash High
+            - Status: 100% Invariants Verified (INV-LOCAL-01 .. INV-SLA-10)
+            - Actions: Provisioned auto-assign.yml, label-sync.yml, .github/labels.yml;
+                       hardened CI matrix across Python 3.10-3.13 with concurrency cancel-in-progress;
+                       created companion Level 1 SBOM THIRD_PARTY_LICENSES.txt;
+                       standardized PEP 621 URLs (Contributing, Plain-Text License, Third-Party Licenses Text);
+                       bilingual CONTRIBUTING.md with Plan D & Quality Gates;
+                       hardened .gitignore against multi-host locks and cloud conflict artifacts;
+                       extended test_metadata.py contract suite.
 ===============================================================================

@@ -49,6 +49,9 @@ def test_pep621_compliance_and_urls():
         "Changelog",
         "Security",
         "Third-Party Licenses",
+        "Third-Party Licenses Text",
+        "Plain-Text License",
+        "Contributing",
         "Marketing Log",
         "Parent Organization",
         "Umbrella Ecosystem",
@@ -67,6 +70,7 @@ def test_pep621_compliance_and_urls():
     # Pytest configuration
     assert "[tool.pytest.ini_options]" in pyproject_text
     assert 'addopts = "-ra -v"' in pyproject_text
+    assert "norecursedirs" in pyproject_text
 
 
 def test_third_party_licenses_audit():
@@ -99,6 +103,7 @@ def test_marketing_log_audit():
     assert "Obsidian" in text
     assert "Joplin" in text
     assert "2026-09-18" in text
+    assert "2026-10-11" in text
 
 
 def test_llms_txt_integrity():
@@ -108,7 +113,7 @@ def test_llms_txt_integrity():
     text = llms_file.read_text(encoding="utf-8")
 
     assert "Version: 1.0.5" in text
-    assert "Last-checked: 2026-09-18" in text
+    assert "Last-checked: 2026-10-11" in text
     assert "doc-bricks" in text
     assert "open-bricks" in text
 
@@ -220,3 +225,70 @@ def test_banner_asset_guardrails():
 
     assert 'src="assets/banner.png"' in readme_en or 'src="assets/banner.svg"' in readme_en
     assert 'src="assets/banner.png"' in readme_de or 'src="assets/banner.svg"' in readme_de
+
+
+def test_plain_text_sbom_companion():
+    """Verify THIRD_PARTY_LICENSES.txt Level 1 SBOM text companion and invariant matrix."""
+    sbom_txt = REPO_ROOT / "THIRD_PARTY_LICENSES.txt"
+    assert sbom_txt.exists(), "THIRD_PARTY_LICENSES.txt must exist"
+    content = sbom_txt.read_text(encoding="utf-8")
+
+    assert "THIRD-PARTY LICENSES & LEVEL 1 SBOM NOTICE" in content
+    assert "RunAsInvoker" in content
+    assert "§ 521 BGB" in content
+    assert "48-Hour Security Response SLA" in content or "48h" in content.lower()
+    for i in range(1, 11):
+        inv_id = f"INV-LOCAL-{i:02d}"
+        assert inv_id in content, f"Missing {inv_id} in THIRD_PARTY_LICENSES.txt"
+
+
+def test_github_workflows_and_labels_hygiene():
+    """Verify CI, auto-assign, and label-sync workflow definitions and labels.yml."""
+    workflows_dir = REPO_ROOT / ".github" / "workflows"
+    assert (workflows_dir / "ci.yml").exists(), "ci.yml must exist"
+    assert (workflows_dir / "auto-assign.yml").exists(), "auto-assign.yml must exist"
+    assert (workflows_dir / "label-sync.yml").exists(), "label-sync.yml must exist"
+
+    ci_text = (workflows_dir / "ci.yml").read_text(encoding="utf-8")
+    assert "concurrency:" in ci_text
+    assert "cancel-in-progress: true" in ci_text
+
+    auto_assign_text = (workflows_dir / "auto-assign.yml").read_text(encoding="utf-8")
+    assert "pull_request_target" in auto_assign_text
+    assert "pull-requests: write" in auto_assign_text
+
+    label_sync_text = (workflows_dir / "label-sync.yml").read_text(encoding="utf-8")
+    assert "EndBug/label-sync" in label_sync_text
+
+    labels_file = REPO_ROOT / ".github" / "labels.yml"
+    assert labels_file.exists(), ".github/labels.yml must exist"
+    labels_text = labels_file.read_text(encoding="utf-8")
+    assert "bug" in labels_text
+    assert "enhancement" in labels_text
+
+
+def test_contributing_guide_bilingual_parity():
+    """Verify CONTRIBUTING.md contains Plan D instructions and bilingual sections."""
+    contrib_file = REPO_ROOT / "CONTRIBUTING.md"
+    assert contrib_file.exists(), "CONTRIBUTING.md must exist"
+    text = contrib_file.read_text(encoding="utf-8")
+
+    assert "## English" in text
+    assert "## Deutsch" in text
+    assert "Plan D" in text
+    assert "Quality Gates" in text
+    assert "RunAsInvoker" in text
+
+
+def test_gitignore_cloud_and_lock_defense():
+    """Verify .gitignore multi-host sync and lock protection patterns."""
+    gitignore_file = REPO_ROOT / ".gitignore"
+    assert gitignore_file.exists(), ".gitignore must exist"
+    text = gitignore_file.read_text(encoding="utf-8")
+
+    assert "*-IDEAPAD*" in text
+    assert "*_WORKSTATION*" in text
+    assert "LOCK.dev.*" in text
+    assert "LOCK.antigravity.*" in text
+    assert "Desktop.ini" in text
+    assert "*conflicted copy*" in text

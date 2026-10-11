@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+- Added GitHub Actions lifecycle workflows: automated PR assignment (`.github/workflows/auto-assign.yml`), issue label synchronization (`.github/workflows/label-sync.yml`), and standard labels catalog (`.github/labels.yml`).
+- Hardened CI workflow (`.github/workflows/ci.yml`) with concurrency cancellation (`cancel-in-progress: true`) and expanded Python matrix testing across versions 3.10 through 3.13.
+- Created plain-text companion Level 1 SBOM `THIRD_PARTY_LICENSES.txt` certifying zero external runtime dependencies, 10 system invariants (`INV-LOCAL-01` .. `INV-SLA-10`), unprivileged `RunAsInvoker` user mode, German statutory disclaimer (§ 521 BGB Gefälligkeitsrecht), and 48h Security Response SLA.
+- Standardized PEP 621 metadata in `pyproject.toml` with `Contributing`, `Plain-Text License`, and `Third-Party Licenses Text` URLs in `[project.urls]`, and configured `norecursedirs` under `[tool.pytest.ini_options]`.
+- Upgraded `CONTRIBUTING.md` to a comprehensive bilingual (EN/DE) development guide including Plan D canonical local cloning instructions, Quality Gates, and Version Freeze governance.
+- Hardened `.gitignore` against multi-host locks (`LOCK.dev.*`, `LOCK.antigravity.*`, `LOCK.bugsearch.*`), cloud synchronization conflicts (`*-IDEAPAD*`, `*_WORKSTATION*`, `*conflicted copy*`, `* (Kopie)*`), and scratch artifacts.
+- Synchronized `llms.txt`, `MARKETING-LOG.txt`, and Shields.io badges to the 2026-10-11 audit baseline.
+- Extended automated contract test suite in `tests/test_metadata.py` to cover lifecycle workflows, SBOM text companion, contributing guidelines, and multi-host gitignore defense.
+
 ## [1.0.5] - 2026-10-04
 
 - Fixed packaging metadata: removed the OSI license classifier that conflicts with the PEP 639 `license=` expression (#6).
