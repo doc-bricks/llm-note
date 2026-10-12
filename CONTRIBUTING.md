@@ -7,63 +7,82 @@
 <a id="english"></a>
 ## English
 
-Thank you for contributing to `llm-note`. We follow strict standards for local-first architecture, privacy guarantees, and software quality.
+Thank you for contributing to `llm-note`. We aim to keep the local-first architecture, public documentation, and software quality accurate and consistent.
 
-### 1. Architectural Mandates & Invariants
-- **100% Local-First & Zero Egress**: Never introduce network calls, remote analytics, or telemetry.
-- **Zero External Runtime Dependencies**: Runtime code must strictly rely only on Python's standard library and SQLite. Build tools (`hatchling`, `pytest`, `ruff`) remain dev-only.
-- **Unprivileged Execution (`RunAsInvoker`)**: Never require administrative or root privileges.
-- **System Invariants**: Respect `INV-LOCAL-01` through `INV-SLA-10` defined in `THIRD_PARTY_LICENSES.md`.
+### 1. Architecture and documentation
 
-### 2. Plan D Local Development Workflow
-- Development takes place in canonical Git clone (`C:\_Local_DEV\repos\llm-note`).
-- OneDrive locations serve purely as gitless projections/mirrors for multi-device visibility.
-- Never initialize `.git` inside cloud synchronization directories.
+- **Local-first core:** Do not introduce external telemetry or cloud clients into core runtime code. This is a development rule; it is not a claim that the operating system blocks all network egress.
+- **Runtime dependencies:** The project currently declares no additional Python runtime packages and uses the Python standard library and SQLite. Build and development tools are separate from runtime dependencies.
+- **Process permissions:** Do not require administrative or root elevation. The process inherits the permissions of the process that launches it; this statement is not a Windows execution certification.
+- Keep security, privacy, and dependency statements tied to checked source or distribution evidence. Do not present tests or documentation strings as a security or compliance certification.
 
-### 3. Version Freeze Discipline (T-20260920-167562623)
+### 2. Local development workflow
+
+- Work from a local Git checkout at the repository root.
+- OneDrive locations may serve as gitless projections or mirrors for multi-device visibility.
+- Do not initialize a Git repository inside a cloud-synchronization directory.
+
+### 3. Version freeze discipline (T-20260920-167562623)
+
 - Package versions are frozen unless an explicit version release ticket is assigned.
-- All technical hygiene improvements, contract tests, and non-breaking refinements are documented under `## [Unreleased]` in `CHANGELOG.md`.
+- Technical hygiene improvements, contract tests, and non-breaking refinements belong under `## [Unreleased]` in `CHANGELOG.md`.
 
-### 4. Quality Gates & Local Verification
-Before opening a pull request, run the complete verification suite:
+### 4. Quality gates and local verification
+
+Before opening a pull request, run the project verification suite:
+
 ```bash
-# Editable install
-pip install -e .
+# Editable install and local verification tools
+python -m pip install -e . pytest ruff build
 
-# Testing & Linting
+# Tests and lint
 python -m pytest -ra -v
 ruff check llm_note tests
 
-# Bytecode compilation & build check
+# Bytecode compilation and local build check
 python -m compileall -q .
 python -m build
 git diff --check
 ```
+
+These commands validate the local checkout; they do not publish a release.
 
 ---
 
 <a id="deutsch"></a>
 ## Deutsch
 
-Vielen Dank für dein Interesse an `llm-note`. Wir verfolgen kompromisslose Standards für Offline-Autarkie, Datenschutz und Softwarequalität.
+Vielen Dank für deinen Beitrag zu `llm-note`. Wir halten die lokal ausgerichtete Architektur, die öffentliche Dokumentation und die Qualitätsangaben sachlich und aufeinander abgestimmt.
 
-### 1. Architektur-Vorgaben & Invarianten
-- **100% Lokal-Zuerst & Zero Egress**: Keine externen Netzwerkaufrufe, keine Telemetrie, kein Tracking.
-- **Null externe Laufzeit-Abhängigkeiten**: Der Produktionscode nutzt ausschließlich die Python-Standardbibliothek und SQLite.
-- **Unprivilegierte Ausführung (`RunAsInvoker`)**: Keinerlei Admin- oder Root-Rechte erforderlich.
-- **System-Invarianten**: Einhaltung von `INV-LOCAL-01` bis `INV-SLA-10` gemäß `THIRD_PARTY_LICENSES.md`.
+### 1. Architektur und Dokumentation
 
-### 2. Plan-D-Entwicklungsworkflow
-- Kanonischer Arbeitsort ist der lokale Git-Klon (`C:\_Local_DEV\repos\llm-note`).
-- OneDrive ist lediglich ein gitloser Projektionsspiegel zur geräteübergreifenden Verfügbarkeit.
+- **Lokaler Kern:** Führe keine externen Telemetrie- oder Cloud-Clients in den Laufzeitkern ein. Das ist eine Entwicklungsregel und keine Aussage, dass das Betriebssystem jeden Netzwerkverkehr blockiert.
+- **Laufzeitabhängigkeiten:** Das Projekt deklariert derzeit keine zusätzlichen Python-Laufzeitpakete und verwendet die Python-Standardbibliothek sowie SQLite. Build- und Entwicklungswerkzeuge sind davon getrennt.
+- **Prozessrechte:** Fordere keine Administrator- oder Root-Erhöhung an. Der Prozess übernimmt die Berechtigungen des aufrufenden Prozesses; das ist keine Windows-Ausführungszertifizierung.
+- Sicherheits-, Datenschutz- und Abhängigkeitsaussagen müssen sich auf geprüften Quellcode oder konkrete Distributionsbelege stützen. Tests und Dokumentationstexte sind keine Sicherheits- oder Compliance-Zertifizierung.
+
+### 2. Lokaler Entwicklungsworkflow
+
+- Entwickle in einem lokalen Git-Klon im Repository-Stammverzeichnis.
+- OneDrive-Pfade können gitlose Projektionen oder Spiegel für die Verfügbarkeit auf mehreren Geräten sein.
+- Initialisiere kein Git-Repository in einem Cloud-Synchronisationsordner.
 
 ### 3. Versions-Einfrier-Disziplin (T-20260920-167562623)
-- Versionen bleiben stabil eingefroren; Neuerungen werden unter `## [Unreleased]` in `CHANGELOG.md` eingetragen.
 
-### 4. Quality Gates
+- Paketversionen bleiben eingefroren, sofern kein ausdrückliches Versionierungs-Ticket vorliegt.
+- Technische Pflege, Vertragstests und nicht rückwärtsbrechende Verbesserungen gehören unter `## [Unreleased]` in `CHANGELOG.md`.
+
+### 4. Qualitätsprüfungen und lokale Verifikation
+
+Führe vor einem Pull Request die Projektprüfungen aus:
+
 ```bash
+python -m pip install -e . pytest ruff build
 python -m pytest -ra -v
 ruff check llm_note tests
 python -m compileall -q .
+python -m build
 git diff --check
 ```
+
+Diese Befehle prüfen den lokalen Klon; sie veröffentlichen kein Release.

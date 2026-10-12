@@ -1,81 +1,46 @@
-THIRD-PARTY LICENSES & LEVEL 1 SBOM NOTICE
+THIRD-PARTY DEPENDENCY NOTES
 Project: doc-bricks/llm-note
-Audited: 2026-10-11
-Repository License: MIT License (see LICENSE)
-Repository Attribution Notice: NOTICE (see NOTICE)
-Architecture & Security: 100% Local-First, Zero-Egress, Unprivileged User-Mode (RunAsInvoker), Zero External Runtime Dependencies, Invariant Cross-Reference Matrix (INV-LOCAL-01..INV-SLA-10)
+Reviewed: 2026-10-12
+Repository license: MIT (see LICENSE)
 
-================================================================================
-1. EXECUTIVE SUMMARY & ZERO-COPYLEFT ISOLATION GUARANTEE
-================================================================================
+Scope
+-----
+This note summarizes direct Python dependencies declared by the repository. It is
+not a complete software bill of materials, a review of every transitive build or
+test dependency, or a legal or security certification. Distribution contents and
+environment-provided components may require separate inspection.
 
-llm-note is a local-first note and notebook engine engineered with an uncompromising
-zero external runtime dependencies architecture. It operates exclusively on local SQLite
-databases and plain-text files.
+Runtime
+-------
+The current project metadata declares no additional Python runtime packages.
+The application uses the Python standard library and SQLite supplied by the
+Python runtime. No third-party Python runtime dependency is listed in
+pyproject.toml.
 
-- 100% Permissive Dependencies: Core execution relies solely on the Python Standard
-  Library (PSF-2.0) and SQLite.
-- Zero-Copyleft Isolation Guarantee: No GPL, AGPL, SSPL, or copyleft-encumbered
-  libraries are bundled, linked, or distributed at runtime.
-- Unprivileged User-Mode (RunAsInvoker): llm-note executes exclusively in standard,
-  non-elevated user space without requesting administrative or root privileges.
-- Zero Egress: Strictly zero outbound network connections, zero analytics, and zero telemetry.
+Build and development
+---------------------
+The build-system declaration in pyproject.toml requires hatchling>=1.25.
+Test and lint tools are used in the development/CI context; they are not
+application runtime dependencies. Their complete transitive dependency and
+license inventory is outside the scope of this note.
 
-================================================================================
-2. INVARIANT CROSS-REFERENCE MATRIX (INV-LOCAL-01 .. INV-SLA-10)
-================================================================================
+Repository facts
+----------------
+- The application stores notes in local SQLite and plain-text notebook files.
+- The optional web interface binds to loopback.
+- The process does not require administrative elevation and inherits the
+  permissions of the process that launches it.
+- These facts do not establish an operating-system egress block, sandbox,
+  complete dependency inventory, or independent security certification.
 
-Invariant ID   | Operational Mandate                | Technical Enforcement                | License Scope
----------------+------------------------------------+--------------------------------------+-------------------
-INV-LOCAL-01   | 100% Local-First & Zero Egress     | Zero outbound telemetry or egress    | MIT / PSF-2.0
-INV-LOCAL-02   | SQLite Single-File Storage         | Local ACID store at data/notes.db    | MIT / PSF-2.0
-INV-LOCAL-03   | Plain-Text Notebook Inboxes        | Plain-text scratchpads in notebooks/ | MIT / PSF-2.0
-INV-LOCAL-04   | Standard Library Only              | Zero 3rd-party runtime packages      | MIT / PSF-2.0
-INV-LOCAL-05   | Crash-Safe Atomic Transfers        | Process lock & idempotency markers   | MIT / PSF-2.0
-INV-LOCAL-06   | Loopback-Bound Web GUI             | Binds strictly to 127.0.0.1          | MIT / PSF-2.0
-INV-LOCAL-07   | Multi-Locale I18N                  | Native bundled translations (6 lang) | MIT / PSF-2.0
-INV-LOCAL-08   | RunAsInvoker Execution             | Non-elevated user space execution    | MIT / PSF-2.0
-INV-LOCAL-09   | Agent Skill Packaging              | Bundled standalone agent skill       | MIT / PSF-2.0
-INV-LOCAL-10   | 48-Hour Security Response SLA      | Documented SLA in SECURITY.md        | SECURITY.md
+Legal information
+-----------------
+This document is not legal advice and does not determine how liability rules
+apply to a particular user or distribution. Section 521 BGB may be relevant
+depending on the specific facts; no conclusion about its applicability or
+effect is made here. The repository's MIT license remains in LICENSE.
 
-================================================================================
-3. RUNTIME SOFTWARE BILL OF MATERIALS (SBOM)
-================================================================================
-
-Component                       Version/Release  SPDX License ID  Upstream Authority
-------------------------------  ---------------  ---------------  --------------------------
-Python Standard Library (Core)  3.10 - 3.13      PSF-2.0          Python Software Foundation
-  - sqlite3                                      PSF-2.0          Python Software Foundation
-  - http.server                                  PSF-2.0          Python Software Foundation
-  - urllib.parse                                 PSF-2.0          Python Software Foundation
-  - argparse                                     PSF-2.0          Python Software Foundation
-  - json                                         PSF-2.0          Python Software Foundation
-  - pathlib                                      PSF-2.0          Python Software Foundation
-  - threading                                    PSF-2.0          Python Software Foundation
-  - dataclasses                                  PSF-2.0          Python Software Foundation
-  - hashlib                                      PSF-2.0          Python Software Foundation
-  - datetime, os, sys, re                        PSF-2.0          Python Software Foundation
-
-Development, Linting & Build Tools (Not Distributed at Runtime):
-  - hatchling                                    MIT              Hatchling Team
-  - pytest                                       MIT              pytest-dev Team
-  - ruff                                         MIT / Apache-2.0 Astral Software Inc.
-
-================================================================================
-4. GERMAN STATUTORY NOTICE (§ 521 BGB GEFÄLLIGKEITSRECHT)
-================================================================================
-
-Dieses Open-Source-Projekt wird unentgeltlich zur Verfügung gestellt. Gemäß § 521 BGB
-haftet der Entwickler im Gefälligkeitsverhältnis nur für Vorsatz und grobe Fahrlässigkeit.
-Jegliche weitergehende Haftung oder Gewährleistung für mittelbare oder unmittelbare Schäden,
-Datenverluste oder Betriebsunterbrechungen ist im gesetzlich zulässigen Rahmen ausgeschlossen.
-
-================================================================================
-5. SECURITY & INCIDENT RESPONSE SLA
-================================================================================
-
-Sicherheitsrelevante Schwachstellen und vertrauliche Meldungen werden nach den in
-SECURITY.md garantierten Service Level Agreements bearbeitet:
-- Erste Bestätigung & Triage: innerhalb von 48 Stunden
-- Statusupdate & Patch-Plan: innerhalb von 5 Tagen
-- Bereitstellung von Korrekturen: via GitHub Advisory / Pull Request
+Security response
+-----------------
+See SECURITY.md for the current maintainer response targets. Acknowledgement
+and triage targets are not guaranteed fix or disclosure deadlines.

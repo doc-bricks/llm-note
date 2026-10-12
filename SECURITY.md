@@ -7,71 +7,63 @@
 <a id="english"></a>
 ## English
 
-### Supported Versions
+### Supported versions
 
-| Version | Supported          | Security SLA        |
-| :---    | :---:              | :---                |
-| 1.0.x   | :white_check_mark: | 48h Response / 5-Day Triage |
-| < 1.0.0 | :x:                | Unsupported         |
+| Version | Supported | Maintainer response target |
+| :--- | :---: | :--- |
+| 1.0.x | Yes | Acknowledgement target: 48 hours; initial triage target: 5 business days |
+| < 1.0.0 | No | Not supported |
 
-### Reporting a Vulnerability
+### Reporting a vulnerability
 
-Please do **not** disclose vulnerabilities via public GitHub issues, discussions, or pull requests.
+Please do **not** disclose vulnerabilities through public GitHub issues, discussions, or pull requests.
 
-1. **GitHub Private Vulnerability Reporting (Preferred):**
-   Navigate to the repository on GitHub, open the **Security** tab, and click **Report a vulnerability**.
-2. **Direct Security Contact (Encrypted / Urgent):**
-   Send an advisory email to:
+1. **GitHub Private Vulnerability Reporting (preferred):** Open the repository's **Security** tab and choose **Report a vulnerability**.
+2. **Direct security contact:** Email:
    - `security@open-bricks.org`
    - CC: `support@lukasgeiger.com`, `lukas@open-bricks.org`
 
-### Response & Remediation SLA
+### Maintainer response targets
 
-- **Acknowledgment:** Within **48 hours** of receiving a report.
-- **Triage & Severity Assessment:** Within **5 business days**.
-- **Fix & Advisory Disclosure:** Coordinated release within 14 calendar days depending on severity.
+The maintainer aims to acknowledge a report within 48 hours and begin triage within 5 business days. These are response targets, not a service-level agreement or a guarantee of investigation, a fix, or disclosure by a particular date. There is no fixed remediation deadline.
 
-### Scope & Threat Model
+### Scope and current implementation
 
-`llm-note` is intentionally designed local-first and zero-egress:
-- **Zero Network Egress:** Core note operations do not communicate with external network services or cloud endpoints.
-- **Loopback Interface Binding:** The optional Web GUI binds strictly to `127.0.0.1`.
-- **Path Traversal Resistance:** Plain-text notebook storage paths are sanitized to stay within the designated notebook directory.
-- **Unprivileged Execution:** Runs strictly in user space (`RunAsInvoker`) and never requires elevated or administrator privileges.
+`llm-note` is a local-first notes application. Its core uses local SQLite and plain-text notebook files, and the project declares no additional Python runtime packages.
 
----
+- The optional web interface binds to loopback at `127.0.0.1`. This is not authentication against other processes running as the same user.
+- Notebook paths are validated and kept within the configured notebook root by the application.
+- The process does not request administrative or root elevation and inherits the permissions of the process that launches it.
+- The application does not provide an operating-system egress block, sandbox, or privilege drop. Network access depends on the host environment; no zero-egress guarantee is made.
 
 <a id="deutsch"></a>
 ## Deutsch
 
 ### Unterstützte Versionen
 
-| Version | Unterstützt        | Sicherheits-SLA     |
-| :---    | :---:              | :---                |
-| 1.0.x   | :white_check_mark: | 48h Antwort / 5 Tage Triage |
-| < 1.0.0 | :x:                | Nicht unterstützt   |
+| Version | Unterstützt | Reaktionsziel des Maintainers |
+| :--- | :---: | :--- |
+| 1.0.x | Ja | Eingangsbestätigung: 48 Stunden; Beginn der Triage: 5 Werktage |
+| < 1.0.0 | Nein | Nicht unterstützt |
 
-### Melden einer Schwachstelle
+### Schwachstellen melden
 
-Bitte veröffentliche Sicherheitslücken **nicht** in öffentlichen Issues oder Foren.
+Veröffentliche Sicherheitslücken **nicht** in öffentlichen GitHub-Issues, Diskussionen oder Pull Requests.
 
-1. **GitHub Private Vulnerability Reporting (Bevorzugt):**
-   Öffne das Repository auf GitHub, wähle den Reiter **Security** und klicke auf **Report a vulnerability**.
-2. **Direkter Sicherheitskontakt:**
-   Sende eine E-Mail an:
+1. **GitHub Private Vulnerability Reporting (bevorzugt):** Öffne im Repository den Reiter **Security** und wähle **Report a vulnerability**.
+2. **Direkter Sicherheitskontakt:** Schreibe an:
    - `security@open-bricks.org`
    - CC: `support@lukasgeiger.com`, `lukas@open-bricks.org`
 
-### Reaktions- und Behebungs-SLA
+### Reaktionsziele des Maintainers
 
-- **Eingangsbestätigung:** Innerhalb von **48 Stunden**.
-- **Triage & Risikobewertung:** Innerhalb von **5 Werktagen**.
-- **Patch & Veröffentlichung:** Koordinierter Release innerhalb von 14 Kalendertagen.
+Der Maintainer strebt an, innerhalb von 48 Stunden den Eingang zu bestätigen und innerhalb von 5 Werktagen mit der Triage zu beginnen. Das sind Reaktionsziele, keine Service-Level-Vereinbarung und keine Garantie für Untersuchung, Korrektur oder Veröffentlichung bis zu einem bestimmten Datum. Eine feste Frist für Korrekturen gibt es nicht.
 
-### Geltungsbereich & Sicherheitsmodell
+### Geltungsbereich und aktueller Implementierungsstand
 
-`llm-note` arbeitet lokal und ohne ausgehenden Netzwerkverkehr:
-- **Keine Netzwerk-Telemetrie:** Der Notizkern führt keine externen Netzwerkverbindungen aus.
-- **Loopback-Bindung:** Die optionale Web-GUI lauscht ausschließlich auf `127.0.0.1`.
-- **Schutz vor Pfad-Traversal:** Notizbuch-Pfade werden validiert und auf das Zielverzeichnis begrenzt.
-- **Keine Rechteausweitung:** Führt Code ausschließlich mit Standard-Benutzerrechten aus (`RunAsInvoker`).
+`llm-note` ist eine lokal ausgerichtete Notizanwendung. Der Kern verwendet lokale SQLite-Datenbanken und Klartext-Notizbücher; das Projekt deklariert keine zusätzlichen Python-Laufzeitpakete.
+
+- Die optionale Weboberfläche bindet an die Loopback-Adresse `127.0.0.1`. Das ist keine Authentifizierung gegenüber anderen Prozessen desselben Benutzers.
+- Die Anwendung validiert Notizbuchpfade und hält sie innerhalb des konfigurierten Notizbuch-Stammverzeichnisses.
+- Der Prozess fordert keine Administrator- oder Root-Erhöhung an und übernimmt die Berechtigungen des aufrufenden Prozesses.
+- Die Anwendung stellt keine Egress-Sperre des Betriebssystems, keine Sandbox und keinen Rechteentzug bereit. Der Netzwerkzugriff hängt von der Hostumgebung ab; eine Zero-Egress-Garantie wird nicht gegeben.

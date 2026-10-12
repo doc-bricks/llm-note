@@ -2,14 +2,19 @@
 
 ## [Unreleased]
 
-- Added GitHub Actions lifecycle workflows: automated PR assignment (`.github/workflows/auto-assign.yml`), issue label synchronization (`.github/workflows/label-sync.yml`), and standard labels catalog (`.github/labels.yml`).
-- Hardened CI workflow (`.github/workflows/ci.yml`) with concurrency cancellation (`cancel-in-progress: true`) and expanded Python matrix testing across versions 3.10 through 3.13.
-- Created plain-text companion Level 1 SBOM `THIRD_PARTY_LICENSES.txt` certifying zero external runtime dependencies, 10 system invariants (`INV-LOCAL-01` .. `INV-SLA-10`), unprivileged `RunAsInvoker` user mode, German statutory disclaimer (§ 521 BGB Gefälligkeitsrecht), and 48h Security Response SLA.
-- Standardized PEP 621 metadata in `pyproject.toml` with `Contributing`, `Plain-Text License`, and `Third-Party Licenses Text` URLs in `[project.urls]`, and configured `norecursedirs` under `[tool.pytest.ini_options]`.
-- Upgraded `CONTRIBUTING.md` to a comprehensive bilingual (EN/DE) development guide including Plan D canonical local cloning instructions, Quality Gates, and Version Freeze governance.
-- Hardened `.gitignore` against multi-host locks (`LOCK.dev.*`, `LOCK.antigravity.*`, `LOCK.bugsearch.*`), cloud synchronization conflicts (`*-IDEAPAD*`, `*_WORKSTATION*`, `*conflicted copy*`, `* (Kopie)*`), and scratch artifacts.
-- Synchronized `llms.txt`, `MARKETING-LOG.txt`, and Shields.io badges to the 2026-10-11 audit baseline.
-- Extended automated contract test suite in `tests/test_metadata.py` to cover lifecycle workflows, SBOM text companion, contributing guidelines, and multi-host gitignore defense.
+- Hardened CI workflow (`.github/workflows/ci.yml`) with concurrency cancellation (`cancel-in-progress: true`) and Python matrix testing across versions 3.10 through 3.13.
+- Standardized PEP 621 metadata in `pyproject.toml` with contributor and plain-text dependency-note URLs, and configured `norecursedirs` under `[tool.pytest.ini_options]`.
+- Reworked `THIRD_PARTY_LICENSES.md` and `THIRD_PARTY_LICENSES.txt` as scoped notes about declared runtime requirements and direct build/development tools; they no longer present a complete SBOM or license-compliance certification.
+- Updated all six README files and `SECURITY.md` to describe local storage, loopback binding, inherited process permissions, maintainer response targets, and the limits of the available evidence.
+- Replaced comparative claims about other products' network behavior, process permissions, and security response with “not assessed” entries.
+- Removed dated test-count, zero-egress, RunAsInvoker, and response-SLA badges; the existing CI badge remains the live status indicator.
+- Revised the § 521 BGB note to leave application and consequences to the specific circumstances; the repository license remains unchanged.
+- Revised `CONTRIBUTING.md` with a local checkout workflow and reproducible editable-install, test, lint, and build commands in English and German.
+- Updated `llms.txt` with a 2026-10-12 review date and current implementation boundaries.
+- Added a dated editorial supersession notice to `MARKETING-LOG.txt`; prior marketing text remains as historical material.
+- Reworked `RELEASE_GATE.md` to keep version 1.0.5 frozen, distinguish the historical 1.0.1 record, and state that the current release gate is not cleared.
+- Kept useful metadata, version, navigation, anchor, asset, runtime-import, CI, contributor-command, and host-sync tests; removed literal tests of old marketing, legal, and security claims.
+- Preserved package version 1.0.5 and made no release or upload.
 
 ## [1.0.5] - 2026-10-04
 

@@ -1,4 +1,31 @@
 ===============================================================================
+EDITORIAL SUPERSESSION — 2026-10-12
+===============================================================================
+
+The material below is retained as historical marketing and discoverability
+planning. It is not a current security, legal, licensing, or service-level
+certification.
+
+The following historical claims are superseded: zero-egress or air-gapped
+operation; no network access under every environment; a complete SBOM or
+zero-copyleft certification; RunAsInvoker certification; guaranteed response
+or fix deadlines; and categorical conclusions about § 521 BGB.
+
+Current bounded product facts: the project declares no additional Python
+runtime packages; core notes are stored in local SQLite and plain-text files;
+the optional web interface binds to loopback; and the process inherits the
+launching process's permissions. The application does not provide an
+operating-system egress block, sandbox, or privilege drop. SECURITY.md describes
+maintainer response targets, not guaranteed deadlines. The repository license
+is MIT (see LICENSE); dependency notes do not certify complete transitive
+license status. Legal applicability depends on the facts and is not determined
+by this marketing log.
+
+The comparative table and search phrases below are retained for history and
+should not be treated as verified statements about other products or as
+current guarantees about llm-note.
+
+===============================================================================
                        llm-note MARKETING & DISCOVERABILITY LOG
 ===============================================================================
 Repository:    doc-bricks/llm-note

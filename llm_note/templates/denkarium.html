@@ -75,6 +75,12 @@
       font-family: "Segoe UI", Arial, sans-serif;
       font-size: 0.78rem;
     }
+    .settings-controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
     .font-choice,
     button,
     input,
@@ -191,6 +197,17 @@
     .mood { margin-left: auto; color: var(--accent); letter-spacing: 0.08em; }
     .empty { padding: 3.5rem 1rem; text-align: center; color: var(--ink-faint); }
     .empty strong { display: block; margin-bottom: 0.4rem; font-size: 1.4rem; font-style: italic; }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
 
     @media (max-width: 620px) {
       main { padding-top: 1.6rem; }
@@ -209,25 +226,40 @@
       <div class="ornament" aria-hidden="true">— ◈ —</div>
     </header>
 
-    <section class="settings" aria-label="Display settings">
-      <div>
-        <button class="font-choice active" data-font="serif" type="button">Serif</button>
-        <button class="font-choice" data-font="sans" type="button">Sans</button>
-        <button class="font-choice" data-font="mono" type="button">Mono</button>
+    <section class="settings" aria-labelledby="settings-label">
+      <span class="visually-hidden" id="settings-label"></span>
+      <div class="settings-controls">
+        <button class="font-choice active" data-font="serif" type="button"></button>
+        <button class="font-choice" data-font="sans" type="button"></button>
+        <button class="font-choice" data-font="mono" type="button"></button>
+        <label class="visually-hidden" id="language-label" for="locale"></label>
+        <select id="locale" aria-labelledby="language-label">
+          <option value="en">English</option>
+          <option value="de">Deutsch</option>
+          <option value="es">Español</option>
+          <option value="zh-Hans">简体中文</option>
+          <option value="ja">日本語</option>
+          <option value="ru">Русский</option>
+        </select>
       </div>
       <div class="stats" id="stats"></div>
     </section>
 
     <form class="compose" id="compose">
-      <textarea id="content" required></textarea>
+      <label class="visually-hidden" id="content-label" for="content"></label>
+      <textarea id="content" aria-labelledby="content-label" required></textarea>
       <div class="compose-controls">
-        <select id="entry-type">
+        <label class="visually-hidden" id="entry-type-label" for="entry-type"></label>
+        <select id="entry-type" aria-labelledby="entry-type-label">
           <option value="note"></option>
           <option value="logbook"></option>
         </select>
-        <input id="category" maxlength="100" value="note">
-        <input id="title" maxlength="200">
-        <select id="mood">
+        <label class="visually-hidden" id="category-label" for="category"></label>
+        <input id="category" aria-labelledby="category-label" maxlength="100" value="note">
+        <label class="visually-hidden" id="title-label" for="title"></label>
+        <input id="title" aria-labelledby="title-label" maxlength="200">
+        <label class="visually-hidden" id="mood-label" for="mood"></label>
+        <select id="mood" aria-labelledby="mood-label">
           <option value=""></option>
           <option value="1">1</option>
           <option value="2">2</option>
@@ -239,7 +271,8 @@
       </div>
     </form>
 
-    <section class="filters" aria-label="Note filters">
+    <section class="filters" aria-labelledby="filters-label">
+      <span class="visually-hidden" id="filters-label"></span>
       <input id="search" type="search">
       <button class="chip active" data-type="" type="button"></button>
       <button class="chip" data-type="note" type="button"></button>
@@ -251,19 +284,56 @@
   </main>
 
   <script>
-    const copy = __GUI_COPY_JSON__;
+    const config = __GUI_CONFIG_JSON__;
+    const translations = config.translations;
+    let currentLocale = "en";
+    let copy = translations.en;
     let currentType = "";
     let searchTimer;
 
     const byId = (id) => document.getElementById(id);
+    function readPreference(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function writePreference(key, value) {
+      try {
+        localStorage.setItem(key, value);
+      } catch (error) {
+        // The interface remains usable when browser storage is unavailable.
+      }
+    }
+
+    function normalizeLocale(locale) {
+      if (typeof locale !== "string") return "en";
+      const tag = locale.trim().replace(/_/g, "-").toLowerCase();
+      const exact = Object.keys(translations).find((supported) => supported.toLowerCase() === tag);
+      if (exact) return exact;
+      const language = tag.split("-", 1)[0];
+      if (language === "zh") return "zh-Hans";
+      return Object.keys(translations).find((supported) => supported.toLowerCase() === language) || "en";
+    }
     const escapeHtml = (value) => String(value ?? "").replace(/[&<>'"]/g, (char) => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
     })[char]);
 
     function applyCopy() {
+      document.documentElement.lang = currentLocale;
       document.title = copy.document_title;
       byId("heading").textContent = copy.heading;
       byId("subtitle").textContent = copy.subtitle;
+      byId("settings-label").textContent = copy.settings;
+      byId("language-label").textContent = copy.language;
+      byId("filters-label").textContent = copy.filters;
+      byId("content-label").textContent = copy.content_label;
+      byId("entry-type-label").textContent = copy.entry_type_label;
+      byId("category-label").textContent = copy.category_label;
+      byId("title-label").textContent = copy.title_label;
+      byId("mood-label").textContent = copy.mood_label;
       byId("content").placeholder = copy.compose_placeholder;
       byId("entry-type").options[0].textContent = copy.note;
       byId("entry-type").options[1].textContent = copy.logbook;
@@ -272,11 +342,23 @@
       byId("mood").options[0].textContent = copy.mood;
       byId("save").textContent = copy.save;
       byId("search").placeholder = copy.search;
+      const fonts = document.querySelectorAll(".font-choice");
+      fonts[0].textContent = copy.font_serif;
+      fonts[1].textContent = copy.font_sans;
+      fonts[2].textContent = copy.font_mono;
+      byId("locale").value = currentLocale;
       const chips = document.querySelectorAll(".chip");
       chips[0].textContent = copy.all;
       chips[1].textContent = copy.notes;
       chips[2].textContent = copy.logbook;
       byId("entries").innerHTML = `<div class="empty">${escapeHtml(copy.loading)}</div>`;
+    }
+
+    function setLocale(locale, persist = true) {
+      currentLocale = normalizeLocale(locale);
+      copy = translations[currentLocale] || translations.en;
+      applyCopy();
+      if (persist) writePreference("llm-note-locale", currentLocale);
     }
 
     function renderStats(stats) {
@@ -331,8 +413,13 @@
         document.body.className = font === "serif" ? "" : font;
         document.querySelectorAll(".font-choice").forEach((item) => item.classList.remove("active"));
         button.classList.add("active");
-        localStorage.setItem("llm-note-font", font);
+        writePreference("llm-note-font", font);
       });
+    });
+
+    byId("locale").addEventListener("change", (event) => {
+      setLocale(event.target.value);
+      loadEntries();
     });
 
     document.querySelectorAll(".chip").forEach((button) => {
@@ -376,8 +463,8 @@
       }
     });
 
-    applyCopy();
-    const savedFont = localStorage.getItem("llm-note-font");
+    setLocale(config.initialLocale ?? readPreference("llm-note-locale") ?? "en", false);
+    const savedFont = readPreference("llm-note-font");
     const savedButton = document.querySelector(`.font-choice[data-font="${savedFont}"]`);
     if (savedButton) savedButton.click();
     loadEntries();

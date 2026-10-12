@@ -7,11 +7,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10-3.13](https://img.shields.io/badge/Python-3.10%20--%203.13-blue.svg)](pyproject.toml)
 [![Platform: Windows | Linux | macOS](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](pyproject.toml)
-[![Tests: 30 Passed](https://img.shields.io/badge/Tests-30%20Passed%20%7C%20100%25-brightgreen.svg)](tests/)
-[![Privacy: 100% Local First](https://img.shields.io/badge/Privacy-100%25%20Local--First-success.svg)](SECURITY.md)
-[![Network: Zero Egress](https://img.shields.io/badge/Network-Zero%20Egress-blue.svg)](SECURITY.md)
-[![Security: RunAsInvoker](https://img.shields.io/badge/Security-RunAsInvoker-orange.svg)](THIRD_PARTY_LICENSES.md)
-[![SLA: 48h Response](https://img.shields.io/badge/SLA-48h%20Response-blueviolet.svg)](SECURITY.md)
 [![Dependencies: 0 Stdlib Only](https://img.shields.io/badge/Dependencies-0%20(Stdlib)-brightgreen.svg)](THIRD_PARTY_LICENSES.md)
 [![Code Style: Ruff](https://img.shields.io/badge/Code%20Style-Ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Ecosystem: doc-bricks](https://img.shields.io/badge/Ecosystem-doc--bricks-0055ff.svg)](https://github.com/doc-bricks)
@@ -22,7 +17,7 @@
 *Traducción asistida por máquina; el README en inglés es la versión de referencia.*
 
 > [!NOTE]
-> **Privacidad primero y solo local**: `llm-note` funciona íntegramente con SQLite local y archivos de texto plano. No requiere claves de API, ni servidores en la nube, ni la sobrecarga de una base de datos vectorial, y no realiza ninguna solicitud de red saliente. Ideal para flujos de trabajo de agentes de IA seguros, aislados de la red (air-gapped) y atentos a la privacidad.
+> **Almacenamiento local de notas:** `llm-note` guarda las notas en SQLite local y archivos de texto plano. El almacenamiento principal no necesita un servicio de notas alojado ni una clave API. La interfaz web opcional se vincula a loopback; la configuración del host determina el acceso a la red.
 
 ---
 
@@ -34,17 +29,17 @@
 4. [Secuencia del ciclo de vida de notas y transferencias](#4-note--transfer-lifecycle-sequence)
 5. [Personas objetivo y descubribilidad](#5-target-personas--discoverability)
 6. [Matriz comparativa frente a alternativas](#6-comparative-matrix-vs-alternatives)
-7. [Gobernanza e invariantes de ejecución](#7-governance--runtime-invariants)
+7. [Gobernanza y notas de implementación](#7-governance--runtime-invariants)
 8. [Guía de la interfaz web local Denkarium](#8-denkarium-local-web-gui-guide)
 9. [Referencia completa de la CLI y ejemplos](#9-cli-complete-reference--examples)
 10. [Guía de la API de Python y ejemplos de código](#10-python-api-guide--code-examples)
 11. [Skill de agente e integración en flujos de trabajo](#11-agent-skill--workflow-integration)
 12. [Bandejas de entrada basadas en archivos y semántica de transferencia](#12-file-based-inboxes--transfer-semantics)
 13. [Matriz del ecosistema hermano](#13-sibling-ecosystem-matrix)
-14. [Licencias de terceros y transparencia](#14-third-party-licenses--transparency)
-15. [Política de seguridad y SLA](#15-security-policy--slas)
+14. [Dependencias de terceros y alcance de licencias](#14-third-party-licenses--transparency)
+15. [Política de seguridad y objetivos de respuesta](#15-security-policy--slas)
 16. [Verificación y suite de pruebas de contrato](#16-verification--contract-test-suite)
-17. [Aviso legal alemán (§ 521 BGB)](#17-german-statutory-notice--521-bgb)
+17. [Nota legal: § 521 BGB](#17-german-statutory-notice--521-bgb)
 18. [Hoja de ruta y registro de cambios](#18-roadmap--changelog)
 
 ---
@@ -69,8 +64,8 @@ Los asistentes de IA y los agentes LLM necesitan con frecuencia un lugar donde r
 
 `llm-note` ofrece el término medio arquitectónico ideal:
 - **Cero dependencias externas en tiempo de ejecución**: Construido íntegramente sobre la biblioteca estándar de Python (`sqlite3`, `http.server`, `urllib`, `argparse`, `json`, `pathlib`).
-- **Flexibilidad de doble almacén**: Combina entradas de pensamiento estructuradas en SQLite (`data/notes.db`) con bandejas de entrada de texto plano editables por personas (`notebooks/*.txt`).
-- **Procedencia de la extracción de BACH**: Desacoplado limpiamente del código del asistente de escritorio BACH (en concreto Notizblock y Denkarium) y liberado como código abierto bajo la licencia permisiva MIT.
+- **Flexibilidad de doble almacén**: Combina entradas de pensamiento en SQLite (archivo predeterminado de la CLI: `llm-note.db`; ruta configurable) con bandejas de entrada de texto plano editables (`notebooks/*.txt`).
+- **Procedencia de la extracción de BACH**: Desacoplado limpiamente del [código del asistente de escritorio BACH](https://github.com/ellmos-ai/bach), en concreto Notizblock y Denkarium, y publicado bajo la licencia permisiva MIT.
 
 ---
 
@@ -84,7 +79,7 @@ Los asistentes de IA y los agentes LLM necesitan con frecuencia un lugar donde r
 - **Bandejas de entrada de cuadernos de texto plano (`FileNotebookStore`)**: Gestiona notas portables de texto plano con marcadores de categorización `#NB:` y bloqueo atómico de archivos entre procesos.
 - **Interfaz web Denkarium integrada**: Interfaz de navegador de bucle local (loopback), sin instalación, enlazada estrictamente a `127.0.0.1` mediante `http.server` de la biblioteca estándar y fuentes del sistema.
 - **Traducción multilingüe**: Localización nativa de mensajes en 6 idiomas: inglés, alemán, español, chino simplificado, japonés y ruso.
-- **Skill de agente listo para usar**: El archivo incluido `skills/llm-note/SKILL.md` está listo para que los agentes autónomos lo descubran e invoquen de inmediato.
+- **Skill de agente en el repositorio fuente**: El repositorio fuente contiene `skills/llm-note/SKILL.md`; `pyproject.toml` empaqueta solo `llm_note`, por lo que el wheel no incluye esa ruta fuente.
 - **Búsqueda determinista**: Búsquedas de subcadenas literales sin sorpresas por comodines, con límites estrictos de consulta (`0` a `1000`).
 
 ---
@@ -112,7 +107,7 @@ graph TD
     end
 
     subgraph LocalStorage["Capa de almacenamiento local"]
-        DB[("data/notes.db<br/>(registro de pensamientos SQLite)")]
+        DB[("llm-note.db<br/>(registro de pensamientos SQLite; valor predeterminado de CLI)")]
         Notebooks["notebooks/*.txt<br/>(bandejas de entrada de texto plano)"]
         LockFile[".llm-note.lock (coordinación atómica)"]
     end
@@ -181,7 +176,7 @@ sequenceDiagram
 | ID de persona | Persona objetivo | Necesidad principal | Valor clave aportado |
 | :--- | :--- | :--- | :--- |
 | `[PERSONA-01]` | **Creadores de agentes autónomos** | Memoria ligera de pensamientos que sobreviva a los reinicios de contexto del LLM | Almacén SQLite sin dependencias, integrable al instante |
-| `[PERSONA-02]` | **Desarrolladores atentos a la privacidad** | Toma de notas y bandejas de entrada aisladas de la red y sin salida de datos | Funcionamiento 100 % local sin telemetría ni llamadas de red |
+| `[PERSONA-02]` | **Desarrolladores atentos a la privacidad** | Notas SQLite locales y bandejas de texto sin un servicio de notas alojado | Almacenamiento local primero; la política del host controla el acceso a la red |
 | `[PERSONA-03]` | **Usuarios de asistentes de IA de escritorio** | Navegador visual instantáneo de pensamientos sin Node/Electron | Interfaz Denkarium integrada en loopback (`127.0.0.1`) |
 | `[PERSONA-04]` | **Investigadores de ciencia abierta** | Registros de pensamientos y experimentos auditables y rastreables con Git | Bandejas de entrada de texto plano y bases de datos SQLite estándar de un solo archivo |
 
@@ -202,14 +197,14 @@ sequenceDiagram
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **1. Motor de almacenamiento** | **SQLite + TXT** | Archivos Markdown | SQLite / sincronización | Embeddings vectoriales | Un único archivo SQLite |
 | **2. Dependencias en tiempo de ejecución** | **0 (solo stdlib)** | Electron / Node | Electron / BD | C++ / Py pesados | 0 (binario C) |
-| **3. Salida de red** | **Cero / aislado de la red** | Los plugins pueden filtrar datos | Servicio de sincronización | API remota / en la nube | Cero / local |
+| **3. Requisitos de red** | **Almacenamiento local; se aplica la política del host** | No evaluado | No evaluado | No evaluado | No evaluado |
 | **4. API de Python para agentes** | **Nativa de primera clase** | REST de la comunidad | API de la comunidad | Cliente complejo | Requiere SQL puro |
 | **5. Interfaz web integrada** | **Integrada (127.0.0.1)** | Aplicación de escritorio | Aplicación de escritorio | SaaS aparte | Ninguna |
 | **6. Sincronización de bandeja de texto plano** | **Integrada (`#NB:`)** | Carpetas manuales | Importaciones manuales | N/D | Scripts manuales |
 | **7. Motor multilingüe** | **6 configuraciones regionales incluidas** | Paquete de la comunidad | Paquete de la comunidad | Centrado en inglés | Solo inglés |
-| **8. Privilegio de ejecución** | **RunAsInvoker** | Usuario / escritorio | Usuario / escritorio | Docker / nube | Usuario |
-| **9. Empaquetado como skill de agente** | **SKILL.md incluido** | De terceros | De terceros | Código a medida | Ninguno |
-| **10. SLA de respuesta de seguridad** | **48 h / 5 d formal** | Comunidad | Comunidad | Solo empresarial | Dominio público |
+| **8. Permisos del proceso** | **Hereda los permisos del proceso iniciador** | No evaluado | No evaluado | No evaluado | No evaluado |
+| **9. Fuente del skill de agente** | **Repositorio fuente; no en el wheel** | De terceros | De terceros | Código a medida | Ninguno |
+| **10. Información sobre respuesta de seguridad** | **Objetivos del mantenedor en SECURITY.md** | No evaluado | No evaluado | No evaluado | No evaluado |
 
 ---
 
@@ -217,20 +212,20 @@ sequenceDiagram
 <a id="governance--runtime-invariants"></a>
 <a id="7-governance--laufzeit-invarianten"></a>
 <a id="governance--laufzeit-invarianten"></a>
-## 7. Gobernanza e invariantes de ejecución
+## 7. Gobernanza y notas de implementación
 
-El motor `llm-note` opera bajo diez invariantes arquitectónicos inmutables:
+Los puntos siguientes describen características actuales de implementación basadas en el código fuente. No son garantías inmutables ni una certificación de seguridad independiente:
 
-- `INV-LOCAL-01`: **100 % local primero y cero salida de datos**: sin solicitudes de red salientes, sin telemetría, sin sincronización en la nube.
-- `INV-LOCAL-02`: **Almacenamiento SQLite en un solo archivo**: base de datos ACID estructurada (`data/notes.db`) con diseños de tabla deterministas.
+- `INV-LOCAL-01`: **Almacenamiento local primero**: las notas se guardan en SQLite local y archivos de texto plano; esto no bloquea el acceso a la red del host.
+- `INV-LOCAL-02`: **Almacenamiento SQLite en un solo archivo**: base de datos ACID estructurada; el archivo predeterminado de la CLI es `llm-note.db` y la ruta se puede configurar.
 - `INV-LOCAL-03`: **Bandejas de entrada de cuadernos de texto plano**: bandejas de texto legibles por personas (`notebooks/*.txt`) con categorización `#NB:`.
 - `INV-LOCAL-04`: **Solo biblioteca estándar**: cero dependencias de terceros en tiempo de ejecución; funciona en cualquier entorno estándar de Python 3.10+.
 - `INV-LOCAL-05`: **Transferencias atómicas a prueba de fallos**: bloqueo entre procesos mediante `.llm-note.lock` y marcadores de idempotencia `#LLM-NOTE-ID`.
 - `INV-LOCAL-06`: **Interfaz web enlazada a loopback**: Denkarium escucha estrictamente en `127.0.0.1`; admite `--no-browser`.
 - `INV-LOCAL-07`: **I18N multilingüe**: 6 catálogos de localización incluidos: EN, DE, ES, ZH, JA, RU.
-- `INV-LOCAL-08`: **Sin elevación (RunAsInvoker)**: opera íntegramente en el espacio de usuario sin privilegios; cero elevación administrativa.
-- `INV-LOCAL-09`: **Empaquetado como skill de agente**: incluye una skill de agente completa (`skills/llm-note/SKILL.md`) para flujos de trabajo con LLM.
-- `INV-LOCAL-10`: **SLA de seguridad de 48 horas**: compromisos formales de respuesta ante vulnerabilidades regulados por `SECURITY.md`.
+- `INV-LOCAL-08`: **Permisos del proceso**: la aplicación no solicita elevación y hereda los permisos del proceso que la inicia.
+- `INV-LOCAL-09`: **Fuente del skill de agente**: el repositorio fuente contiene [`skills/llm-note/SKILL.md`](skills/llm-note/SKILL.md); `pyproject.toml` empaqueta solo `llm_note`, así que esa ruta fuente no se declara como contenido del wheel.
+- `INV-LOCAL-10`: **Objetivos de respuesta del mantenedor**: `SECURITY.md` recoge objetivos de acuse de recibo y triaje; no son un SLA ni un plazo de corrección.
 
 ---
 
@@ -240,7 +235,7 @@ El motor `llm-note` opera bajo diez invariantes arquitectónicos inmutables:
 <a id="lokale-denkarium-weboberflaeche"></a>
 ## 8. Guía de la interfaz web local Denkarium
 
-La interfaz Denkarium ofrece un panel visual de pensamientos instantáneo y sin instalación:
+La interfaz Denkarium ofrece un panel visual de pensamientos instantáneo y sin instalación. Elige uno de los seis idiomas en el menú «Idioma». La elección es independiente para cada navegador y se guarda en su almacenamiento local. Al iniciar la GUI con un `--locale` explícito, ese valor tiene prioridad para el idioma inicial; si no se indica, se usa la elección guardada y, como alternativa, inglés.
 
 ```bash
 # Iniciar Denkarium con la configuración por defecto (abre http://127.0.0.1:8000/)
@@ -283,7 +278,7 @@ Esto proporciona el comando `llm-note` y el paquete de Python `llm_note`.
 
 ```bash
 # Escribir una nota con categoría y estado de ánimo
-llm-note write "Refactor caching layer" --cat dev --mood focused
+llm-note write "Refactor caching layer" --cat dev --mood 4
 
 # Leer notas recientes (límite por defecto: 10)
 llm-note read --limit 5
@@ -319,7 +314,7 @@ notes = NoteStore("data/notes.db")
 entry = notes.write(
     content="Implement deterministic seed for test suite",
     category="testing",
-    mood="neutral"
+    mood=4
 )
 print(f"Created entry #{entry.id} at {entry.created_at}")
 
@@ -346,7 +341,7 @@ print(f"Transferred {transferred} entries to topic notebooks.")
 <a id="agenten-skill--workflow-integration"></a>
 ## 11. Skill de agente e integración en flujos de trabajo
 
-`llm-note` incluye una definición de skill de agente en [`skills/llm-note/SKILL.md`](skills/llm-note/SKILL.md). Los agentes autónomos (como Claude Code, Antigravity o Codex) pueden invocar `llm-note` directamente para registrar observaciones persistentes, mantener borradores entre delegaciones a subagentes y conservar registros de auditoría.
+El repositorio fuente contiene la definición del skill de agente [`skills/llm-note/SKILL.md`](skills/llm-note/SKILL.md). El wheel solo empaqueta `llm_note`, según [`pyproject.toml`](pyproject.toml), por lo que no se afirma que esa ruta fuente forme parte del wheel. Los agentes autónomos pueden invocar `llm-note` para registrar observaciones y mantener borradores.
 
 ```markdown
 # Ejemplo de invocación de herramienta por un agente
@@ -375,16 +370,16 @@ Para guardar una observación de investigación provisional:
 <a id="oekosystem-matrix--verwandte-module"></a>
 ## 13. Matriz del ecosistema hermano
 
-`llm-note` forma parte de la familia `doc-bricks` bajo el paraguas de código abierto `open-bricks`:
+Los siguientes enlaces apuntan a repositorios relacionados del ecosistema ampliado; su inclusión no implica una integración directa con llm-note:
 
 | Proyecto | Enfoque y papel en el ecosistema | Enlace |
 | :--- | :--- | :--- |
 | **doc-bricks/llm-note** | Núcleo local-first de pensamientos y cuadernos para agentes | [doc-bricks/llm-note](https://github.com/doc-bricks/llm-note) |
-| **doc-bricks/MediaBrain** | Análisis de activos multimodales, OCR y transcripción de documentos | [doc-bricks/MediaBrain](https://github.com/doc-bricks/MediaBrain) |
-| **doc-bricks/MailProcessor** | Análisis determinista de correo electrónico y canalización de archivado conforme | [doc-bricks/MailProcessor](https://github.com/doc-bricks/MailProcessor) |
+| **doc-bricks/MediaBrain** | Biblioteca personal de vídeo y música con listas inteligentes e historial de reproducción | [doc-bricks/MediaBrain](https://github.com/doc-bricks/MediaBrain) |
+| **doc-bricks/MailProcessor** | Aplicación de la bandeja de Windows para iniciar las herramientas locales Universal Mail | [doc-bricks/MailProcessor](https://github.com/doc-bricks/MailProcessor) |
 | **file-bricks/ProSync** | Sincronización de directorios robusta y multiplataforma | [file-bricks/ProSync](https://github.com/file-bricks/ProSync) |
-| **file-bricks/CloudLockFixer**| Resolución de conflictos y gestor de bloqueos para carpetas en la nube | [file-bricks/CloudLockFixer](https://github.com/file-bricks/CloudLockFixer) |
-| **open-bricks/open-bricks** | Catálogo general y herramientas abiertas fundamentales para desarrolladores | [open-bricks/open-bricks](https://github.com/open-bricks) |
+| **file-bricks/CloudLockFixer** | Retrasa operaciones de archivos en carpetas sincronizadas y verifica los reemplazos de copia/eliminación con SHA-256 | [file-bricks/CloudLockFixer](https://github.com/file-bricks/CloudLockFixer) |
+| **open-bricks organization profile** | Perfil de organización y catálogo general; no es un repositorio específico | [open-bricks en GitHub](https://github.com/open-bricks) |
 
 ---
 
@@ -392,28 +387,26 @@ Para guardar una observación de investigación provisional:
 <a id="third-party-licenses--transparency"></a>
 <a id="14-drittanbieter-lizenzen--transparenz"></a>
 <a id="drittanbieter-lizenzen--transparenz"></a>
-## 14. Licencias de terceros y transparencia
+## 14. Dependencias de terceros y alcance de licencias
 
-`llm-note` tiene **0 dependencias externas en tiempo de ejecución**. Todas las operaciones centrales se apoyan exclusivamente en la biblioteca estándar de Python, bajo la [Python Software Foundation License](https://docs.python.org/3/license.html).
+`pyproject.toml` no declara paquetes Python adicionales como dependencias de tiempo de ejecución. El núcleo utiliza la biblioteca estándar de Python y SQLite proporcionado por el entorno de Python.
 
-- Auditoría completa de SBOM y transparencia de licencias: [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md)
-- Verificación de cero copyleft: 100 % libre de código GPL, AGPL, LGPL y SSPL.
-- Ejecución sin privilegios: Certificado para el espacio de usuario `RunAsInvoker`.
-
+- Notas de alcance limitado sobre dependencias declaradas directamente: [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md) y [`THIRD_PARTY_LICENSES.txt`](THIRD_PARTY_LICENSES.txt). No son SBOM completos.
+- Estas notas no certifican el estado de licencias de todos los árboles transitivos de dependencias de desarrollo o compilación.
+- El proceso no solicita elevación administrativa y hereda los permisos del proceso que lo inicia; esto no es una certificación de plataforma.
 ---
 
 <a id="15-security-policy--slas"></a>
 <a id="security-policy--slas"></a>
 <a id="15-sicherheitsrichtlinie--slas"></a>
 <a id="sicherheitsrichtlinie--slas"></a>
-## 15. Política de seguridad y SLA
+## 15. Política de seguridad y objetivos de respuesta
 
-Mantenemos un proceso riguroso y formal de gestión de vulnerabilidades, documentado en [`SECURITY.md`](SECURITY.md):
+El canal de notificación y los objetivos de respuesta del mantenedor se describen en [`SECURITY.md`](SECURITY.md):
 
-- **Contrato de cero salida de datos**: El software no realiza ninguna llamada de red. Cualquier salida no autorizada se clasifica como defecto crítico.
-- **SLA de respuesta de 48 horas**: Triaje inicial en 48 horas; plan de resolución en 5 días hábiles.
-- **Contacto**: Informa de posibles problemas de seguridad de forma confidencial a `security@lukasgeiger.com`.
-
+- **Límite de implementación:** el núcleo de notas usa almacenamiento local y la interfaz web opcional se vincula a loopback. La aplicación no bloquea el acceso de red del host ni crea un entorno aislado.
+- **Objetivos de respuesta del mantenedor:** acuse de recibo en 48 horas e inicio del triaje en 5 días hábiles son objetivos, no un SLA ni un plazo de corrección prometido.
+- **Contacto**: Envía informes confidenciales mediante el canal privado descrito en [SECURITY.md](SECURITY.md).
 ---
 
 <a id="16-verification--contract-test-suite"></a>
@@ -441,12 +434,9 @@ python -m compileall -q .
 <a id="german-statutory-notice--521-bgb"></a>
 <a id="17-gesetzlicher-haftungshinweis--521-bgb"></a>
 <a id="gesetzlicher-haftungshinweis--521-bgb"></a>
-## 17. Aviso legal alemán (§ 521 BGB)
+## 17. Nota legal: § 521 BGB
 
-Dieses Open-Source-Projekt wird unentgeltlich zur Verfügung gestellt. Für unentgeltliche Bereitstellungen gilt gemäß § 521 BGB das gesetzliche Gefälligkeitsrecht: Die Haftung des Anbieters beschränkt sich auf Vorsatz und grobe Fahrlässigkeit.
-
-Este software de código abierto se proporciona de forma gratuita bajo la licencia MIT. De conformidad con el § 521 del Código Civil alemán (BGB), la responsabilidad legal por las cesiones gratuitas se limita al dolo y a la negligencia grave.
-
+§ 521 BGB puede ser pertinente según las circunstancias concretas. Esta nota no determina si se aplica a una distribución específica ni qué consecuencias de responsabilidad se derivan.
 ---
 
 <a id="18-roadmap--changelog"></a>

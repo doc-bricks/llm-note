@@ -7,7 +7,6 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-
 def test_version_consistency():
     """Verify that version 1.0.5 is synchronized across all manifests."""
     pyproject_text = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
@@ -32,7 +31,6 @@ def test_version_consistency():
     # Check CHANGELOG.md entry
     changelog_text = (REPO_ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
     assert "## [1.0.5] - 2026-10-04" in changelog_text
-
 
 def test_pep621_compliance_and_urls():
     """Verify PEP 621 compliance, URLs, classifiers, and test settings in pyproject.toml."""
@@ -72,73 +70,48 @@ def test_pep621_compliance_and_urls():
     assert 'addopts = "-ra -v"' in pyproject_text
     assert "norecursedirs" in pyproject_text
 
-
-def test_third_party_licenses_audit():
-    """Verify THIRD_PARTY_LICENSES.md SBOM and the 10 system invariants."""
-    licenses_file = REPO_ROOT / "THIRD_PARTY_LICENSES.md"
-    assert licenses_file.exists(), "THIRD_PARTY_LICENSES.md must exist"
-    text = licenses_file.read_text(encoding="utf-8")
-
-    assert "PSF-2.0" in text
-    assert "MIT" in text
-    assert "Zero (Zero)" in text or "Runtime Dependencies:       0" in text
-    assert "RunAsInvoker" in text
-
-    for i in range(1, 11):
-        inv_id = f"INV-LOCAL-{i:02d}"
-        assert inv_id in text, f"Missing system invariant {inv_id} in THIRD_PARTY_LICENSES.md"
-
-
-def test_marketing_log_audit():
-    """Verify MARKETING-LOG.txt personas, comparative matrix, and audit record."""
+def test_marketing_log_supersession_is_explicit():
+    """Keep retained marketing copy visibly marked as historical."""
     marketing_file = REPO_ROOT / "MARKETING-LOG.txt"
     assert marketing_file.exists(), "MARKETING-LOG.txt must exist"
     text = marketing_file.read_text(encoding="utf-8")
 
-    for p in range(1, 5):
-        persona_tag = f"[PERSONA-{p:02d}]"
-        assert persona_tag in text, f"Missing persona {persona_tag} in MARKETING-LOG.txt"
-
-    assert "10-DIMENSION COMPARATIVE MATRIX" in text
-    assert "Obsidian" in text
-    assert "Joplin" in text
-    assert "2026-09-18" in text
-    assert "2026-10-11" in text
-
+    expected_header = "===============================================================================\nEDITORIAL SUPERSESSION — 2026-10-12"
+    assert text.startswith(expected_header)
+    assert "2026-10-11" in text, "The prior dated record should remain as history"
 
 def test_llms_txt_integrity():
-    """Verify llms.txt AI context index."""
+    """Verify llms.txt context metadata and its current review date."""
     llms_file = REPO_ROOT / "llms.txt"
     assert llms_file.exists(), "llms.txt must exist"
     text = llms_file.read_text(encoding="utf-8")
 
     assert "Version: 1.0.5" in text
-    assert "Last-checked: 2026-10-11" in text
+    assert "Last-checked: 2026-10-12" in text
     assert "doc-bricks" in text
     assert "open-bricks" in text
 
+def test_readme_navigation_and_anchor_parity():
+    """Verify section navigation across locales and stable EN/DE anchor aliases."""
+    filenames = [
+        "README.md",
+        "README_de.md",
+        "README_es.md",
+        "README_zh-Hans.md",
+        "README_ja.md",
+        "README_ru.md",
+    ]
+    contents = {name: (REPO_ROOT / name).read_text(encoding="utf-8") for name in filenames}
 
-def test_security_policy_slas():
-    """Verify SECURITY.md SLAs and zero-egress commitments."""
-    security_file = REPO_ROOT / "SECURITY.md"
-    assert security_file.exists(), "SECURITY.md must exist"
-    text = security_file.read_text(encoding="utf-8")
+    for filename, text in contents.items():
+        for i in range(1, 19):
+            heading_prefix = f"## {i}."
+            assert heading_prefix in text, f"Missing section {heading_prefix} in {filename}"
+        assert "[![Tests:" not in text, f"Static test-count badge found in {filename}"
 
-    assert "48" in text, "Expected 48h response SLA in SECURITY.md"
-    assert "Zero Egress" in text or "zero-egress" in text.lower()
-
-
-def test_readme_bilingual_navigation_and_anchor_parity():
-    """Verify 18-point navigation parity and reciprocal HTML anchors in README.md & README_de.md."""
-    readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
-    readme_de = (REPO_ROOT / "README_de.md").read_text(encoding="utf-8")
-
-    for i in range(1, 19):
-        heading_prefix = f"## {i}."
-        assert heading_prefix in readme_en, f"Missing section {heading_prefix} in README.md"
-        assert heading_prefix in readme_de, f"Missing section {heading_prefix} in README_de.md"
-
-    # Check key reciprocal anchor tags
+    # Check key reciprocal anchor tags retained in the full EN/DE versions.
+    readme_en = contents["README.md"]
+    readme_de = contents["README_de.md"]
     key_anchors = [
         "1-overview--why-this-exists",
         "1-ueberblick--warum-dieses-projekt-existiert",
@@ -152,15 +125,6 @@ def test_readme_bilingual_navigation_and_anchor_parity():
     for anchor in key_anchors:
         assert f'id="{anchor}"' in readme_en, f"Missing anchor {anchor} in README.md"
         assert f'id="{anchor}"' in readme_de, f"Missing anchor {anchor} in README_de.md"
-
-
-def test_german_statutory_disclaimer():
-    """Verify German statutory disclaimer (§ 521 BGB) in README_de.md."""
-    readme_de = (REPO_ROOT / "README_de.md").read_text(encoding="utf-8")
-    assert "§ 521 BGB" in readme_de
-    assert "Gefälligkeitsrecht" in readme_de or "Gefaelligkeitsrecht" in readme_de
-    assert "Vorsatz und grobe Fahrlässigkeit" in readme_de or "grobe Fahrlaessigkeit" in readme_de
-
 
 def test_zero_external_runtime_dependencies():
     """Verify via AST parsing that llm_note has 0 external runtime dependencies."""
@@ -188,9 +152,8 @@ def test_zero_external_runtime_dependencies():
 
     assert not external_imports, f"Discovered external runtime imports: {external_imports}"
 
-
-def test_mermaid_diagrams_in_readmes():
-    """Verify that Mermaid diagrams in README.md and README_de.md adhere to syntax guardrails."""
+def test_mermaid_diagram_markers_and_message_guardrails():
+    """Check diagram markers and project-specific message rules; this does not parse Mermaid syntax."""
     for filename in ["README.md", "README_de.md"]:
         text = (REPO_ROOT / filename).read_text(encoding="utf-8")
         blocks = re.findall(r"```mermaid\n(.*?)\n```", text, flags=re.DOTALL)
@@ -211,7 +174,6 @@ def test_mermaid_diagrams_in_readmes():
                         msg_part = line.split(":", 1)[-1] if ":" in line else ""
                         assert ";" not in msg_part, f"Semicolon found in sequence message: {line} in {filename}"
 
-
 def test_banner_asset_guardrails():
     """Verify HOOK-BANNER-ASSET-01: banner assets exist and are referenced in documentation."""
     png_banner = REPO_ROOT / "assets" / "banner.png"
@@ -225,22 +187,6 @@ def test_banner_asset_guardrails():
 
     assert 'src="assets/banner.png"' in readme_en or 'src="assets/banner.svg"' in readme_en
     assert 'src="assets/banner.png"' in readme_de or 'src="assets/banner.svg"' in readme_de
-
-
-def test_plain_text_sbom_companion():
-    """Verify THIRD_PARTY_LICENSES.txt Level 1 SBOM text companion and invariant matrix."""
-    sbom_txt = REPO_ROOT / "THIRD_PARTY_LICENSES.txt"
-    assert sbom_txt.exists(), "THIRD_PARTY_LICENSES.txt must exist"
-    content = sbom_txt.read_text(encoding="utf-8")
-
-    assert "THIRD-PARTY LICENSES & LEVEL 1 SBOM NOTICE" in content
-    assert "RunAsInvoker" in content
-    assert "§ 521 BGB" in content
-    assert "48-Hour Security Response SLA" in content or "48h" in content.lower()
-    for i in range(1, 11):
-        inv_id = f"INV-LOCAL-{i:02d}"
-        assert inv_id in content, f"Missing {inv_id} in THIRD_PARTY_LICENSES.txt"
-
 
 def test_github_workflows_and_labels_hygiene():
     """Verify CI, auto-assign, and label-sync workflow definitions and labels.yml."""
@@ -266,19 +212,25 @@ def test_github_workflows_and_labels_hygiene():
     assert "bug" in labels_text
     assert "enhancement" in labels_text
 
-
 def test_contributing_guide_bilingual_parity():
-    """Verify CONTRIBUTING.md contains Plan D instructions and bilingual sections."""
+    """Verify bilingual contributor instructions keep local verification reproducible."""
     contrib_file = REPO_ROOT / "CONTRIBUTING.md"
     assert contrib_file.exists(), "CONTRIBUTING.md must exist"
     text = contrib_file.read_text(encoding="utf-8")
 
     assert "## English" in text
     assert "## Deutsch" in text
-    assert "Plan D" in text
-    assert "Quality Gates" in text
-    assert "RunAsInvoker" in text
-
+    for command in [
+        "python -m pip install -e . pytest ruff build",
+        "python -m pytest -ra -v",
+        "ruff check llm_note tests",
+        "python -m compileall -q .",
+        "python -m build",
+        "git diff --check",
+    ]:
+        assert text.count(command) == 2, (
+            f"Expected the command in both language sections: {command}"
+        )
 
 def test_gitignore_cloud_and_lock_defense():
     """Verify .gitignore multi-host sync and lock protection patterns."""
