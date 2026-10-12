@@ -7,11 +7,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10-3.13](https://img.shields.io/badge/Python-3.10%20--%203.13-blue.svg)](pyproject.toml)
 [![Platform: Windows | Linux | macOS](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](pyproject.toml)
-[![Tests: 30 Passed](https://img.shields.io/badge/Tests-30%20Passed%20%7C%20100%25-brightgreen.svg)](tests/)
-[![Privacy: 100% Local First](https://img.shields.io/badge/Privacy-100%25%20Local--First-success.svg)](SECURITY.md)
-[![Network: Zero Egress](https://img.shields.io/badge/Network-Zero%20Egress-blue.svg)](SECURITY.md)
-[![Security: RunAsInvoker](https://img.shields.io/badge/Security-RunAsInvoker-orange.svg)](THIRD_PARTY_LICENSES.md)
-[![SLA: 48h Response](https://img.shields.io/badge/SLA-48h%20Response-blueviolet.svg)](SECURITY.md)
 [![Dependencies: 0 Stdlib Only](https://img.shields.io/badge/Dependencies-0%20(Stdlib)-brightgreen.svg)](THIRD_PARTY_LICENSES.md)
 [![Code Style: Ruff](https://img.shields.io/badge/Code%20Style-Ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Ecosystem: doc-bricks](https://img.shields.io/badge/Ecosystem-doc--bricks-0055ff.svg)](https://github.com/doc-bricks)
@@ -23,7 +18,7 @@
 *機械支援による翻訳です。正式な内容は英語版 README が優先されます。*
 
 > [!NOTE]
-> **プライバシー最優先・ローカル専用**: `llm-note` は、ローカルの SQLite とプレーンテキストファイルだけで動作します。API キー、クラウドサーバー、ベクトルデータベースのオーバーヘッドは一切不要で、外部へのネットワークリクエストも行いません。安全で、エアギャップ環境にも対応し、プライバシーを重視する AI エージェントのワークフローに最適です。
+> **ローカル優先のノート保存:** `llm-note` はノートをローカルの SQLite とプレーンテキストファイルに保存します。コアのノート保存にホスト型ノートサービスや API キーは必要ありません。任意の Web インターフェースは loopback にバインドされ、ネットワークアクセスはホストの設定に従います。
 
 ---
 
@@ -35,17 +30,17 @@
 4. [ノートと転送のライフサイクルシーケンス](#4-note--transfer-lifecycle-sequence)
 5. [対象ペルソナと発見しやすさ](#5-target-personas--discoverability)
 6. [代替手段との比較マトリクス](#6-comparative-matrix-vs-alternatives)
-7. [ガバナンスとランタイム不変条件](#7-governance--runtime-invariants)
+7. [ガバナンスと実装上の説明](#7-governance--runtime-invariants)
 8. [Denkarium ローカル Web GUI ガイド](#8-denkarium-local-web-gui-guide)
 9. [CLI 完全リファレンスと例](#9-cli-complete-reference--examples)
 10. [Python API ガイドとコード例](#10-python-api-guide--code-examples)
 11. [エージェントスキルとワークフロー連携](#11-agent-skill--workflow-integration)
 12. [ファイルベースのインボックスと転送セマンティクス](#12-file-based-inboxes--transfer-semantics)
 13. [兄弟エコシステムマトリクス](#13-sibling-ecosystem-matrix)
-14. [サードパーティライセンスと透明性](#14-third-party-licenses--transparency)
-15. [セキュリティポリシーと SLA](#15-security-policy--slas)
+14. [サードパーティ依存関係とライセンス範囲](#14-third-party-licenses--transparency)
+15. [セキュリティポリシーと対応目標](#15-security-policy--slas)
 16. [検証とコントラクトテストスイート](#16-verification--contract-test-suite)
-17. [ドイツ法に基づく通知 (§ 521 BGB)](#17-german-statutory-notice--521-bgb)
+17. [法的な説明: § 521 BGB](#17-german-statutory-notice--521-bgb)
 18. [ロードマップと変更履歴](#18-roadmap--changelog)
 
 ---
@@ -70,8 +65,8 @@ AI アシスタントや LLM エージェントは、決定事項を記録し、
 
 `llm-note` は、理想的なアーキテクチャ上の中間点を提供します。
 - **外部ランタイム依存ゼロ**: Python 標準ライブラリ (`sqlite3`、`http.server`、`urllib`、`argparse`、`json`、`pathlib`) のみで構築されています。
-- **デュアルストアの柔軟性**: 構造化された SQLite の思考エントリ (`data/notes.db`) と、人間が編集可能なプレーンテキストのインボックス (`notebooks/*.txt`) を組み合わせています。
-- **BACH 由来の出自**: BACH デスクトップアシスタントのコードベース（具体的には Notizblock と Denkarium）から明確に切り離され、寛容な MIT ライセンスの下でオープンソース化されています。
+- **デュアルストアの柔軟性**: 構造化された SQLite の思考エントリ (CLI の既定ファイルは `llm-note.db`、パスは設定可能) と、人間が編集可能なプレーンテキストのインボックス (`notebooks/*.txt`) を組み合わせています。
+- **BACH 由来の出自**: BACH デスクトップアシスタントの[コードベース](https://github.com/ellmos-ai/bach)（具体的には Notizblock と Denkarium）から明確に切り離され、寛容な MIT ライセンスの下で公開されています。
 
 ---
 
@@ -85,7 +80,7 @@ AI アシスタントや LLM エージェントは、決定事項を記録し、
 - **プレーンテキストのノートブックインボックス (`FileNotebookStore`)**: `#NB:` による分類マーカーとアトミックなプロセス間ファイルロックを備えた、可搬性のあるプレーンテキストのノートを管理します。
 - **組み込み Denkarium Web UI**: インストール不要のループバック専用ブラウザインターフェース。標準ライブラリの `http.server` とシステムフォントを使用し、厳密に `127.0.0.1` にのみバインドされます。
 - **多言語ローカライズ**: 英語、ドイツ語、スペイン語、簡体字中国語、日本語、ロシア語の 6 言語でメッセージをネイティブにローカライズします。
-- **すぐに使えるエージェントスキル**: 同梱の `skills/llm-note/SKILL.md` により、自律型エージェントがすぐに発見・呼び出しできます。
+- **エージェントスキルのソース**: ソースリポジトリには `skills/llm-note/SKILL.md` があります。`pyproject.toml` がパッケージ化するのは `llm_note` のみで、このソースパスは wheel に含まれません。
 - **決定論的な検索**: ワイルドカードによる予期せぬ挙動のない文字列そのままの部分一致検索で、クエリの上限は厳密に定められています (`0` ～ `1000`)。
 
 ---
@@ -113,7 +108,7 @@ graph TD
     end
 
     subgraph LocalStorage["ローカルストレージ層"]
-        DB[("data/notes.db<br/>(SQLite 思考ログ)")]
+        DB[("llm-note.db<br/>(SQLite 思考ログ; CLI 既定値)")]
         Notebooks["notebooks/*.txt<br/>(プレーンテキストのインボックス)"]
         LockFile[".llm-note.lock (アトミックな調整)"]
     end
@@ -182,7 +177,7 @@ sequenceDiagram
 | ペルソナ ID | 対象ペルソナ | 中心的なニーズ | 提供する主な価値 |
 | :--- | :--- | :--- | :--- |
 | `[PERSONA-01]` | **自律型エージェントの開発者** | LLM のコンテキストリセットをまたぐ軽量な思考メモリ | すぐに組み込める、依存ゼロの SQLite ストア |
-| `[PERSONA-02]` | **プライバシーを重視する開発者** | エアギャップ環境で外部送信ゼロのノート取りとインボックス | テレメトリもネットワーク呼び出しもない 100% ローカル動作 |
+| `[PERSONA-02]` | **プライバシーを重視する開発者** | ホスト型ノートサービスを使わないローカル SQLite ノートとテキストインボックス | ローカル優先の保存。ネットワークアクセスはホストのポリシーに従います |
 | `[PERSONA-03]` | **デスクトップ AI アシスタントのユーザー** | Node/Electron なしで使える即時のビジュアル思考ブラウザ | 組み込みのループバック Denkarium GUI (`127.0.0.1`) |
 | `[PERSONA-04]` | **オープンサイエンスの研究者** | Git で追跡でき、監査可能な思考・実験ログ | プレーンテキストのインボックスと標準的な単一ファイルの SQLite データベース |
 
@@ -203,14 +198,14 @@ sequenceDiagram
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **1. ストレージエンジン** | **SQLite + TXT** | Markdown ファイル | SQLite / 同期 | ベクトル埋め込み | 単一の SQLite ファイル |
 | **2. ランタイム依存** | **0（標準ライブラリのみ）** | Electron / Node | Electron / DB | 重量級の C++ / Py | 0（C バイナリ） |
-| **3. ネットワーク外部送信** | **ゼロ / エアギャップ** | プラグインが漏らす可能性あり | 同期サービス | リモート / クラウド API | ゼロ / ローカル |
+| **3. ネットワーク要件** | **ローカル保存。ホストのポリシーに従う** | 未評価 | 未評価 | 未評価 | 未評価 |
 | **4. エージェント向け Python API** | **ネイティブのファーストクラス** | コミュニティ製 REST | コミュニティ製 API | 複雑なクライアント | 生の SQL が必要 |
 | **5. 組み込み Web GUI** | **内蔵 (127.0.0.1)** | デスクトップアプリ | デスクトップアプリ | 別の SaaS | なし |
 | **6. プレーンテキストのインボックス同期** | **内蔵 (`#NB:`)** | 手動のフォルダ | 手動のインポート | 該当なし | 手動のスクリプト |
 | **7. 多言語エンジン** | **6 ロケール同梱** | コミュニティパック | コミュニティパック | 英語中心 | 英語のみ |
-| **8. 実行権限** | **RunAsInvoker** | ユーザー / デスクトップ | ユーザー / デスクトップ | Docker / クラウド | ユーザー |
-| **9. エージェントスキルのパッケージ化** | **SKILL.md を同梱** | サードパーティ | サードパーティ | 独自コード | なし |
-| **10. セキュリティ対応 SLA** | **48 時間 / 5 日（正式）** | コミュニティ | コミュニティ | エンタープライズ限定 | パブリックドメイン |
+| **8. プロセス権限** | **起動元プロセスの権限を継承** | 未評価 | 未評価 | 未評価 | 未評価 |
+| **9. エージェントスキルのソース** | **ソースリポジトリ内; wheel には含まれない** | サードパーティ | サードパーティ | 独自コード | なし |
+| **10. セキュリティ対応情報** | **SECURITY.md のメンテナー目標** | 未評価 | 未評価 | 未評価 | 未評価 |
 
 ---
 
@@ -218,20 +213,20 @@ sequenceDiagram
 <a id="governance--runtime-invariants"></a>
 <a id="7-governance--laufzeit-invarianten"></a>
 <a id="governance--laufzeit-invarianten"></a>
-## 7. ガバナンスとランタイム不変条件
+## 7. ガバナンスと実装上の説明
 
-`llm-note` エンジンは、変更不可能な 10 のアーキテクチャ不変条件の下で動作します。
+以下はソースコードで確認できる現在の実装上の特性です。不変の保証や第三者によるセキュリティ認証ではありません。
 
-- `INV-LOCAL-01`: **100% ローカルファーストかつ外部送信ゼロ** — 外部へのネットワークリクエスト、テレメトリ、クラウド同期は一切ありません。
-- `INV-LOCAL-02`: **SQLite 単一ファイルストレージ** — 決定論的なテーブルレイアウトを持つ構造化 ACID データベース (`data/notes.db`)。
+- `INV-LOCAL-01`: **ローカル優先の保存** — ノートはローカルの SQLite とプレーンテキストファイルに保存されます。これはホスト上のネットワークアクセスを遮断するものではありません。
+- `INV-LOCAL-02`: **SQLite 単一ファイルストレージ** — 構造化 ACID データベース。CLI の既定ファイルは `llm-note.db` で、パスは設定できます。
 - `INV-LOCAL-03`: **プレーンテキストのノートブックインボックス** — `#NB:` による分類を備えた、人間が読めるテキストのインボックス (`notebooks/*.txt`)。
 - `INV-LOCAL-04`: **標準ライブラリのみ** — サードパーティのランタイム依存はゼロで、標準的な Python 3.10+ のランタイムであればどこでも動作します。
 - `INV-LOCAL-05`: **クラッシュ安全なアトミック転送** — `.llm-note.lock` によるプロセス間ロックと `#LLM-NOTE-ID` の冪等性マーカー。
 - `INV-LOCAL-06`: **ループバックにバインドされた Web GUI** — Denkarium は厳密に `127.0.0.1` のみで待ち受けます。`--no-browser` に対応しています。
 - `INV-LOCAL-07`: **多言語 I18N** — 6 つのローカライズカタログを同梱: EN、DE、ES、ZH、JA、RU。
-- `INV-LOCAL-08`: **RunAsInvoker による非昇格** — 完全に権限のないユーザー空間で動作し、管理者権限への昇格は一切ありません。
-- `INV-LOCAL-09`: **エージェントスキルのパッケージ化** — LLM ワークフロー向けに、完全なエージェントスキル (`skills/llm-note/SKILL.md`) を同梱しています。
-- `INV-LOCAL-10`: **48 時間セキュリティ SLA** — `SECURITY.md` に定められた、脆弱性対応に関する正式な約束。
+- `INV-LOCAL-08`: **プロセス権限** — アプリケーションは昇格を要求せず、起動元プロセスの権限を継承します。
+- `INV-LOCAL-09`: **エージェントスキルのソース** — ソースリポジトリには [`skills/llm-note/SKILL.md`](skills/llm-note/SKILL.md) があります。`pyproject.toml` は `llm_note` のみをパッケージ化するため、このソースパスを wheel の内容とは記載しません。
+- `INV-LOCAL-10`: **メンテナーの対応目標** — `SECURITY.md` に受付確認と初期トリアージの目標を記載しています。SLA や修正期限の約束ではありません。
 
 ---
 
@@ -241,7 +236,7 @@ sequenceDiagram
 <a id="lokale-denkarium-weboberflaeche"></a>
 ## 8. Denkarium ローカル Web GUI ガイド
 
-Denkarium GUI は、インストール不要で即座に使えるビジュアルな思考ダッシュボードを提供します。
+Denkarium GUI は、インストール不要で即座に使えるビジュアルな思考ダッシュボードを提供します。「言語」メニューで6つの言語から選択します。選択はブラウザーごとに行われ、そのブラウザーのローカルストレージに保存されます。GUIの起動時に `--locale` を明示すると、その値が初期言語として優先されます。指定がない場合は、保存されたブラウザーの選択を使い、未選択なら英語になります。
 
 ```bash
 # デフォルト設定で Denkarium を起動（http://127.0.0.1:8000/ を開きます）
@@ -284,7 +279,7 @@ git clone https://github.com/doc-bricks/llm-note.git && cd llm-note && pip insta
 
 ```bash
 # カテゴリと気分を付けてノートを書く
-llm-note write "Refactor caching layer" --cat dev --mood focused
+llm-note write "Refactor caching layer" --cat dev --mood 4
 
 # 最近のノートを読む（デフォルトの上限は 10）
 llm-note read --limit 5
@@ -320,7 +315,7 @@ notes = NoteStore("data/notes.db")
 entry = notes.write(
     content="Implement deterministic seed for test suite",
     category="testing",
-    mood="neutral"
+    mood=4
 )
 print(f"Created entry #{entry.id} at {entry.created_at}")
 
@@ -347,7 +342,7 @@ print(f"Transferred {transferred} entries to topic notebooks.")
 <a id="agenten-skill--workflow-integration"></a>
 ## 11. エージェントスキルとワークフロー連携
 
-`llm-note` には、[`skills/llm-note/SKILL.md`](skills/llm-note/SKILL.md) にエージェントスキル定義が含まれています。自律型エージェント（Claude Code、Antigravity、Codex など）は `llm-note` を直接呼び出して、永続的な所見を記録し、サブエージェントへの委任をまたいでスクラッチパッドを維持し、監査ログを保持できます。
+ソースリポジトリにはエージェントスキル定義 [`skills/llm-note/SKILL.md`](skills/llm-note/SKILL.md) があります。`pyproject.toml` がパッケージ化するのは `llm_note` のみなので、このソースパスは wheel に含まれるとは記載しません。エージェントは `llm-note` を呼び出して観察内容や下書きを記録できます。
 
 ```markdown
 # Agent Tool Invocation Example
@@ -376,16 +371,16 @@ To save an interim research observation:
 <a id="oekosystem-matrix--verwandte-module"></a>
 ## 13. 兄弟エコシステムマトリクス
 
-`llm-note` は、`open-bricks` オープンソース傘下の `doc-bricks` ファミリーの一員です。
+以下は広いエコシステム内の関連リポジトリです。掲載は llm-note との直接連携を示すものではありません。
 
 | プロジェクト | エコシステムにおける焦点と役割 | リンク |
 | :--- | :--- | :--- |
 | **doc-bricks/llm-note** | エージェント向けのローカルファーストな思考・ノートブックのコア | [doc-bricks/llm-note](https://github.com/doc-bricks/llm-note) |
-| **doc-bricks/MediaBrain** | マルチモーダルなアセット分析、OCR、ドキュメントの文字起こし | [doc-bricks/MediaBrain](https://github.com/doc-bricks/MediaBrain) |
-| **doc-bricks/MailProcessor** | 決定論的なメール解析とコンプライアンスに準拠したアーカイブのパイプライン | [doc-bricks/MailProcessor](https://github.com/doc-bricks/MailProcessor) |
+| **doc-bricks/MediaBrain** | スマートプレイリストとストリーミング視聴履歴を備えた、個人用の動画・音楽ライブラリ | [doc-bricks/MediaBrain](https://github.com/doc-bricks/MediaBrain) |
+| **doc-bricks/MailProcessor** | ローカルの Universal Mail ツールを起動する Windows トレイアプリ | [doc-bricks/MailProcessor](https://github.com/doc-bricks/MailProcessor) |
 | **file-bricks/ProSync** | 堅牢なクロスプラットフォームのディレクトリ同期 | [file-bricks/ProSync](https://github.com/file-bricks/ProSync) |
-| **file-bricks/CloudLockFixer**| クラウドフォルダ向けの競合解決とロックマネージャー | [file-bricks/CloudLockFixer](https://github.com/file-bricks/CloudLockFixer) |
-| **open-bricks/open-bricks** | 傘下のカタログと、基盤となるオープンな開発者ツール | [open-bricks/open-bricks](https://github.com/open-bricks) |
+| **file-bricks/CloudLockFixer** | クラウド同期フォルダのファイル操作を遅延実行し、SHA-256でコピー/削除フォールバックを検証します | [file-bricks/CloudLockFixer](https://github.com/file-bricks/CloudLockFixer) |
+| **open-bricks 組織プロフィール** | 組織プロフィールとアンブレラカタログであり、個別のリポジトリではありません | [open-bricks on GitHub](https://github.com/open-bricks) |
 
 ---
 
@@ -393,28 +388,26 @@ To save an interim research observation:
 <a id="third-party-licenses--transparency"></a>
 <a id="14-drittanbieter-lizenzen--transparenz"></a>
 <a id="drittanbieter-lizenzen--transparenz"></a>
-## 14. サードパーティライセンスと透明性
+## 14. サードパーティ依存関係とライセンス範囲
 
-`llm-note` の外部ランタイム依存は **0** です。すべてのコア処理は、[Python Software Foundation License](https://docs.python.org/3/license.html) の下にある Python 標準ライブラリだけに依存しています。
+`pyproject.toml` は追加の Python ランタイムパッケージ依存を宣言していません。コアは Python 標準ライブラリと Python 環境が提供する SQLite を使用します。
 
-- SBOM とライセンス透明性の完全な監査: [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md)
-- コピーレフトゼロの検証: GPL、AGPL、LGPL、SSPL のコードを 100% 含みません。
-- 権限のない実行: `RunAsInvoker` のユーザー空間向けに認定されています。
-
+- 直接宣言された依存関係に関する限定的な説明: [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md) と [`THIRD_PARTY_LICENSES.txt`](THIRD_PARTY_LICENSES.txt)。完全な SBOM ではありません。
+- これらの依存関係メモは、推移的なビルド／開発依存関係全体のライセンス状態を認証しません。
+- プロセスは管理者権限への昇格を要求せず、起動元プロセスの権限を継承します。プラットフォーム認証ではありません。
 ---
 
 <a id="15-security-policy--slas"></a>
 <a id="security-policy--slas"></a>
 <a id="15-sicherheitsrichtlinie--slas"></a>
 <a id="sicherheitsrichtlinie--slas"></a>
-## 15. セキュリティポリシーと SLA
+## 15. セキュリティポリシーと対応目標
 
-[`SECURITY.md`](SECURITY.md) に記載された、厳格で正式な脆弱性管理プロセスを維持しています。
+報告窓口とメンテナーの対応目標は [`SECURITY.md`](SECURITY.md) に記載しています。
 
-- **外部送信ゼロの契約**: このソフトウェアはネットワーク呼び出しを一切行いません。無許可の外部送信は重大な欠陥として分類されます。
-- **48 時間対応 SLA**: 初期トリアージは 48 時間以内、解決計画は 5 営業日以内。
-- **連絡先**: セキュリティ上の問題の可能性は、`security@lukasgeiger.com` まで非公開でご報告ください。
-
+- **実装上の境界:** ノートコアはローカル保存を使用し、任意の Web インターフェースは loopback にバインドされます。アプリケーションはホストのネットワークアクセスを遮断せず、サンドボックスも提供しません。
+- **メンテナーの対応目標:** 48 時間以内の受領確認と 5 営業日以内の初期トリアージ開始は目標であり、SLA や修正期限の約束ではありません。
+- **連絡先:** セキュリティ報告は [SECURITY.md](SECURITY.md) に記載された非公開の報告方法をご利用ください。
 ---
 
 <a id="16-verification--contract-test-suite"></a>
@@ -442,12 +435,9 @@ python -m compileall -q .
 <a id="german-statutory-notice--521-bgb"></a>
 <a id="17-gesetzlicher-haftungshinweis--521-bgb"></a>
 <a id="gesetzlicher-haftungshinweis--521-bgb"></a>
-## 17. ドイツ法に基づく通知 (§ 521 BGB)
+## 17. 法的な説明: § 521 BGB
 
-Dieses Open-Source-Projekt wird unentgeltlich zur Verfügung gestellt. Für unentgeltliche Bereitstellungen gilt gemäß § 521 BGB das gesetzliche Gefälligkeitsrecht: Die Haftung des Anbieters beschränkt sich auf Vorsatz und grobe Fahrlässigkeit.
-
-このオープンソースソフトウェアは、MIT ライセンスの下で無償で提供されます。ドイツ民法典 (BGB) § 521 に従い、無償提供に関する法定責任は、故意および重過失に限定されます。
-
+§ 521 BGB が特定の提供に適用されるか、どのような責任上の結果が生じるかは、個別の事情によって異なります。この説明はその判断を行うものではありません。
 ---
 
 <a id="18-roadmap--changelog"></a>

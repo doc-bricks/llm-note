@@ -1,61 +1,54 @@
 # llm-note (v1.0.5)
 
-llm-note is an ultra-lightweight, zero-service local notebook engine — primarily a notebook for humans that AI assistants and coding agents write into for their user, and, depending on how it's used, a notebook shared by both. It provides a durable SQLite thought store (`data/notes.db`), human-editable plain-text inboxes (`notebooks/*.txt`), a command-line interface (`llm-note`), an embedded loopback-only web GUI (`Denkarium` at `127.0.0.1`), and an agent-ready skill definition (`skills/llm-note/SKILL.md`).
+llm-note is a local-first notes and notebook application that an LLM assistant or coding agent can use for its user. It stores structured notes in local SQLite and supports human-editable plain-text notebook files. It provides a Python command-line interface, an optional loopback web interface at `127.0.0.1`, and an agent skill definition.
 
 Version: 1.0.5
-Last-checked: 2026-10-11
-License: MIT (100% Permissive, Zero Copyleft, PSF Standard Library)
-Ecosystem: doc-bricks (https://github.com/doc-bricks)
-Umbrella: open-bricks (https://github.com/open-bricks)
+Last-checked: 2026-10-12
+License: MIT (see LICENSE)
+Runtime packages: No additional Python runtime packages are declared in pyproject.toml.
+Related projects (family links only; no direct integration with llm-note is implied):
+- MediaBrain: Personal video and music library with smart playlists and streaming history (https://github.com/doc-bricks/MediaBrain)
+- MailProcessor: Windows tray app for launching the local Universal Mail tools (https://github.com/doc-bricks/MailProcessor)
+- ProSync: Cross-platform directory synchronization (https://github.com/file-bricks/ProSync)
+- CloudLockFixer: Delayed file operations in cloud-sync folders with SHA-256-verified copy/delete fallbacks (https://github.com/file-bricks/CloudLockFixer)
+- open-bricks organization profile / umbrella catalog (not a specific repository): https://github.com/open-bricks
+BACH provenance reference: https://github.com/ellmos-ai/bach (related source reference; no current consumer integration is claimed)
 
-Audience & Personas:
+Audience & use:
+- Agent and application developers who need local SQLite notes and plain-text notebooks.
+- Developers who prefer local storage and a loopback interface without requiring a hosted note service.
+- Researchers who want human-readable notebook files alongside structured SQLite records.
 
-- [PERSONA-01] Autonomous Agent Framework Builders who need an embeddable, fast, zero-dependency SQLite memory/thought log.
-- [PERSONA-02] Privacy-Conscious Developers & Power Users who demand zero-egress, air-gapped note capture and notebook inboxes.
-- [PERSONA-03] Desktop AI Assistant Users / Denkarium Explorers who want an instant loopback web UI to browse thoughts.
-- [PERSONA-04] Open-Science Researchers & Audit Logkeepers who require Git-trackable, auditable scratchpads and SQLite records.
-
-Search phrases:
-
-- local-first LLM notes
-- SQLite note store for agents
-- agent notebook CLI
-- private AI notebook
-- local LLM note GUI
-- LLM memory logbook
-- Denkarium thought browser
-- zero-egress agent scratchpad
-- BACH Notizblock extraction
-- zero-dependency python agent storage
-
-Disambiguation:
-
-- Not Google NotebookLM, Obsidian, Joplin, a vector database, or a hosted AI cloud service.
-- Not an MCP server or cloud SaaS; the package is a pure Python library, CLI, loopback-only GUI, and reusable agent skill.
-- Runtime storage is strictly local SQLite (`data/notes.db`) plus plain text files (`notebooks/*.txt`).
-- The GUI uses exclusively Python standard library `http.server`, bundled HTML, and system fonts. Zero node/npm dependencies.
+Capabilities:
+- Local SQLite note storage and plain-text notebook files.
+- Command-line operations for writing, reading, searching, and managing notes.
+- Optional web interface bound to loopback.
+- Six bundled message locales: English, German, Spanish, Simplified Chinese, Japanese, and Russian.
+- No additional Python runtime packages declared by the project; build and test tools are separate.
 
 Important files:
+- `llm_note/store.py`: SQLite and plain-text notebook logic.
+- `llm_note/cli.py`: command-line interface.
+- `llm_note/gui.py`: loopback web interface and API.
+- `llm_note/locales/*.json`: bundled message catalogs.
+- `llm_note/templates/denkarium.html`: browser interface.
+- `skills/llm-note/SKILL.md`: standalone agent skill.
+- `SECURITY.md`: reporting path, maintainer response targets, and implementation boundaries. It does not claim an egress block or fixed remediation deadline.
+- `THIRD_PARTY_LICENSES.md` and `THIRD_PARTY_LICENSES.txt`: scoped notes about declared direct dependencies; they are not complete SBOMs or license-compliance certifications.
+- `CONTRIBUTING.md`: bilingual contributor guide and local quality checks.
+- `MARKETING-LOG.txt`: historical marketing notes with a dated supersession notice.
+- `ellmos-module.v2.json`: portable module metadata.
+- `.github/workflows/ci.yml`: CI test, lint, and distribution-build workflow.
+- `tests/test_metadata.py`: package metadata, navigation, and documentation-integrity checks.
 
-- `llm_note/store.py`: core SQLite and file notebook logic (`NoteStore`, `FileNotebookStore`).
-- `llm_note/cli.py`: command line interface (`write`, `read`, `search`, `brainstorm`, `stats`, `gui`).
-- `llm_note/gui.py`: loopback HTTP server and JSON API (binds strictly to `127.0.0.1`).
-- `llm_note/templates/denkarium.html`: bundled browser interface adapted from BACH.
-- `llm_note/locales/*.json`: six standard message locales (en, de, es, zh-Hans, ja, ru).
-- `THIRD_PARTY_LICENSES.md`: formal SBOM, standard-library licensing audit, and 10 system invariants (`INV-LOCAL-01`..`INV-SLA-10`).
-- `THIRD_PARTY_LICENSES.txt`: Level 1 SBOM plain-text companion file with invariant matrix.
-- `CONTRIBUTING.md`: bilingual developer guide, Plan D workflow, and Quality Gates.
-- `MARKETING-LOG.txt`: marketing and discoverability register with personas, comparative matrix, and sister repo links.
-- `SECURITY.md`: zero-egress policy, unprivileged `RunAsInvoker` execution, and 48h vulnerability response SLA.
-- `ellmos-module.v2.json`: portable module catalog metadata.
-- `skills/llm-note/SKILL.md`: standalone agent skill specification.
-- `.github/workflows/`: CI testing across platforms (`ci.yml`), automated PR assignment (`auto-assign.yml`), and label synchronization (`label-sync.yml`).
-- `tests/test_metadata.py`: automated contract tests for PEP 621 compliance, version alignment, and invariant verification.
+The application does not provide an operating-system network block, sandbox, or privilege drop. Network access depends on the host environment. No zero-egress guarantee is made.
 
-Run checks:
+Run local checks:
 
 ```bash
+python -m pip install -e . pytest build ruff
 python -m pytest -ra -v
 ruff check llm_note tests
-python -m py_compile llm_note/store.py llm_note/cli.py llm_note/gui.py llm_note/i18n.py
+python -m compileall -q llm_note tests
+python -m build
 ```
