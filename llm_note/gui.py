@@ -13,55 +13,11 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlsplit
 
-from .i18n import STANDARD_LOCALES
+from .i18n import STANDARD_LOCALES, load_messages, normalize_locale
 from .store import MAX_QUERY_LIMIT, NoteStore
 
 MAX_REQUEST_BYTES = 1_000_000
 
-_GUI_COPY = {
-    "en": {
-        "document_title": "llm-note Denkarium",
-        "heading": "Denkarium",
-        "subtitle": "Notes · logbook · ideas",
-        "compose_placeholder": "What is on your mind?",
-        "note": "Note",
-        "notes": "Notes",
-        "logbook": "Logbook",
-        "category": "Category",
-        "optional_title": "Title (optional)",
-        "mood": "Mood",
-        "save": "Save",
-        "search": "Search notes …",
-        "all": "All",
-        "entries": "entries",
-        "empty_title": "Empty pages",
-        "empty_body": "Write your first note.",
-        "loading": "Loading …",
-        "load_error": "Could not load notes.",
-        "save_error": "Could not save the note.",
-    },
-    "de": {
-        "document_title": "llm-note Denkarium",
-        "heading": "Denkarium",
-        "subtitle": "Notizen · Logbuch · Ideen",
-        "compose_placeholder": "Was bewegt dich gerade?",
-        "note": "Notiz",
-        "notes": "Notizen",
-        "logbook": "Logbuch",
-        "category": "Kategorie",
-        "optional_title": "Titel (optional)",
-        "mood": "Stimmung",
-        "save": "Speichern",
-        "search": "Notizen durchsuchen …",
-        "all": "Alle",
-        "entries": "Einträge",
-        "empty_title": "Leere Seiten",
-        "empty_body": "Schreibe deine erste Notiz.",
-        "loading": "Lädt …",
-        "load_error": "Notizen konnten nicht geladen werden.",
-        "save_error": "Notiz konnte nicht gespeichert werden.",
-    },
-}
 
 
 class NoteHTTPServer(ThreadingHTTPServer):
@@ -74,10 +30,11 @@ class NoteHTTPServer(ThreadingHTTPServer):
         self,
         server_address: tuple[str, int],
         store: NoteStore,
-        locale: str,
+        locale: str | None,
     ) -> None:
         self.store = store
-        self.locale = locale if locale in STANDARD_LOCALES else "en"
+        # The immutable launch value seeds each browser; selections stay client-local.
+        self.locale = normalize_locale(locale) if locale is not None else None
         super().__init__(server_address, NoteRequestHandler)
 
 
@@ -240,12 +197,24 @@ class NoteRequestHandler(BaseHTTPRequestHandler):
             .joinpath("templates", "denkarium.html")
             .read_text(encoding="utf-8")
         )
-        locale = self.server.locale if self.server.locale in _GUI_COPY else "en"
-        copy_json = json.dumps(_GUI_COPY[locale], ensure_ascii=False).replace(
-            "</", "<\\/"
-        )
-        return template.replace("__GUI_LANG__", locale).replace(
-            "__GUI_COPY_JSON__", copy_json
+        translations = {
+            locale: {
+                key.removeprefix("gui_"): value
+                for key, value in load_messages(locale).items()
+                if key.startswith("gui_")
+            }
+            for locale in STANDARD_LOCALES
+        }
+        config_json = json.dumps(
+            {
+                "translations": translations,
+                "initialLocale": self.server.locale,
+            },
+            ensure_ascii=False,
+        ).replace("</", "<\\/")
+        initial_locale = self.server.locale or "en"
+        return template.replace("__GUI_LANG__", initial_locale).replace(
+            "__GUI_CONFIG_JSON__", config_json
         )
 
     def _send_json(
@@ -286,7 +255,7 @@ def create_server(
     db_path: str | Path = "llm-note.db",
     *,
     port: int = 8000,
-    locale: str = "en",
+    locale: str | None = None,
 ) -> NoteHTTPServer:
     """Create a loopback-only GUI server without starting its event loop."""
 
@@ -297,15 +266,16 @@ def run_server(
     db_path: str | Path = "llm-note.db",
     *,
     port: int = 8000,
-    locale: str = "en",
+    locale: str | None = None,
     open_browser: bool = True,
 ) -> None:
     """Run the local GUI until interrupted."""
 
     server = create_server(db_path, port=port, locale=locale)
+    messages = load_messages(locale)
     url = f"http://127.0.0.1:{server.server_port}/"
-    print(f"llm-note GUI: {url}")
-    print("Press Ctrl+C to stop.")
+    print(messages["cli_gui_started"].format(url=url))
+    print(messages["cli_gui_stop"])
     if open_browser:
         threading.Timer(0.2, webbrowser.open, args=(url,)).start()
     try:
