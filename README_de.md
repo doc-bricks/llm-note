@@ -371,10 +371,11 @@ Zur Sicherung einer Zwischenbeobachtung:
 <a id="oekosystem-matrix--verwandte-module"></a>
 ## 13. Ökosystem-Matrix & Verwandte Module
 
-Die folgenden Einträge verweisen auf verwandte Repositories im weiteren Ökosystem; ihre Nennung behauptet keine direkte Integration mit llm-note:
+Die folgenden Einträge verweisen auf verwandte Projekte. Die FolderHome-Zeile beschreibt zusätzlich eine Anbieterbeziehung, die auf den zitierten Quellstand und Pin begrenzt ist; sie behauptet keine Kompatibilität mit aktuellem `main` und keine Freischaltung des Live-Betriebs.
 
 | Projekt | Fokus & Rolle im Ökosystem | Verweis |
 | :--- | :--- | :--- |
+| **ellmos-ai/FolderHome** | Das Komponentenmanifest pinnt dieses Repository auf `b5fe59fc155ded9603566aa0fb920a53181a2426` und deklariert `notes.read` sowie freigabepflichtiges `notes.write` (`default_mode = dry-run`, `live_enabled = false`). | [Manifest am Quellstand 51d5dc7](https://github.com/ellmos-ai/FolderHome/blob/51d5dc71ec11f1cde4598c528323483a50f6e52c/manifests/components/llm-note.toml), [Provider-Guide](https://github.com/ellmos-ai/FolderHome/blob/51d5dc71ec11f1cde4598c528323483a50f6e52c/docs/provider-checkouts.md) |
 | **doc-bricks/llm-note** | Lokaler Notiz- und Denkarium-Kern für Agenten | [doc-bricks/llm-note](https://github.com/doc-bricks/llm-note) |
 | **doc-bricks/MediaBrain** | Persönliche Video- und Musikbibliothek mit Smart-Playlists und Streaming-Verlauf | [doc-bricks/MediaBrain](https://github.com/doc-bricks/MediaBrain) |
 | **doc-bricks/MailProcessor** | Windows-Infobereichs-App zum Starten der lokalen Universal-Mail-Werkzeuge | [doc-bricks/MailProcessor](https://github.com/doc-bricks/MailProcessor) |

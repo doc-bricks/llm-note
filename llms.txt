@@ -6,12 +6,14 @@ Version: 1.0.5
 Last-checked: 2026-10-12
 License: MIT (see LICENSE)
 Runtime packages: No additional Python runtime packages are declared in pyproject.toml.
-Related projects (family links only; no direct integration with llm-note is implied):
+Related projects (family references; see the separate consumer reference below for its scoped provider relationship):
 - MediaBrain: Personal video and music library with smart playlists and streaming history (https://github.com/doc-bricks/MediaBrain)
 - MailProcessor: Windows tray app for launching the local Universal Mail tools (https://github.com/doc-bricks/MailProcessor)
 - ProSync: Cross-platform directory synchronization (https://github.com/file-bricks/ProSync)
 - CloudLockFixer: Delayed file operations in cloud-sync folders with SHA-256-verified copy/delete fallbacks (https://github.com/file-bricks/CloudLockFixer)
 - open-bricks organization profile / umbrella catalog (not a specific repository): https://github.com/open-bricks
+
+Consumer reference (FolderHome manifest at source commit `51d5dc7`): pins this repository at `b5fe59fc155ded9603566aa0fb920a53181a2426` and declares `notes.read` plus gated `notes.write` (`default_mode = dry-run`, `live_enabled = false`). This records the cited manifest scope; it does not assert compatibility with current `main` or live enablement. [Manifest](https://github.com/ellmos-ai/FolderHome/blob/51d5dc71ec11f1cde4598c528323483a50f6e52c/manifests/components/llm-note.toml); [provider checkout guide](https://github.com/ellmos-ai/FolderHome/blob/51d5dc71ec11f1cde4598c528323483a50f6e52c/docs/provider-checkouts.md).
 BACH provenance reference: https://github.com/ellmos-ai/bach (related source reference; no current consumer integration is claimed)
 
 Audience & use:

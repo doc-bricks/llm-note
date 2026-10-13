@@ -371,10 +371,11 @@ To save an interim research observation:
 <a id="oekosystem-matrix--verwandte-module"></a>
 ## 13. Sibling Ecosystem Matrix
 
-The repositories below are related projects in the wider ecosystem; listing them does not imply direct integration with llm-note:
+The entries below link to related projects. The FolderHome row also describes a provider relationship scoped to its cited source commit and pin; it does not assert compatibility with current `main` or live enablement.
 
 | Project | Focus & Role in Ecosystem | Link |
 | :--- | :--- | :--- |
+| **ellmos-ai/FolderHome** | Its component manifest pins this repository at `b5fe59fc155ded9603566aa0fb920a53181a2426` and declares `notes.read` plus gated `notes.write` (`default_mode = dry-run`, `live_enabled = false`). | [manifest at 51d5dc7](https://github.com/ellmos-ai/FolderHome/blob/51d5dc71ec11f1cde4598c528323483a50f6e52c/manifests/components/llm-note.toml), [provider guide](https://github.com/ellmos-ai/FolderHome/blob/51d5dc71ec11f1cde4598c528323483a50f6e52c/docs/provider-checkouts.md) |
 | **doc-bricks/llm-note** | Local-first thought and notebook core for agents | [doc-bricks/llm-note](https://github.com/doc-bricks/llm-note) |
 | **doc-bricks/MediaBrain** | Personal video and music library with smart playlists and streaming history | [doc-bricks/MediaBrain](https://github.com/doc-bricks/MediaBrain) |
 | **doc-bricks/MailProcessor** | Windows tray app for launching the local Universal Mail tools | [doc-bricks/MailProcessor](https://github.com/doc-bricks/MailProcessor) |
