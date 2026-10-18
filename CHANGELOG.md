@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- Added ASCII Four-View Architectural Topology projection to Section 3 of `README.md` and `README_de.md` (`VIEW 1..VIEW 4` and `SICHT 1..SICHT 4`) mapping client, core engine, persistence, and execution invariants `INV-LOCAL-01` through `INV-LOCAL-10`.
+- Harmonized 18-point multilingual quick navigation parity across all six README files with reciprocal dual HTML anchor aliases (`<a id="sec-01"></a>` through `<a id="sec-18"></a>`).
+- Added automated contract test `test_ascii_four_view_architectural_topology_parity` and extended `test_readme_navigation_and_anchor_parity` in `tests/test_metadata.py` to verify the presence and structure of the ASCII Four-View Architectural Topology and dual `sec-01`..`sec-18` anchor tags across documentation.
+- Maintained strict package version freeze at `1.0.5` per T-20260920-167562623.
 - Hardened CI workflow (`.github/workflows/ci.yml`) with concurrency cancellation (`cancel-in-progress: true`) and Python matrix testing across versions 3.10 through 3.13.
 - Standardized PEP 621 metadata in `pyproject.toml` with contributor and plain-text dependency-note URLs, and configured `norecursedirs` under `[tool.pytest.ini_options]`.
 - Reworked `THIRD_PARTY_LICENSES.md` and `THIRD_PARTY_LICENSES.txt` as scoped notes about declared runtime requirements and direct build/development tools; they no longer present a complete SBOM or license-compliance certification.

@@ -187,4 +187,26 @@ Umbrella:     open-bricks (https://github.com/open-bricks)
                        bilingual CONTRIBUTING.md with Plan D & Quality Gates;
                        hardened .gitignore against multi-host locks and cloud conflict artifacts;
                        extended test_metadata.py contract suite.
+2026-10-18: Pfad B Discoverability, Visual Architecture & Dual-Anchor Navigation Audit (v1.0.5 frozen)
+            - Auditor: Antigravity / Gemini
+            - Status: 100% Invariants Verified (INV-LOCAL-01 .. INV-LOCAL-10)
+            - Actions:
+              * Visual Architecture & Topology: Added ASCII Four-View Architectural Topology
+                projection to Section 3 of README.md and README_de.md (VIEW 1..VIEW 4 /
+                SICHT 1..SICHT 4) projecting all 10 invariants INV-LOCAL-01 through INV-LOCAL-10
+                in full alignment with bounded product facts (local-first storage, loopback web GUI,
+                zero external runtime packages, caller-inherited privileges).
+              * 18-Point Multilingual Quick Navigation Parity: Synchronized reciprocal dual HTML
+                anchor aliases (<a id="sec-01"></a> through <a id="sec-18"></a>) across all six
+                language editions (README.md, README_de.md, README_es.md, README_zh-Hans.md,
+                README_ja.md, README_ru.md) ensuring stable cross-language linking.
+              * Contract Test Suite Extension: Added test_ascii_four_view_architectural_topology_parity
+                and extended test_readme_navigation_and_anchor_parity in tests/test_metadata.py.
+              * Version Freeze: Package version 1.0.5 strictly preserved per T-20260920-167562623.
+            - Recommendations:
+              [REC-20261018-01] Create lightweight animated terminal SVG / asciinema demos for CLI
+                                thought brainstorming and atomic notebook transfers.
+              [REC-20261018-02] Prepare curated integration recipes for major local agent runners
+                                (Claude Code, Antigravity, Ollama/LangChain local loops).
+              [REC-20261018-03] Expand Denkarium web interface showcase with dark mode theme preview.
 ===============================================================================

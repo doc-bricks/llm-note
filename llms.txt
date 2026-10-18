@@ -3,7 +3,7 @@
 llm-note is a local-first notes and notebook application that an LLM assistant or coding agent can use for its user. It stores structured notes in local SQLite and supports human-editable plain-text notebook files. It provides a Python command-line interface, an optional loopback web interface at `127.0.0.1`, and an agent skill definition.
 
 Version: 1.0.5
-Last-checked: 2026-10-12
+Last-checked: 2026-10-18
 License: MIT (see LICENSE)
 Runtime packages: No additional Python runtime packages are declared in pyproject.toml.
 Related projects (family references; see the separate consumer reference below for its scoped provider relationship):
@@ -22,6 +22,8 @@ Audience & use:
 - Researchers who want human-readable notebook files alongside structured SQLite records.
 
 Capabilities:
+- Four-view architectural topology projecting client runtimes, dual note engines, persistence, and execution invariants.
+- Eighteen-point multilingual quick navigation parity across all six bundled language editions.
 - Local SQLite note storage and plain-text notebook files.
 - Command-line operations for writing, reading, searching, and managing notes.
 - Optional web interface bound to loopback.
