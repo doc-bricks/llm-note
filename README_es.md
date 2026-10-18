@@ -44,6 +44,7 @@
 
 ---
 
+<a id="sec-01"></a>
 <a id="1-overview--why-this-exists"></a>
 <a id="overview--why-this-exists"></a>
 <a id="1-ueberblick--warum-dieses-projekt-existiert"></a>
@@ -69,6 +70,7 @@ Los asistentes de IA y los agentes LLM necesitan con frecuencia un lugar donde r
 
 ---
 
+<a id="sec-02"></a>
 <a id="2-key-capabilities--architecture"></a>
 <a id="key-capabilities--architecture"></a>
 <a id="2-kernfaehigkeiten--architektur"></a>
@@ -84,6 +86,7 @@ Los asistentes de IA y los agentes LLM necesitan con frecuencia un lugar donde r
 
 ---
 
+<a id="sec-03"></a>
 <a id="3-visual-system-architecture"></a>
 <a id="visual-system-architecture"></a>
 <a id="3-visuelle-systemarchitektur"></a>
@@ -129,6 +132,7 @@ graph TD
 
 ---
 
+<a id="sec-04"></a>
 <a id="4-note--transfer-lifecycle-sequence"></a>
 <a id="note--transfer-lifecycle-sequence"></a>
 <a id="4-sequenzdiagramm-notiz--und-transfer-lebenszyklus"></a>
@@ -165,6 +169,7 @@ sequenceDiagram
 
 ---
 
+<a id="sec-05"></a>
 <a id="5-target-personas--discoverability"></a>
 <a id="target-personas--discoverability"></a>
 <a id="5-zielgruppen--suchbegriffe"></a>
@@ -187,6 +192,7 @@ sequenceDiagram
 
 ---
 
+<a id="sec-06"></a>
 <a id="6-comparative-matrix-vs-alternatives"></a>
 <a id="comparative-matrix-vs-alternatives"></a>
 <a id="6-vergleichsmatrix-gegenueber-alternativen"></a>
@@ -208,6 +214,7 @@ sequenceDiagram
 
 ---
 
+<a id="sec-07"></a>
 <a id="7-governance--runtime-invariants"></a>
 <a id="governance--runtime-invariants"></a>
 <a id="7-governance--laufzeit-invarianten"></a>
@@ -229,6 +236,7 @@ Los puntos siguientes describen características actuales de implementación bas
 
 ---
 
+<a id="sec-08"></a>
 <a id="8-denkarium-local-web-gui-guide"></a>
 <a id="denkarium-local-web-gui-guide"></a>
 <a id="8-lokale-denkarium-weboberflaeche"></a>
@@ -257,6 +265,7 @@ llm-note gui --port 8765 --no-browser
 
 ---
 
+<a id="sec-09"></a>
 <a id="9-cli-complete-reference--examples"></a>
 <a id="cli-complete-reference--examples"></a>
 <a id="9-cli-befehlsreferenz--beispiele"></a>
@@ -298,6 +307,7 @@ llm-note --db custom/notes.db --locale de read --limit 3
 
 ---
 
+<a id="sec-10"></a>
 <a id="10-python-api-guide--code-examples"></a>
 <a id="python-api-guide--code-examples"></a>
 <a id="10-python-api--programmierbeispiele"></a>
@@ -335,6 +345,7 @@ print(f"Transferred {transferred} entries to topic notebooks.")
 
 ---
 
+<a id="sec-11"></a>
 <a id="11-agent-skill--workflow-integration"></a>
 <a id="agent-skill--workflow-integration"></a>
 <a id="11-agenten-skill--workflow-integration"></a>
@@ -351,6 +362,7 @@ Para guardar una observación de investigación provisional:
 
 ---
 
+<a id="sec-12"></a>
 <a id="12-file-based-inboxes--transfer-semantics"></a>
 <a id="file-based-inboxes--transfer-semantics"></a>
 <a id="12-text-notizbuecher--transfer-semantik"></a>
@@ -364,6 +376,7 @@ Para guardar una observación de investigación provisional:
 
 ---
 
+<a id="sec-13"></a>
 <a id="13-sibling-ecosystem-matrix"></a>
 <a id="sibling-ecosystem-matrix"></a>
 <a id="13-oekosystem-matrix--verwandte-module"></a>
@@ -383,6 +396,7 @@ Los siguientes enlaces apuntan a repositorios relacionados del ecosistema amplia
 
 ---
 
+<a id="sec-14"></a>
 <a id="14-third-party-licenses--transparency"></a>
 <a id="third-party-licenses--transparency"></a>
 <a id="14-drittanbieter-lizenzen--transparenz"></a>
@@ -396,6 +410,7 @@ Los siguientes enlaces apuntan a repositorios relacionados del ecosistema amplia
 - El proceso no solicita elevación administrativa y hereda los permisos del proceso que lo inicia; esto no es una certificación de plataforma.
 ---
 
+<a id="sec-15"></a>
 <a id="15-security-policy--slas"></a>
 <a id="security-policy--slas"></a>
 <a id="15-sicherheitsrichtlinie--slas"></a>
@@ -409,6 +424,7 @@ El canal de notificación y los objetivos de respuesta del mantenedor se describ
 - **Contacto**: Envía informes confidenciales mediante el canal privado descrito en [SECURITY.md](SECURITY.md).
 ---
 
+<a id="sec-16"></a>
 <a id="16-verification--contract-test-suite"></a>
 <a id="verification--contract-test-suite"></a>
 <a id="16-verifikation--test-suite"></a>
@@ -430,6 +446,7 @@ python -m compileall -q .
 
 ---
 
+<a id="sec-17"></a>
 <a id="17-german-statutory-notice--521-bgb"></a>
 <a id="german-statutory-notice--521-bgb"></a>
 <a id="17-gesetzlicher-haftungshinweis--521-bgb"></a>
@@ -439,6 +456,7 @@ python -m compileall -q .
 § 521 BGB puede ser pertinente según las circunstancias concretas. Esta nota no determina si se aplica a una distribución específica ni qué consecuencias de responsabilidad se derivan.
 ---
 
+<a id="sec-18"></a>
 <a id="18-roadmap--changelog"></a>
 <a id="roadmap--changelog"></a>
 <a id="18-roadmap--aenderungsprotokoll"></a>

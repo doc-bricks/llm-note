@@ -87,7 +87,7 @@ def test_llms_txt_integrity():
     text = llms_file.read_text(encoding="utf-8")
 
     assert "Version: 1.0.5" in text
-    assert "Last-checked: 2026-10-12" in text
+    assert "Last-checked: 2026-10-18" in text
     assert "doc-bricks" in text
     assert "open-bricks" in text
 
@@ -107,6 +107,8 @@ def test_readme_navigation_and_anchor_parity():
         for i in range(1, 19):
             heading_prefix = f"## {i}."
             assert heading_prefix in text, f"Missing section {heading_prefix} in {filename}"
+            sec_anchor = f'<a id="sec-{i:02d}"></a>'
+            assert sec_anchor in text, f"Missing anchor {sec_anchor} in {filename}"
         assert "[![Tests:" not in text, f"Static test-count badge found in {filename}"
 
     # Check key reciprocal anchor tags retained in the full EN/DE versions.
@@ -244,3 +246,27 @@ def test_gitignore_cloud_and_lock_defense():
     assert "LOCK.antigravity.*" in text
     assert "Desktop.ini" in text
     assert "*conflicted copy*" in text
+
+
+def test_ascii_four_view_architectural_topology_parity():
+    """Verify ASCII Four-View Architectural Topology presence and invariant projection."""
+    readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    readme_de = (REPO_ROOT / "README_de.md").read_text(encoding="utf-8")
+
+    # Check anchor presence
+    assert 'id="four-view-architectural-topology-projection"' in readme_en
+    assert 'id="vier-sichten-architekturtopologie-projektion"' in readme_de
+
+    # Check English Views
+    for view_id in ["VIEW 1:", "VIEW 2:", "VIEW 3:", "VIEW 4:"]:
+        assert view_id in readme_en, f"Missing {view_id} in README.md"
+
+    # Check German Sichten
+    for sicht_id in ["SICHT 1:", "SICHT 2:", "SICHT 3:", "SICHT 4:"]:
+        assert sicht_id in readme_de, f"Missing {sicht_id} in README_de.md"
+
+    # Check all 10 invariants projected in both
+    for i in range(1, 11):
+        inv = f"INV-LOCAL-{i:02d}"
+        assert inv in readme_en, f"Missing {inv} in README.md topology"
+        assert inv in readme_de, f"Missing {inv} in README_de.md topology"

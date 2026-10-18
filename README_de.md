@@ -7,7 +7,7 @@
 [![Lizenz: MIT](https://img.shields.io/badge/Lizenz-MIT-green.svg)](LICENSE)
 [![Python 3.10-3.13](https://img.shields.io/badge/Python-3.10%20--%203.13-blue.svg)](pyproject.toml)
 [![Plattform: Windows | Linux | macOS](https://img.shields.io/badge/Plattform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](pyproject.toml)
-[![Dokumentation aktualisiert: 2026-10-12](https://img.shields.io/badge/Dokumentation-aktualisiert-2026--10--12-blue.svg)](CHANGELOG.md)
+[![Dokumentation aktualisiert: 2026-10-12](https://img.shields.io/badge/Dokumentation-aktualisiert-2026--10--18-blue.svg)](CHANGELOG.md)
 [![Mitwirken: Leitfaden](https://img.shields.io/badge/Mitwirken-Leitfaden-blue.svg)](CONTRIBUTING.md)
 [![Abhängigkeiten: 0 Stdlib Only](https://img.shields.io/badge/Abh%C3%A4ngigkeiten-0%20(Stdlib)-brightgreen.svg)](THIRD_PARTY_LICENSES.md)
 [![Code-Stil: Ruff](https://img.shields.io/badge/Code--Stil-Ruff-000000.svg)](https://github.com/astral-sh/ruff)
@@ -45,6 +45,7 @@
 
 ---
 
+<a id="sec-01"></a>
 <a id="1-overview--why-this-exists"></a>
 <a id="overview--why-this-exists"></a>
 <a id="1-ueberblick--warum-dieses-projekt-existiert"></a>
@@ -70,6 +71,7 @@ Autonome Agenten und LLMs müssen während komplexer Arbeitsläufe fortlaufend E
 
 ---
 
+<a id="sec-02"></a>
 <a id="2-key-capabilities--architecture"></a>
 <a id="key-capabilities--architecture"></a>
 <a id="2-kernfaehigkeiten--architektur"></a>
@@ -85,6 +87,7 @@ Autonome Agenten und LLMs müssen während komplexer Arbeitsläufe fortlaufend E
 
 ---
 
+<a id="sec-03"></a>
 <a id="3-visual-system-architecture"></a>
 <a id="visual-system-architecture"></a>
 <a id="3-visuelle-systemarchitektur"></a>
@@ -128,8 +131,55 @@ graph TD
     FileStore -->|"Prozess-Sperre"| LockFile
 ```
 
+<a id="vier-sichten-architekturtopologie-projektion"></a>
+### Vier-Sichten-Architekturtopologie (ASCII-Topologieprojektion)
+
+```text
++==================================================================================================+
+|                 LLM-NOTE -- VIER-SICHTEN-ARCHITEKTURTOPOLOGIE (LOKALER NOTIZKERN)                |
++==================================================================================================+
+| [SICHT 1: CLIENT-SCHNITTSTELLEN, WEBOBERFLAECHE & AGENTEN-INTEGRATION]                           |
+|  * Universelle CLI [INV-LOCAL-04]: argparse-basierter Befehl fuer write, read, search & stats    |
+|  * Denkarium-Weboberflaeche [INV-LOCAL-06]: Zero-Install Loopback-Interface strikt auf 127.0.0.1|
+|  * Python-API-Integration: Direkte In-Process-Nutzung von NoteStore und FileNotebookStore       |
+|  * Agenten-Skill [INV-LOCAL-09]: Quellrepository-SKILL.md fuer autonome Assistenten             |
++--------------------------------------------------------------------------------------------------+
+                                                |
+                                                | Strukturierte API-Aufrufe & Text-Inbox-Operationen
+                                                v
++--------------------------------------------------------------------------------------------------+
+| [SICHT 2: DUALE NOTIZ-ENGINES, SQLITE-GEDANKENSPEICHER & INBOX-TRANSFERS]                        |
+|  * Strukturierter Gedankenspeicher [INV-LOCAL-02]: SQLite NoteStore mit ACID-Transaktionen       |
+|  * Text-Notizbuchverwaltung [INV-LOCAL-03]: Menschenlesbare notebooks/*.txt mit #NB:-Routing     |
+|  * Atomare Transfer-Engine [INV-LOCAL-05]: Idempotente #LLM-NOTE-ID-Marker & .llm-note.lock     |
+|  * Deterministische Suche: Substring-Treffer ohne Wildcard-Ueberraschungen (Limits 0..1000)      |
++--------------------------------------------------------------------------------------------------+
+                                                |
+                                                | Speicherpersistenz & Lokalisierungskataloge
+                                                v
++--------------------------------------------------------------------------------------------------+
+| [SICHT 3: LAUFZEIT-PERSISTENZ, KOORDINATION & MEHRSPRACHIGKEIT]                                  |
+|  * SQLite-Einzeldatei-Persistenz: Konfigurierbarer DB-Pfad mit automatischer Schemainitialisierung|
+|  * Prozessuebergreifende Sicherheit: Beratende Dateisperre verhindert Transfer-Kollisionen       |
+|  * Mehrsprachige Lokalisierung [INV-LOCAL-07]: 6 mitgelieferte Kataloge (DE, EN, ES, ZH, JA, RU)|
+|  * Browser-unabhaengige I18N: Client-Praeferenzspeicherung mit CLI-Fallback-Prioritaet           |
++--------------------------------------------------------------------------------------------------+
+                                                |
+                                                | Begrenzte Ausfuehrung, Aufrufer-Rechte & Governance
+                                                v
++--------------------------------------------------------------------------------------------------+
+| [SICHT 4: BEGRENZTE AUSFUEHRUNG, AUFRUFER-RECHTE & GOVERNANCE-RAHMEN]                            |
+|  * Lokale Speicherung [INV-LOCAL-01]: Notizen lokal in SQLite und Textdateien abgelegt           |
+|  * Keine externen Laufzeit-Abhaengigkeiten [INV-LOCAL-04]: 100% reine Python-Standardbibliothek |
+|  * Aufrufer-Rechte [INV-LOCAL-08]: Keine Rechteausweitung; erbt Berechtigungen des Elternprozesses|
+|  * Sicherheits- & Reaktionsziele [INV-LOCAL-10]: 48h-Bestaetigungsziel gemaess SECURITY.md       |
+|  * Offene Governance & Recht [INV-LOCAL-01..10]: MIT-Lizenz, Level-1-SBOM-Notizen & § 521 BGB   |
++--------------------------------------------------------------------------------------------------+
+```
+
 ---
 
+<a id="sec-04"></a>
 <a id="4-note--transfer-lifecycle-sequence"></a>
 <a id="note--transfer-lifecycle-sequence"></a>
 <a id="4-sequenzdiagramm-notiz--und-transfer-lebenszyklus"></a>
@@ -166,6 +216,7 @@ sequenceDiagram
 
 ---
 
+<a id="sec-05"></a>
 <a id="5-target-personas--discoverability"></a>
 <a id="target-personas--discoverability"></a>
 <a id="5-zielgruppen--suchbegriffe"></a>
@@ -188,6 +239,7 @@ sequenceDiagram
 
 ---
 
+<a id="sec-06"></a>
 <a id="6-comparative-matrix-vs-alternatives"></a>
 <a id="comparative-matrix-vs-alternatives"></a>
 <a id="6-vergleichsmatrix-gegenueber-alternativen"></a>
@@ -209,6 +261,7 @@ sequenceDiagram
 
 ---
 
+<a id="sec-07"></a>
 <a id="7-governance--runtime-invariants"></a>
 <a id="governance--runtime-invariants"></a>
 <a id="7-governance--laufzeit-invarianten"></a>
@@ -230,6 +283,7 @@ Die folgenden Punkte beschreiben den aktuellen, im Quellcode belegten Stand. Sie
 
 ---
 
+<a id="sec-08"></a>
 <a id="8-denkarium-local-web-gui-guide"></a>
 <a id="denkarium-local-web-gui-guide"></a>
 <a id="8-lokale-denkarium-weboberflaeche"></a>
@@ -258,6 +312,7 @@ llm-note gui --port 8765 --no-browser
 
 ---
 
+<a id="sec-09"></a>
 <a id="9-cli-complete-reference--examples"></a>
 <a id="cli-complete-reference--examples"></a>
 <a id="9-cli-befehlsreferenz--beispiele"></a>
@@ -299,6 +354,7 @@ llm-note --db custom/notes.db --locale de read --limit 3
 
 ---
 
+<a id="sec-10"></a>
 <a id="10-python-api-guide--code-examples"></a>
 <a id="python-api-guide--code-examples"></a>
 <a id="10-python-api--programmierbeispiele"></a>
@@ -336,6 +392,7 @@ print(f"{transferred} Einträge in Themen-Notizbücher übertragen.")
 
 ---
 
+<a id="sec-11"></a>
 <a id="11-agent-skill--workflow-integration"></a>
 <a id="agent-skill--workflow-integration"></a>
 <a id="11-agenten-skill--workflow-integration"></a>
@@ -352,6 +409,7 @@ Zur Sicherung einer Zwischenbeobachtung:
 
 ---
 
+<a id="sec-12"></a>
 <a id="12-file-based-inboxes--transfer-semantics"></a>
 <a id="file-based-inboxes--transfer-semantics"></a>
 <a id="12-text-notizbuecher--transfer-semantik"></a>
@@ -365,6 +423,7 @@ Zur Sicherung einer Zwischenbeobachtung:
 
 ---
 
+<a id="sec-13"></a>
 <a id="13-sibling-ecosystem-matrix"></a>
 <a id="sibling-ecosystem-matrix"></a>
 <a id="13-oekosystem-matrix--verwandte-module"></a>
@@ -385,6 +444,7 @@ Die folgenden Einträge verweisen auf verwandte Projekte. Die FolderHome-Zeile b
 
 ---
 
+<a id="sec-14"></a>
 <a id="14-third-party-licenses--transparency"></a>
 <a id="third-party-licenses--transparency"></a>
 <a id="14-drittanbieter-lizenzen--transparenz"></a>
@@ -399,6 +459,7 @@ Die folgenden Einträge verweisen auf verwandte Projekte. Die FolderHome-Zeile b
 
 ---
 
+<a id="sec-15"></a>
 <a id="15-security-policy--slas"></a>
 <a id="security-policy--slas"></a>
 <a id="15-sicherheitsrichtlinie--slas"></a>
@@ -413,6 +474,7 @@ Meldeweg und Reaktionsziele des Maintainers stehen in [`SECURITY.md`](SECURITY.m
 
 ---
 
+<a id="sec-16"></a>
 <a id="16-verification--contract-test-suite"></a>
 <a id="verification--contract-test-suite"></a>
 <a id="16-verifikation--test-suite"></a>
@@ -434,6 +496,7 @@ python -m compileall -q .
 
 ---
 
+<a id="sec-17"></a>
 <a id="17-german-statutory-notice--521-bgb"></a>
 <a id="german-statutory-notice--521-bgb"></a>
 <a id="17-gesetzlicher-haftungshinweis--521-bgb"></a>
@@ -446,6 +509,7 @@ Dieser Hinweis trifft keine Aussage dazu, ob § 521 BGB auf eine konkrete Bereit
 
 ---
 
+<a id="sec-18"></a>
 <a id="18-roadmap--changelog"></a>
 <a id="roadmap--changelog"></a>
 <a id="18-roadmap--aenderungsprotokoll"></a>
