@@ -7,7 +7,7 @@
 [![Lizenz: MIT](https://img.shields.io/badge/Lizenz-MIT-green.svg)](LICENSE)
 [![Python 3.10-3.13](https://img.shields.io/badge/Python-3.10%20--%203.13-blue.svg)](pyproject.toml)
 [![Plattform: Windows | Linux | macOS](https://img.shields.io/badge/Plattform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](pyproject.toml)
-[![Dokumentation aktualisiert: 2026-10-12](https://img.shields.io/badge/Dokumentation-aktualisiert-2026--10--18-blue.svg)](CHANGELOG.md)
+[![Dokumentation aktualisiert: 2026-11-01](https://img.shields.io/badge/Dokumentation-aktualisiert-2026--11--01-blue.svg)](CHANGELOG.md)
 [![Mitwirken: Leitfaden](https://img.shields.io/badge/Mitwirken-Leitfaden-blue.svg)](CONTRIBUTING.md)
 [![Abhängigkeiten: 0 Stdlib Only](https://img.shields.io/badge/Abh%C3%A4ngigkeiten-0%20(Stdlib)-brightgreen.svg)](THIRD_PARTY_LICENSES.md)
 [![Code-Stil: Ruff](https://img.shields.io/badge/Code--Stil-Ruff-000000.svg)](https://github.com/astral-sh/ruff)
@@ -209,7 +209,7 @@ sequenceDiagram
     FileStore -->> UserOrAgent: Transfer abgeschlossen (0 Duplikatsrisiko)
 
     UserOrAgent ->> Denkarium: Loopback-GUI aufrufen (http://127.0.0.1:8000/)
-    Denkarium ->> NoteStore: GET /api/notes (SQLite-Gedanken abfragen)
+    Denkarium ->> NoteStore: GET /api/entries (SQLite-Gedanken abfragen)
     NoteStore -->> Denkarium: JSON-Antwort mit gefiltertem Gedankenstrom
     Denkarium -->> UserOrAgent: Interaktive Ansicht mit nativen Systemschriften gerendert
 ```
@@ -303,12 +303,16 @@ llm-note --db data/notes.db --locale de gui --port 8765
 llm-note gui --port 8765 --no-browser
 ```
 
+<p align="center">
+  <img src="assets/denkarium-preview.svg" alt="llm-note Denkarium Weboberfläche Vorschau" width="100%">
+</p>
+
 ### Technische Highlights der Weboberfläche
 - **Kein Framework-Ballast**: Reines HTML/CSS/JavaScript, direkt über Pythons `http.server` ausgeliefert.
 - **Responsives Design**: Optimiert für Desktop und mobile Endgeräte mit Systemschriften (`Segoe UI`, `SF Pro`, `system-ui`).
 - **REST-JSON-Schnittstellen**:
-  - `GET /api/notes?search=<begriff>&category=<kat>&limit=<n>`
-  - `POST /api/notes` (erstellt neuen Gedanken-Eintrag)
+  - `GET /api/entries?search=<begriff>&category=<kat>&entry_type=<typ>&limit=<n>`
+  - `POST /api/entries` (erstellt neuen Gedanken-Eintrag)
 
 ---
 

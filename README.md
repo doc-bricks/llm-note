@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10-3.13](https://img.shields.io/badge/Python-3.10%20--%203.13-blue.svg)](pyproject.toml)
 [![Platform: Windows | Linux | macOS](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](pyproject.toml)
-[![Docs updated: 2026-10-12](https://img.shields.io/badge/Docs-updated-2026--10--18-blue.svg)](CHANGELOG.md)
+[![Docs updated: 2026-11-01](https://img.shields.io/badge/Docs-updated-2026--11--01-blue.svg)](CHANGELOG.md)
 [![Contributing: Guide](https://img.shields.io/badge/Contributing-Guide-blue.svg)](CONTRIBUTING.md)
 [![Dependencies: 0 Stdlib Only](https://img.shields.io/badge/Dependencies-0%20(Stdlib)-brightgreen.svg)](THIRD_PARTY_LICENSES.md)
 [![Code Style: Ruff](https://img.shields.io/badge/Code%20Style-Ruff-000000.svg)](https://github.com/astral-sh/ruff)
@@ -209,7 +209,7 @@ sequenceDiagram
     FileStore -->> UserOrAgent: Transfer complete (0 duplicate risk)
 
     UserOrAgent ->> Denkarium: Open loopback GUI (http://127.0.0.1:8000/)
-    Denkarium ->> NoteStore: GET /api/notes (query SQLite thoughts)
+    Denkarium ->> NoteStore: GET /api/entries (query SQLite thoughts)
     NoteStore -->> Denkarium: JSON response with filtered thought stream
     Denkarium -->> UserOrAgent: Interactive visual view rendered via system fonts
 ```
@@ -303,12 +303,16 @@ llm-note --db data/notes.db --locale de gui --port 8765
 llm-note gui --port 8765 --no-browser
 ```
 
+<p align="center">
+  <img src="assets/denkarium-preview.svg" alt="llm-note Denkarium Web UI Preview" width="100%">
+</p>
+
 ### GUI Architectural Highlights
 - **Zero Framework Bloat**: Pure vanilla HTML/CSS/JavaScript served directly via Python's standard `http.server`.
 - **Responsive Layout**: Designed for both desktop and mobile viewports with system-native fonts (`Segoe UI`, `SF Pro`, `system-ui`).
 - **REST JSON Endpoints**:
-  - `GET /api/notes?search=<query>&category=<cat>&limit=<n>`
-  - `POST /api/notes` (creates a new thought entry)
+  - `GET /api/entries?search=<query>&category=<cat>&entry_type=<type>&limit=<n>`
+  - `POST /api/entries` (creates a new thought entry)
 
 ---
 

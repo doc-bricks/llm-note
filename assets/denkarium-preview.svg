@@ -1,0 +1,174 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 600" width="920" height="600" role="img" aria-labelledby="previewTitle previewDesc">
+  <title id="previewTitle">llm-note Denkarium Local Web GUI Interface Preview</title>
+  <desc id="previewDesc">Interactive visual preview of the Denkarium local thought log and plain-text notebook inbox web dashboard running on loopback 127.0.0.1.</desc>
+  <defs>
+    <filter id="shadowFilter" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#24160e" flood-opacity="0.16"/>
+    </filter>
+    <filter id="cardShadow" x="-2%" y="-2%" width="104%" height="108%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#362b20" flood-opacity="0.08"/>
+    </filter>
+    <linearGradient id="windowHeader" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f5f2ea"/>
+      <stop offset="100%" stop-color="#ebe5d8"/>
+    </linearGradient>
+    <linearGradient id="urlBar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#faf8f4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Window Container with Shadow -->
+  <g filter="url(#shadowFilter)">
+    <!-- Window Outer Frame -->
+    <rect x="20" y="20" width="880" height="560" rx="10" fill="#fffefa" stroke="#ded7cc" stroke-width="1.5"/>
+
+    <!-- Window Titlebar -->
+    <path d="M 20 30 Q 20 20 30 20 L 890 20 Q 900 20 900 30 L 900 62 L 20 62 Z" fill="url(#windowHeader)"/>
+    <line x1="20" y1="62" x2="900" y2="62" stroke="#ded7cc" stroke-width="1"/>
+
+    <!-- Window Window Controls (macOS / clean dots) -->
+    <circle cx="42" cy="41" r="5.5" fill="#e06c75" stroke="#be5059" stroke-width="0.5"/>
+    <circle cx="60" cy="41" r="5.5" fill="#e5c07b" stroke="#c49d52" stroke-width="0.5"/>
+    <circle cx="78" cy="41" r="5.5" fill="#98c379" stroke="#78a059" stroke-width="0.5"/>
+
+    <!-- URL Bar -->
+    <rect x="180" y="29" width="560" height="24" rx="5" fill="url(#urlBar)" stroke="#d5cebf" stroke-width="1"/>
+    <path d="M 195 38 A 3 3 0 0 1 201 38 L 201 41 L 195 41 Z" fill="none" stroke="#68635b" stroke-width="1.2"/>
+    <rect x="194" y="41" width="8" height="6" rx="1" fill="#68635b"/>
+    <text x="210" y="45" font-family="'Segoe UI', -apple-system, sans-serif" font-size="12" fill="#292722" font-weight="500">http://127.0.0.1:8000/</text>
+    <text x="330" y="45" font-family="'Segoe UI', -apple-system, sans-serif" font-size="11" fill="#928b80">— Denkarium Local Thought Browser (Zero-Egress)</text>
+  </g>
+
+  <!-- Denkarium Main Header -->
+  <g transform="translate(460, 105)" text-anchor="middle">
+    <text y="0" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-style="italic" fill="#7c4326" letter-spacing="-0.5">llm-note Denkarium</text>
+    <text y="22" font-family="'Segoe UI', sans-serif" font-size="9" font-weight="600" fill="#928b80" letter-spacing="1.8">LOCAL THOUGHT LOG &amp; PLAIN-TEXT NOTEBOOK INBOX</text>
+    <text y="40" font-family="Georgia, serif" font-size="13" fill="#ded7cc">~ ❧ ~</text>
+  </g>
+
+  <!-- Settings & Controls Bar -->
+  <g transform="translate(60, 160)">
+    <text x="0" y="16" font-family="'Segoe UI', sans-serif" font-size="11" fill="#928b80">Typography:</text>
+    <!-- Font buttons -->
+    <rect x="70" y="0" width="46" height="22" rx="3" fill="#292722"/>
+    <text x="93" y="15" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#fffefa" text-anchor="middle">Serif</text>
+    <rect x="120" y="0" width="46" height="22" rx="3" fill="transparent" stroke="#ded7cc"/>
+    <text x="143" y="15" font-family="'Segoe UI', sans-serif" font-size="10" fill="#68635b" text-anchor="middle">Sans</text>
+    <rect x="170" y="0" width="46" height="22" rx="3" fill="transparent" stroke="#ded7cc"/>
+    <text x="193" y="15" font-family="'Segoe UI', sans-serif" font-size="10" fill="#68635b" text-anchor="middle">Mono</text>
+
+    <!-- Language Selector Dropdown -->
+    <rect x="235" y="0" width="105" height="22" rx="3" fill="#fffefa" stroke="#ded7cc"/>
+    <text x="245" y="15" font-family="'Segoe UI', sans-serif" font-size="10.5" fill="#292722">🌐 English</text>
+    <path d="M 326 10 L 331 15 L 336 10" fill="none" stroke="#68635b" stroke-width="1.2"/>
+
+    <!-- Stats summary badges -->
+    <g transform="translate(530, 0)">
+      <rect x="0" y="1" width="75" height="20" rx="3" fill="#f8f4ec" stroke="#ded7cc"/>
+      <text x="37" y="15" font-family="'Segoe UI', sans-serif" font-size="10" fill="#68635b" text-anchor="middle">Total: <tspan font-weight="700" fill="#292722">14</tspan></text>
+
+      <rect x="82" y="1" width="85" height="20" rx="3" fill="#f8f4ec" stroke="#ded7cc"/>
+      <text x="124" y="15" font-family="'Segoe UI', sans-serif" font-size="10" fill="#68635b" text-anchor="middle">Notes: <tspan font-weight="700" fill="#315f7a">11</tspan></text>
+
+      <rect x="174" y="1" width="95" height="20" rx="3" fill="#f8f4ec" stroke="#ded7cc"/>
+      <text x="221" y="15" font-family="'Segoe UI', sans-serif" font-size="10" fill="#68635b" text-anchor="middle">Logbook: <tspan font-weight="700" fill="#7c4326">3</tspan></text>
+    </g>
+  </g>
+
+  <!-- Thought Composer Card -->
+  <g transform="translate(60, 195)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="800" height="135" rx="6" fill="#f8f4ec" stroke="#ded7cc" stroke-width="1"/>
+
+    <!-- Lined Notepad Paper Area -->
+    <rect x="15" y="14" width="770" height="66" rx="4" fill="#fffefa" stroke="#ded7cc" stroke-width="0.8"/>
+    <!-- Notebook lines -->
+    <line x1="16" y1="36" x2="784" y2="36" stroke="#f0ebe1" stroke-width="1"/>
+    <line x1="16" y1="58" x2="784" y2="58" stroke="#f0ebe1" stroke-width="1"/>
+
+    <!-- Note text content -->
+    <text x="26" y="31" font-family="Georgia, serif" font-size="13.5" fill="#292722">Architecture Review: Local-first SQLite store with ACID transactions &amp; plain-text inboxes.</text>
+    <text x="26" y="53" font-family="Georgia, serif" font-size="13" fill="#68635b">Zero external runtime dependencies. Portable inbox syncing via <tspan fill="#7c4326" font-weight="bold">#NB: Architecture</tspan></text>
+
+    <!-- Composer Controls Row -->
+    <g transform="translate(15, 92)">
+      <!-- Category input -->
+      <rect x="0" y="0" width="140" height="28" rx="3" fill="#fffefa" stroke="#ded7cc"/>
+      <text x="10" y="18" font-family="'Segoe UI', sans-serif" font-size="11" fill="#928b80">Category: <tspan fill="#292722" font-weight="600">architecture</tspan></text>
+
+      <!-- Mood selector -->
+      <rect x="150" y="0" width="130" height="28" rx="3" fill="#fffefa" stroke="#ded7cc"/>
+      <text x="160" y="18" font-family="'Segoe UI', sans-serif" font-size="11" fill="#928b80">Mood: <tspan fill="#7c4326">★★★★☆ (4)</tspan></text>
+
+      <!-- Entry Type -->
+      <rect x="290" y="0" width="105" height="28" rx="3" fill="#fffefa" stroke="#ded7cc"/>
+      <text x="300" y="18" font-family="'Segoe UI', sans-serif" font-size="11" fill="#292722">Type: Note ▾</text>
+
+      <!-- Record Button -->
+      <rect x="640" y="0" width="130" height="28" rx="3" fill="#7c4326" stroke="#68341b"/>
+      <text x="705" y="18" font-family="'Segoe UI', sans-serif" font-size="11.5" font-weight="600" fill="#fffefa" text-anchor="middle">Record Thought</text>
+    </g>
+  </g>
+
+  <!-- Filter & Stream Header -->
+  <g transform="translate(60, 348)">
+    <!-- Search Bar -->
+    <rect x="0" y="0" width="380" height="26" rx="3" fill="#fffefa" stroke="#ded7cc"/>
+    <text x="12" y="17" font-family="'Segoe UI', sans-serif" font-size="11" fill="#928b80">🔍 Filter thoughts literally (zero wildcard surprises)...</text>
+
+    <!-- Filter Buttons -->
+    <rect x="400" y="0" width="60" height="26" rx="3" fill="#292722"/>
+    <text x="430" y="17" font-family="'Segoe UI', sans-serif" font-size="10.5" font-weight="600" fill="#fffefa" text-anchor="middle">All (14)</text>
+
+    <rect x="468" y="0" width="85" height="26" rx="3" fill="#fffefa" stroke="#ded7cc"/>
+    <text x="510" y="17" font-family="'Segoe UI', sans-serif" font-size="10.5" fill="#68635b" text-anchor="middle">Notes (11)</text>
+
+    <rect x="561" y="0" width="95" height="26" rx="3" fill="#fffefa" stroke="#ded7cc"/>
+    <text x="608" y="17" font-family="'Segoe UI', sans-serif" font-size="10.5" fill="#68635b" text-anchor="middle">Logbook (3)</text>
+  </g>
+
+  <!-- Thought Stream Entries -->
+  <!-- Entry 1 -->
+  <g transform="translate(60, 388)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="800" height="78" rx="5" fill="#fffefa" stroke="#ded7cc" stroke-width="1"/>
+
+    <!-- Entry Meta Header -->
+    <rect x="15" y="10" width="55" height="18" rx="3" fill="#ebf3f7"/>
+    <text x="42" y="23" font-family="'Segoe UI', sans-serif" font-size="9.5" font-weight="700" fill="#315f7a" text-anchor="middle">NOTE</text>
+
+    <rect x="76" y="10" width="86" height="18" rx="3" fill="#f8f4ec"/>
+    <text x="119" y="23" font-family="'Segoe UI', sans-serif" font-size="9.5" font-weight="600" fill="#7c4326" text-anchor="middle">architecture</text>
+
+    <text x="175" y="23" font-family="'Segoe UI', sans-serif" font-size="10.5" fill="#928b80">2026-11-01 07:30 UTC  •  Mood: ★★★★☆</text>
+
+    <!-- Action Button -->
+    <rect x="670" y="9" width="115" height="20" rx="3" fill="#fffefa" stroke="#ded7cc"/>
+    <text x="727" y="23" font-family="'Segoe UI', sans-serif" font-size="10" fill="#68635b" text-anchor="middle">Promote to Task ↗</text>
+
+    <!-- Entry Content -->
+    <text x="15" y="47" font-family="Georgia, serif" font-size="13" fill="#292722">Decoupled Denkarium web interface into standalone micro-server bound to loopback 127.0.0.1.</text>
+    <text x="15" y="65" font-family="'Segoe UI', sans-serif" font-size="10.5" fill="#68635b">REST API: <tspan font-family="Consolas, monospace" fill="#315f7a">GET /api/entries?category=architecture</tspan> — Pure Python standard library.</text>
+  </g>
+
+  <!-- Entry 2 -->
+  <g transform="translate(60, 478)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="800" height="78" rx="5" fill="#fffefa" stroke="#ded7cc" stroke-width="1"/>
+
+    <!-- Entry Meta Header -->
+    <rect x="15" y="10" width="68" height="18" rx="3" fill="#fdf0e9"/>
+    <text x="49" y="23" font-family="'Segoe UI', sans-serif" font-size="9.5" font-weight="700" fill="#8a3535" text-anchor="middle">LOGBOOK</text>
+
+    <rect x="89" y="10" width="70" height="18" rx="3" fill="#f8f4ec"/>
+    <text x="124" y="23" font-family="'Segoe UI', sans-serif" font-size="9.5" font-weight="600" fill="#7c4326" text-anchor="middle">file-store</text>
+
+    <text x="172" y="23" font-family="'Segoe UI', sans-serif" font-size="10.5" fill="#928b80">2026-10-31 19:15 UTC  •  Mood: ★★★★★</text>
+
+    <!-- Action Button -->
+    <rect x="670" y="9" width="115" height="20" rx="3" fill="#fffefa" stroke="#ded7cc"/>
+    <text x="727" y="23" font-family="'Segoe UI', sans-serif" font-size="10" fill="#68635b" text-anchor="middle">Promote to Task ↗</text>
+
+    <!-- Entry Content -->
+    <text x="15" y="47" font-family="Georgia, serif" font-size="13" fill="#292722">Verified FileNotebookStore atomic cross-process transfers via <tspan font-family="Consolas, monospace">.llm-note.lock</tspan> and stable IDs.</text>
+    <text x="15" y="65" font-family="'Segoe UI', sans-serif" font-size="10.5" fill="#68635b">Zero-duplicate risk guaranteed by <tspan font-family="Consolas, monospace">#LLM-NOTE-ID:&lt;sha256&gt;</tspan> idempotency markers.</text>
+  </g>
+</svg>
