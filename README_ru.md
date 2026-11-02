@@ -163,7 +163,7 @@ sequenceDiagram
     FileStore -->> UserOrAgent: Перенос завершён (риск дубликатов отсутствует)
 
     UserOrAgent ->> Denkarium: Открытие loopback-интерфейса (http://127.0.0.1:8000/)
-    Denkarium ->> NoteStore: GET /api/notes (запрос мыслей из SQLite)
+    Denkarium ->> NoteStore: GET /api/entries (запрос мыслей из SQLite)
     NoteStore -->> Denkarium: JSON-ответ с отфильтрованным потоком мыслей
     Denkarium -->> UserOrAgent: Интерактивное визуальное представление с системными шрифтами
 ```
@@ -257,12 +257,16 @@ llm-note --db data/notes.db --locale de gui --port 8765
 llm-note gui --port 8765 --no-browser
 ```
 
+<p align="center">
+  <img src="assets/denkarium-preview.svg" alt="llm-note Denkarium Web UI Preview" width="100%">
+</p>
+
 ### Архитектурные особенности GUI
 - **Никакой раздутости фреймворков**: чистые HTML/CSS/JavaScript без фреймворков, раздаваемые напрямую через стандартный `http.server` Python.
 - **Адаптивная вёрстка**: рассчитана как на настольные, так и на мобильные окна просмотра, с нативными системными шрифтами (`Segoe UI`, `SF Pro`, `system-ui`).
 - **REST JSON-эндпоинты**:
-  - `GET /api/notes?search=<query>&category=<cat>&limit=<n>`
-  - `POST /api/notes` (создаёт новую запись мысли)
+  - `GET /api/entries?search=<query>&category=<cat>&entry_type=<type>&limit=<n>`
+  - `POST /api/entries` (создаёт новую запись мысли)
 
 ---
 

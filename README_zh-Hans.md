@@ -162,7 +162,7 @@ sequenceDiagram
     FileStore -->> UserOrAgent: 转移完成（重复风险为 0）
 
     UserOrAgent ->> Denkarium: 打开回环界面 (http://127.0.0.1:8000/)
-    Denkarium ->> NoteStore: GET /api/notes（查询 SQLite 想法）
+    Denkarium ->> NoteStore: GET /api/entries（查询 SQLite 想法）
     NoteStore -->> Denkarium: 带有已过滤想法流的 JSON 响应
     Denkarium -->> UserOrAgent: 使用系统字体渲染的交互式可视化视图
 ```
@@ -256,12 +256,16 @@ llm-note --db data/notes.db --locale de gui --port 8765
 llm-note gui --port 8765 --no-browser
 ```
 
+<p align="center">
+  <img src="assets/denkarium-preview.svg" alt="llm-note Denkarium Web UI Preview" width="100%">
+</p>
+
 ### 界面架构亮点
 - **零框架臃肿**：纯原生 HTML/CSS/JavaScript，直接通过 Python 标准库的 `http.server` 提供服务。
 - **响应式布局**：同时适配桌面和移动端视口，使用系统原生字体（`Segoe UI`、`SF Pro`、`system-ui`）。
 - **REST JSON 端点**：
-  - `GET /api/notes?search=<query>&category=<cat>&limit=<n>`
-  - `POST /api/notes`（创建新的想法条目）
+  - `GET /api/entries?search=<query>&category=<cat>&entry_type=<type>&limit=<n>`
+  - `POST /api/entries`（创建新的想法条目）
 
 ---
 

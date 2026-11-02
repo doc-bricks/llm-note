@@ -162,7 +162,7 @@ sequenceDiagram
     FileStore -->> UserOrAgent: Transferencia completada (riesgo de duplicados: 0)
 
     UserOrAgent ->> Denkarium: Abrir la interfaz loopback (http://127.0.0.1:8000/)
-    Denkarium ->> NoteStore: GET /api/notes (consultar los pensamientos en SQLite)
+    Denkarium ->> NoteStore: GET /api/entries (consultar los pensamientos en SQLite)
     NoteStore -->> Denkarium: Respuesta JSON con el flujo de pensamientos filtrado
     Denkarium -->> UserOrAgent: Vista visual interactiva renderizada con fuentes del sistema
 ```
@@ -256,12 +256,16 @@ llm-note --db data/notes.db --locale de gui --port 8765
 llm-note gui --port 8765 --no-browser
 ```
 
+<p align="center">
+  <img src="assets/denkarium-preview.svg" alt="llm-note Denkarium Web UI Preview" width="100%">
+</p>
+
 ### Aspectos arquitectónicos destacados de la interfaz
 - **Sin lastre de frameworks**: HTML/CSS/JavaScript puro (vanilla) servido directamente mediante el `http.server` estándar de Python.
 - **Diseño adaptable**: Pensado tanto para pantallas de escritorio como móviles, con fuentes nativas del sistema (`Segoe UI`, `SF Pro`, `system-ui`).
 - **Endpoints REST JSON**:
-  - `GET /api/notes?search=<query>&category=<cat>&limit=<n>`
-  - `POST /api/notes` (crea una nueva entrada de pensamiento)
+  - `GET /api/entries?search=<query>&category=<cat>&entry_type=<type>&limit=<n>`
+  - `POST /api/entries` (crea una nueva entrada de pensamiento)
 
 ---
 

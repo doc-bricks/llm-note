@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+- Added vector SVG interface preview for Denkarium Local Web GUI (`assets/denkarium-preview.svg`) and integrated it into Section 8 across all six README localizations.
+- Corrected REST API endpoint documentation in Section 8 and sequence diagrams in Section 4 across all six README files to reference `/api/entries`.
+- Hardened `pytest.ini` with `norecursedirs` to exclude `references/` from recursive test collection.
+- Hardened `run_cli` helper in `tests/test_cli.py` to preserve repo root in `PYTHONPATH` during subprocess execution.
+
 - Added ASCII Four-View Architectural Topology projection to Section 3 of `README.md` and `README_de.md` (`VIEW 1..VIEW 4` and `SICHT 1..SICHT 4`) mapping client, core engine, persistence, and execution invariants `INV-LOCAL-01` through `INV-LOCAL-10`.
 - Harmonized 18-point multilingual quick navigation parity across all six README files with reciprocal dual HTML anchor aliases (`<a id="sec-01"></a>` through `<a id="sec-18"></a>`).
 - Added automated contract test `test_ascii_four_view_architectural_topology_parity` and extended `test_readme_navigation_and_anchor_parity` in `tests/test_metadata.py` to verify the presence and structure of the ASCII Four-View Architectural Topology and dual `sec-01`..`sec-18` anchor tags across documentation.

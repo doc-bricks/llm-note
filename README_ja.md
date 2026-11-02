@@ -163,7 +163,7 @@ sequenceDiagram
     FileStore -->> UserOrAgent: 転送完了（重複のリスクなし）
 
     UserOrAgent ->> Denkarium: ループバック GUI を開く (http://127.0.0.1:8000/)
-    Denkarium ->> NoteStore: GET /api/notes（SQLite の思考を照会）
+    Denkarium ->> NoteStore: GET /api/entries（SQLite の思考を照会）
     NoteStore -->> Denkarium: フィルタ済みの思考ストリームを含む JSON レスポンス
     Denkarium -->> UserOrAgent: システムフォントで描画されたインタラクティブなビジュアルビュー
 ```
@@ -257,12 +257,16 @@ llm-note --db data/notes.db --locale de gui --port 8765
 llm-note gui --port 8765 --no-browser
 ```
 
+<p align="center">
+  <img src="assets/denkarium-preview.svg" alt="llm-note Denkarium Web UI Preview" width="100%">
+</p>
+
 ### GUI アーキテクチャの要点
 - **フレームワークの肥大化ゼロ**: 純粋なバニラの HTML/CSS/JavaScript を、Python 標準の `http.server` から直接配信します。
 - **レスポンシブレイアウト**: システムネイティブのフォント (`Segoe UI`、`SF Pro`、`system-ui`) を使用し、デスクトップとモバイルの両方のビューポートに対応して設計されています。
 - **REST JSON エンドポイント**:
-  - `GET /api/notes?search=<query>&category=<cat>&limit=<n>`
-  - `POST /api/notes`（新しい思考エントリを作成します）
+  - `GET /api/entries?search=<query>&category=<cat>&entry_type=<type>&limit=<n>`
+  - `POST /api/entries`（新しい思考エントリを作成します）
 
 ---
 

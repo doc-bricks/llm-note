@@ -12,8 +12,15 @@ from llm_note.store import NoteStore
 
 
 def run_cli(tmp_path: Path, *args: str) -> subprocess.CompletedProcess[str]:
+    repo_root = str(Path(__file__).resolve().parent.parent)
     environment = os.environ.copy()
     environment["PYTHONIOENCODING"] = "utf-8"
+    existing_pythonpath = environment.get("PYTHONPATH", "")
+    environment["PYTHONPATH"] = (
+        f"{repo_root}{os.pathsep}{existing_pythonpath}"
+        if existing_pythonpath
+        else repo_root
+    )
     return subprocess.run(
         [
             sys.executable,
