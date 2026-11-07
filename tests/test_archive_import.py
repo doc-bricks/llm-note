@@ -117,3 +117,11 @@ def test_old_database_without_new_columns_is_migrated_on_open(tmp_path: Path) ->
     store.archive(rows[0].id)
     assert store.list_entries() == []
     NoteStore(db)  # second open must not fail (idempotent migration)
+
+
+def test_promote_can_record_target_id(tmp_path: Path) -> None:
+    store = NoteStore(tmp_path / "n.db")
+    entry = store.write("promote me")
+    promoted = store.promote(entry.id, "task", promoted_id=42)
+    assert promoted.promoted_to == "task" and promoted.promoted_id == 42
+    assert store.promote(entry.id, "wiki").promoted_id == 42  # not overwritten when omitted

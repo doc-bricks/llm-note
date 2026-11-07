@@ -382,14 +382,17 @@ class NoteStore:
             title=f"Brainstorm: {topic}",
         )
 
-    def promote(self, entry_id: int, target: str) -> Entry:
+    def promote(
+        self, entry_id: int, target: str, promoted_id: int | None = None
+    ) -> Entry:
         if target not in {"task", "wiki", "issue"}:
             raise ValueError("target must be task, wiki, or issue")
         now = datetime.now().astimezone().isoformat(timespec="seconds")
         with self._connect() as conn:
             conn.execute(
-                "UPDATE note_entries SET promoted_to = ?, updated_at = ? WHERE id = ?",
-                (target, now, entry_id),
+                "UPDATE note_entries SET promoted_to = ?,"
+                " promoted_id = COALESCE(?, promoted_id), updated_at = ? WHERE id = ?",
+                (target, promoted_id, now, entry_id),
             )
         return self.get(entry_id)
 
