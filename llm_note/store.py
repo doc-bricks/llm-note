@@ -16,6 +16,14 @@ from pathlib import Path
 from uuid import uuid4
 
 MAX_QUERY_LIMIT = 1000
+# BACH Denkarium vocabulary -> llm-note vocabulary
+ENTRY_TYPE_ALIASES = {"denkarium": "note", "logbuch": "logbook"}
+_ARCHIVE_COLUMNS = {
+    "is_archived": "INTEGER DEFAULT 0",
+    "archived_reason": "TEXT",
+    "archived_at": "TEXT",
+    "legacy_id": "INTEGER",
+}
 _WINDOWS_RESERVED_NAMES = {
     "CON",
     "PRN",
@@ -28,6 +36,14 @@ _WINDOWS_RESERVED_NAMES = {
 _TRANSFER_ID_RE = re.compile(
     r"(?m)^#LLM-NOTE-ID:[^\S\r\n]*([0-9a-fA-F-]{36})[^\S\r\n]*(?=\r?$)"
 )
+
+
+def _norm_type(entry_type: str | None) -> str | None:
+    return ENTRY_TYPE_ALIASES.get(entry_type, entry_type) if entry_type else entry_type
+
+
+def _now() -> str:
+    return datetime.now().astimezone().strftime("%Y-%m-%d %H:%M")
 
 
 def _validate_limit(limit: int) -> int:
@@ -114,6 +130,14 @@ class Entry:
     mood: int | None = None
     promoted_to: str | None = None
     created_at: str | None = None
+    tags: str | None = None
+    source: str | None = None
+    updated_at: str | None = None
+    is_archived: bool = False
+    archived_reason: str | None = None
+    archived_at: str | None = None
+    legacy_id: int | None = None
+    promoted_id: int | None = None
 
 
 class NoteStore:
@@ -158,6 +182,10 @@ class NoteStore:
                 )
                 """
             )
+            have = {r["name"] for r in conn.execute("PRAGMA table_info(note_entries)")}
+            for name, ddl in _ARCHIVE_COLUMNS.items():
+                if name not in have:
+                    conn.execute(f"ALTER TABLE note_entries ADD COLUMN {name} {ddl}")
             conn.execute(
                 "CREATE INDEX IF NOT EXISTS idx_note_type ON note_entries(entry_type)"
             )
@@ -178,7 +206,8 @@ class NoteStore:
         mood: int | None = None,
         source: str = "user",
     ) -> Entry:
-        now = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M")
+        now = _now()
+        entry_type = _norm_type(entry_type)
         if entry_type == "logbook" and not title:
             title = f"Log {now}"
 
@@ -209,14 +238,17 @@ class NoteStore:
         entry_type: str | None = None,
         category: str | None = None,
         limit: int = 10,
+        include_archived: bool = False,
     ) -> list[Entry]:
         limit = _validate_limit(limit)
         query = "SELECT * FROM note_entries"
         where: list[str] = []
         params: list[object] = []
+        if not include_archived:
+            where.append("COALESCE(is_archived, 0) = 0")
         if entry_type:
             where.append("entry_type = ?")
-            params.append(entry_type)
+            params.append(_norm_type(entry_type))
         if category:
             where.append("category = ?")
             params.append(category)
@@ -235,6 +267,7 @@ class NoteStore:
         entry_type: str | None = None,
         category: str | None = None,
         limit: int = 20,
+        include_archived: bool = False,
     ) -> list[Entry]:
         limit = _validate_limit(limit)
         escaped_term = (
@@ -250,9 +283,11 @@ class NoteStore:
             )
         ]
         params: list[object] = [pattern, pattern, pattern, pattern]
+        if not include_archived:
+            where.append("COALESCE(is_archived, 0) = 0")
         if entry_type:
             where.append("entry_type = ?")
-            params.append(entry_type)
+            params.append(_norm_type(entry_type))
         if category:
             where.append("category = ?")
             params.append(category)
@@ -265,6 +300,79 @@ class NoteStore:
                 params,
             ).fetchall()
         return [self._row_to_entry(row) for row in rows]
+
+    def import_entry(
+        self,
+        content: str,
+        *,
+        entry_type: str = "note",
+        category: str = "note",
+        title: str | None = None,
+        mood: int | None = None,
+        source: str = "user",
+        tags: str | None = None,
+        promoted_to: str | None = None,
+        promoted_id: int | None = None,
+        created_at: str | None = None,
+        updated_at: str | None = None,
+        legacy_id: int | None = None,
+        is_archived: bool = False,
+        archived_reason: str | None = None,
+        archived_at: str | None = None,
+    ) -> Entry:
+        """Insert an entry keeping foreign timestamps; idempotent per ``legacy_id``."""
+
+        with self._connect() as conn:
+            if legacy_id is not None:
+                row = conn.execute(
+                    "SELECT id FROM note_entries WHERE legacy_id = ?", (legacy_id,)
+                ).fetchone()
+                if row is not None:
+                    return self.get(int(row["id"]))
+            cur = conn.execute(
+                """
+                INSERT INTO note_entries
+                    (entry_type, title, content, category, tags, source, mood,
+                     promoted_to, promoted_id, created_at, updated_at, legacy_id,
+                     is_archived, archived_reason, archived_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    _norm_type(entry_type), title, content, category, tags, source,
+                    mood, promoted_to, promoted_id, created_at or _now(), updated_at,
+                    legacy_id, int(is_archived), archived_reason, archived_at,
+                ),
+            )
+            entry_id = int(cur.lastrowid)
+        return self.get(entry_id)
+
+    def archive(self, entry_id: int, reason: str | None = None) -> Entry:
+        self.get(entry_id)  # KeyError if unknown
+        with self._connect() as conn:
+            conn.execute(
+                "UPDATE note_entries SET is_archived = 1, archived_reason = ?,"
+                " archived_at = ? WHERE id = ?",
+                (reason, _now(), entry_id),
+            )
+        return self.get(entry_id)
+
+    def unarchive(self, entry_id: int) -> Entry:
+        self.get(entry_id)
+        with self._connect() as conn:
+            conn.execute(
+                "UPDATE note_entries SET is_archived = 0, archived_reason = NULL,"
+                " archived_at = NULL WHERE id = ?",
+                (entry_id,),
+            )
+        return self.get(entry_id)
+
+    def delete(self, entry_id: int) -> None:
+        with self._connect() as conn:
+            deleted = conn.execute(
+                "DELETE FROM note_entries WHERE id = ?", (entry_id,)
+            ).rowcount
+        if deleted == 0:
+            raise KeyError(f"Entry not found: {entry_id}")
 
     def brainstorm(self, topic: str) -> Entry:
         return self.write(
@@ -294,7 +402,15 @@ class NoteStore:
             logbook = conn.execute(
                 "SELECT COUNT(*) FROM note_entries WHERE entry_type = 'logbook'"
             ).fetchone()[0]
-        return {"total": int(total), "promoted": int(promoted), "logbook": int(logbook)}
+            archived = conn.execute(
+                "SELECT COUNT(*) FROM note_entries WHERE COALESCE(is_archived, 0) = 1"
+            ).fetchone()[0]
+        return {
+            "total": int(total),
+            "promoted": int(promoted),
+            "logbook": int(logbook),
+            "archived": int(archived),
+        }
 
     @staticmethod
     def _row_to_entry(row: sqlite3.Row) -> Entry:
@@ -307,6 +423,14 @@ class NoteStore:
             mood=row["mood"],
             promoted_to=row["promoted_to"],
             created_at=row["created_at"],
+            tags=row["tags"],
+            source=row["source"],
+            updated_at=row["updated_at"],
+            is_archived=bool(row["is_archived"]),
+            archived_reason=row["archived_reason"],
+            archived_at=row["archived_at"],
+            legacy_id=row["legacy_id"],
+            promoted_id=row["promoted_id"],
         )
 
 

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- PB-11 (BACH #3994): `NoteStore` can now replace the BACH Denkarium. Additive columns `is_archived`, `archived_reason`, `archived_at`, `legacy_id` are migrated when an existing database is opened; new `archive()`, `unarchive()`, `delete()`, `import_entry()` (keeps foreign timestamps, idempotent per `legacy_id`); `list_entries()`/`search()` hide archived entries unless `include_archived=True`; entry types accept the aliases `denkarium` (note) and `logbuch` (logbook); `Entry` and `stats()` expose the new fields.
+- Added the one-off migration `python -m llm_note.migrate_denkarium SOURCE_DB TARGET_DB` (dry run by default; `--apply --snapshot-dir` snapshots the source table, imports, aborts on a count mismatch; the source table is only read).
+- The package version stays frozen at `1.0.5` (see RELEASE_GATE.md); a `1.1.0` bump needs a separate release decision.
+
 - Added vector SVG interface preview for Denkarium Local Web GUI (`assets/denkarium-preview.svg`) and integrated it into Section 8 across all six README localizations.
 - Corrected REST API endpoint documentation in Section 8 and sequence diagrams in Section 4 across all six README files to reference `/api/entries`.
 - Hardened `pytest.ini` with `norecursedirs` to exclude `references/` from recursive test collection.
