@@ -9,6 +9,7 @@ description = "Local-first notes and notebooks an LLM assistant keeps for its us
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
+dependencies = []
 authors = [{ name = "Lukas Geiger" }]
 keywords = [
   "llm",
@@ -48,10 +49,17 @@ Security = "https://github.com/doc-bricks/llm-note/blob/main/SECURITY.md"
 "Third-Party Licenses Text" = "https://github.com/doc-bricks/llm-note/blob/main/THIRD_PARTY_LICENSES.txt"
 "Plain-Text License" = "https://github.com/doc-bricks/llm-note/blob/main/LICENSE"
 Contributing = "https://github.com/doc-bricks/llm-note/blob/main/CONTRIBUTING.md"
-"Marketing Log" = "https://github.com/doc-bricks/llm-note/blob/main/MARKETING-LOG.txt"
+"Code of Conduct" = "https://github.com/doc-bricks/llm-note/blob/main/CODE_OF_CONDUCT.md"
 "Parent Organization" = "https://github.com/doc-bricks"
 "Umbrella Ecosystem" = "https://github.com/open-bricks"
 "LLM Ready" = "https://github.com/doc-bricks/llm-note/blob/main/llms.txt"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.0",
+  "ruff>=0.6",
+  "build>=1.0",
+]
 
 [project.scripts]
 llm-note = "llm_note.cli:main"
@@ -62,8 +70,10 @@ packages = ["llm_note"]
 [tool.pytest.ini_options]
 minversion = "7.0"
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = "-ra -v"
-norecursedirs = [".git", ".pytest_cache", ".ruff_cache", "build", "dist", "data", "notebooks", ".venv", "venv"]
+xfail_strict = true
+norecursedirs = [".git", ".pytest_cache", ".ruff_cache", "build", "dist", "data", "notebooks", "references", ".venv", "venv"]
 
 [tool.ruff]
 line-length = 100

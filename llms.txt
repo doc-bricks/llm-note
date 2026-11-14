@@ -3,7 +3,7 @@
 llm-note is a local-first notes and notebook application that an LLM assistant or coding agent can use for its user. It stores structured notes in local SQLite and supports human-editable plain-text notebook files. It provides a Python command-line interface, an optional loopback web interface at `127.0.0.1`, and an agent skill definition.
 
 Version: 1.0.5
-Last-checked: 2026-10-18
+Last-checked: 2026-11-14
 License: MIT (see LICENSE)
 Runtime packages: No additional Python runtime packages are declared in pyproject.toml.
 Related projects (family references; see the separate consumer reference below for its scoped provider relationship):
@@ -31,19 +31,20 @@ Capabilities:
 - No additional Python runtime packages declared by the project; build and test tools are separate.
 
 Important files:
-- `llm_note/store.py`: SQLite and plain-text notebook logic.
+- `llm_note/store.py`: SQLite and plain-text notebook logic (including `archive`, `unarchive`, `delete`, `import_entry`).
 - `llm_note/cli.py`: command-line interface.
 - `llm_note/gui.py`: loopback web interface and API.
+- `llm_note/migrate_denkarium.py`: one-off idempotent migration from legacy `denkarium_entries` tables (`dry-run` default).
 - `llm_note/locales/*.json`: bundled message catalogs.
 - `llm_note/templates/denkarium.html`: browser interface.
 - `skills/llm-note/SKILL.md`: standalone agent skill.
 - `SECURITY.md`: reporting path, maintainer response targets, and implementation boundaries. It does not claim an egress block or fixed remediation deadline.
 - `THIRD_PARTY_LICENSES.md` and `THIRD_PARTY_LICENSES.txt`: scoped notes about declared direct dependencies; they are not complete SBOMs or license-compliance certifications.
 - `CONTRIBUTING.md`: bilingual contributor guide and local quality checks.
-- `MARKETING-LOG.txt`: historical marketing notes with a dated supersession notice.
+- `CODE_OF_CONDUCT.md`: bilingual community code of conduct.
 - `ellmos-module.v2.json`: portable module metadata.
-- `.github/workflows/ci.yml`: CI test, lint, and distribution-build workflow.
-- `tests/test_metadata.py`: package metadata, navigation, and documentation-integrity checks.
+- `.github/workflows/ci.yml`: CI test, lint, compile, whitespace, and distribution-build workflow.
+- `tests/test_metadata.py`: package metadata, navigation, workflow, and documentation-integrity checks.
 
 The application does not provide an operating-system network block, sandbox, or privilege drop. Network access depends on the host environment. No zero-egress guarantee is made.
 

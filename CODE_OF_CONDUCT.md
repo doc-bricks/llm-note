@@ -1,5 +1,21 @@
-# Code of Conduct
+# Code of Conduct / Verhaltenskodex
+
+[English](#english) · [Deutsch](#deutsch)
+
+---
+
+<a id="english"></a>
+## English
 
 Be kind, specific, and constructive. This project welcomes practical feedback, bug reports, tests, documentation fixes, and small pull requests.
 
 Do not harass people, publish private information, or use issues and discussions for spam. Maintainers may remove disruptive content and block repeat offenders.
+
+---
+
+<a id="deutsch"></a>
+## Deutsch
+
+Bleib freundlich, sachlich und konstruktiv. Dieses Projekt begrüßt praktisches Feedback, Fehlerberichte, Tests, Dokumentationskorrekturen und kleine Pull Requests.
+
+Belästige keine Personen, veröffentliche keine privaten Informationen und nutze Issues oder Diskussionen nicht für Spam. Maintainer können störende Inhalte entfernen und wiederholte Regelverstöße blockieren.

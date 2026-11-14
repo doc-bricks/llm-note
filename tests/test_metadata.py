@@ -2,7 +2,9 @@
 
 import json
 import re
+import subprocess
 import sys
+import tomllib
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -33,11 +35,16 @@ def test_version_consistency():
     assert "## [1.0.5] - 2026-10-04" in changelog_text
 
 def test_pep621_compliance_and_urls():
-    """Verify PEP 621 compliance, URLs, classifiers, and test settings in pyproject.toml."""
+    """Verify PEP 621/639 compliance, URLs, classifiers, and test settings in pyproject.toml."""
     pyproject_text = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    data = tomllib.loads(pyproject_text)
+    project = data["project"]
 
-    assert 'name = "llm-note"' in pyproject_text
-    assert 'requires-python = ">=3.10"' in pyproject_text
+    assert project["name"] == "llm-note"
+    assert project["requires-python"] == ">=3.10"
+    assert project["license"] == "MIT"
+    assert project["dependencies"] == []
+    assert "dev" in project.get("optional-dependencies", {})
 
     required_urls = [
         "Homepage",
@@ -50,46 +57,67 @@ def test_pep621_compliance_and_urls():
         "Third-Party Licenses Text",
         "Plain-Text License",
         "Contributing",
-        "Marketing Log",
+        "Code of Conduct",
         "Parent Organization",
         "Umbrella Ecosystem",
         "LLM Ready",
     ]
+    urls = project.get("urls", {})
     for url_key in required_urls:
-        assert f'"{url_key}"' in pyproject_text or f"{url_key} =" in pyproject_text, (
-            f"Missing required URL key: {url_key}"
+        assert url_key in urls, f"Missing required URL key: {url_key}"
+    assert "Marketing Log" not in urls
+
+    # PEP 639: SPDX license expression must not coexist with OSI license classifiers.
+    classifiers = project.get("classifiers", [])
+    assert not any(c.startswith("License :: OSI Approved ::") for c in classifiers)
+    assert "Operating System :: OS Independent" in classifiers
+    assert "Programming Language :: Python :: 3.10" in classifiers
+    assert "Programming Language :: Python :: 3.13" in classifiers
+
+    # Pytest configuration is consolidated in pyproject.toml (no duplicate pytest.ini).
+    assert not (REPO_ROOT / "pytest.ini").exists(), "Duplicate pytest.ini must not override pyproject.toml"
+    pytest_opts = data["tool"]["pytest"]["ini_options"]
+    assert pytest_opts["addopts"] == "-ra -v"
+    assert pytest_opts["pythonpath"] == ["."]
+    assert pytest_opts["xfail_strict"] is True
+    assert "references" in pytest_opts["norecursedirs"]
+
+
+def test_marketing_log_is_untracked_and_gitignored():
+    """Verify *MARKETING-LOG.txt is gitignored and never tracked in git (T-20260926-455218633)."""
+    gitignore_text = (REPO_ROOT / ".gitignore").read_text(encoding="utf-8")
+    assert "*MARKETING-LOG.txt" in gitignore_text
+
+    pyproject_text = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert "MARKETING-LOG.txt" not in pyproject_text
+
+    if (REPO_ROOT / ".git").exists():
+        tracked = subprocess.run(
+            ["git", "ls-files", "*MARKETING-LOG.txt", "MARKETING-LOG.txt"],
+            cwd=REPO_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
         )
+        assert tracked.stdout.strip() == "", f"Tracked marketing log found: {tracked.stdout}"
 
-    # Classifiers
-    assert "Operating System :: OS Independent" in pyproject_text
-    assert "Programming Language :: Python :: 3.10" in pyproject_text
-    assert "Programming Language :: Python :: 3.13" in pyproject_text
-
-    # Pytest configuration
-    assert "[tool.pytest.ini_options]" in pyproject_text
-    assert 'addopts = "-ra -v"' in pyproject_text
-    assert "norecursedirs" in pyproject_text
-
-def test_marketing_log_supersession_is_explicit():
-    """Keep retained marketing copy visibly marked as historical."""
-    marketing_file = REPO_ROOT / "MARKETING-LOG.txt"
-    assert marketing_file.exists(), "MARKETING-LOG.txt must exist"
-    text = marketing_file.read_text(encoding="utf-8")
-
-    expected_header = "===============================================================================\nEDITORIAL SUPERSESSION — 2026-10-12"
-    assert text.startswith(expected_header)
-    assert "2026-10-11" in text, "The prior dated record should remain as history"
 
 def test_llms_txt_integrity():
-    """Verify llms.txt context metadata and its current review date."""
+    """Verify llms.txt context metadata, compatibility pointer llm.txt, and review date."""
     llms_file = REPO_ROOT / "llms.txt"
     assert llms_file.exists(), "llms.txt must exist"
     text = llms_file.read_text(encoding="utf-8")
 
     assert "Version: 1.0.5" in text
-    assert "Last-checked: 2026-10-18" in text
+    assert "Last-checked: 2026-11-14" in text
     assert "doc-bricks" in text
     assert "open-bricks" in text
+    assert "MARKETING-LOG.txt" not in text
+
+    llm_compat = REPO_ROOT / "llm.txt"
+    assert llm_compat.exists(), "llm.txt compatibility pointer must exist"
+    assert "llms.txt" in llm_compat.read_text(encoding="utf-8")
 
 def test_readme_navigation_and_anchor_parity():
     """Verify section navigation across locales and stable EN/DE anchor aliases."""
@@ -191,7 +219,7 @@ def test_banner_asset_guardrails():
     assert 'src="assets/banner.png"' in readme_de or 'src="assets/banner.svg"' in readme_de
 
 def test_github_workflows_and_labels_hygiene():
-    """Verify CI, auto-assign, and label-sync workflow definitions and labels.yml."""
+    """Verify CI, auto-assign, label-sync, labels.yml, and issue templates."""
     workflows_dir = REPO_ROOT / ".github" / "workflows"
     assert (workflows_dir / "ci.yml").exists(), "ci.yml must exist"
     assert (workflows_dir / "auto-assign.yml").exists(), "auto-assign.yml must exist"
@@ -200,10 +228,15 @@ def test_github_workflows_and_labels_hygiene():
     ci_text = (workflows_dir / "ci.yml").read_text(encoding="utf-8")
     assert "concurrency:" in ci_text
     assert "cancel-in-progress: true" in ci_text
+    assert "workflow_dispatch:" in ci_text
+    assert "python -m compileall -q llm_note tests" in ci_text
+    assert "git diff --check" in ci_text
+    assert "python -m pip check" in ci_text
 
     auto_assign_text = (workflows_dir / "auto-assign.yml").read_text(encoding="utf-8")
     assert "pull_request_target" in auto_assign_text
     assert "pull-requests: write" in auto_assign_text
+    assert "github.event.pull_request.user.type != 'Bot'" in auto_assign_text
 
     label_sync_text = (workflows_dir / "label-sync.yml").read_text(encoding="utf-8")
     assert "EndBug/label-sync" in label_sync_text
@@ -213,6 +246,10 @@ def test_github_workflows_and_labels_hygiene():
     labels_text = labels_file.read_text(encoding="utf-8")
     assert "bug" in labels_text
     assert "enhancement" in labels_text
+
+    issue_tpl_dir = REPO_ROOT / ".github" / "ISSUE_TEMPLATE"
+    assert (issue_tpl_dir / "bug_report.md").exists()
+    assert (issue_tpl_dir / "feature_request.md").exists()
 
 def test_contributing_guide_bilingual_parity():
     """Verify bilingual contributor instructions keep local verification reproducible."""
@@ -244,8 +281,25 @@ def test_gitignore_cloud_and_lock_defense():
     assert "*_WORKSTATION*" in text
     assert "LOCK.dev.*" in text
     assert "LOCK.antigravity.*" in text
+    assert "LOCK.orchestrator.*" in text
+    assert "LOCK-CACHE.*" in text
+    assert ".gemini/" in text
     assert "Desktop.ini" in text
     assert "*conflicted copy*" in text
+
+
+def test_code_of_conduct_and_module_manifest_parity():
+    """Verify bilingual Code of Conduct and ellmos-module.v2.json boundaries."""
+    coc_text = (REPO_ROOT / "CODE_OF_CONDUCT.md").read_text(encoding="utf-8")
+    assert "## English" in coc_text
+    assert "## Deutsch" in coc_text
+
+    module_data = json.loads((REPO_ROOT / "ellmos-module.v2.json").read_text(encoding="utf-8"))
+    assert module_data["schema"] == "ellmos.module.v2"
+    assert module_data["id"] == "llm-note"
+    assert module_data["version"] == "1.0.5"
+    assert module_data["boundaries"]["network"] == "none"
+    assert module_data["source_of_truth"]["repository"] == "https://github.com/doc-bricks/llm-note.git"
 
 
 def test_ascii_four_view_architectural_topology_parity():

@@ -1,0 +1,3 @@
+# llm-note
+
+See [llms.txt](llms.txt) for the canonical LLM context and discovery index.

@@ -3,6 +3,7 @@ name: CI
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -30,8 +31,14 @@ jobs:
         run: python -m pip install -e . pytest build ruff
       - name: Lint
         run: ruff check llm_note tests
+      - name: Compile check
+        run: python -m compileall -q llm_note tests
+      - name: Whitespace check
+        run: git diff --check
       - name: Test
         run: python -m pytest -q
+      - name: Dependency consistency check
+        run: python -m pip check
       - name: Build distributions
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.13'
         run: python -m build
