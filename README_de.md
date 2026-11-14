@@ -7,7 +7,7 @@
 [![Lizenz: MIT](https://img.shields.io/badge/Lizenz-MIT-green.svg)](LICENSE)
 [![Python 3.10-3.13](https://img.shields.io/badge/Python-3.10%20--%203.13-blue.svg)](pyproject.toml)
 [![Plattform: Windows | Linux | macOS](https://img.shields.io/badge/Plattform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](pyproject.toml)
-[![Dokumentation aktualisiert: 2026-11-01](https://img.shields.io/badge/Dokumentation-aktualisiert-2026--11--01-blue.svg)](CHANGELOG.md)
+[![Dokumentation aktualisiert: 2026-11-14](https://img.shields.io/badge/Dokumentation-aktualisiert-2026--11--14-blue.svg)](CHANGELOG.md)
 [![Mitwirken: Leitfaden](https://img.shields.io/badge/Mitwirken-Leitfaden-blue.svg)](CONTRIBUTING.md)
 [![Abhängigkeiten: 0 Stdlib Only](https://img.shields.io/badge/Abh%C3%A4ngigkeiten-0%20(Stdlib)-brightgreen.svg)](THIRD_PARTY_LICENSES.md)
 [![Code-Stil: Ruff](https://img.shields.io/badge/Code--Stil-Ruff-000000.svg)](https://github.com/astral-sh/ruff)
@@ -384,8 +384,10 @@ matches = notes.search("deterministisch")
 for match in matches:
     print(f"Treffer: {match.content} [{match.category}]")
 
-# 4. Notiz zur Aufgabe befördern
+# 4. Notiz zur Aufgabe befördern sowie Einträge archivieren / wiederherstellen
 notes.promote(entry.id, target="task")
+notes.archive(entry.id, reason="abgeschlossen")
+notes.unarchive(entry.id)
 
 # 5. Text-Notizbücher koordinieren
 notebooks = FileNotebookStore("notebooks")
@@ -393,6 +395,9 @@ notebooks.write("Release-Mitteilung vorbereiten\n#NB: Marketing")
 transferred = notebooks.transfer_marked_entries()
 print(f"{transferred} Einträge in Themen-Notizbücher übertragen.")
 ```
+
+> [!TIP]
+> Migration aus einer bestehenden BACH-Tabelle `denkarium_entries`: `python -m llm_note.migrate_denkarium SOURCE_DB TARGET_DB` (standardmäßig Dry-Run; `--apply --snapshot-dir <dir>` erstellt vorab einen Snapshot und importiert idempotent über `NoteStore.import_entry()`).
 
 ---
 

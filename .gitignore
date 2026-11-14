@@ -5,7 +5,9 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 .coverage
+.coverage.*
 htmlcov/
+*.prof
 
 .env
 .env.*
@@ -30,6 +32,15 @@ ehthumbs.db
 *.swo
 *.swp
 TASKPLAN_*.md
+*MARKETING-LOG.txt
+MARKETING-LOG.txt
+.tmp/
+tmp/
+
+# Local agent runtime directories
+.gemini/
+.claude/
+.codex/
 
 # Notebook and multi-agent coordination locks
 .llm-note.lock
@@ -40,7 +51,13 @@ LOCK*.txt
 LOCK.dev.*
 LOCK.antigravity.*
 LOCK.bugsearch.*
+LOCK.orchestrator.*
+LOCK.operator.*
+LOCK.worker.*
+LOCK.thinker.*
+LOCK.reviewer.*
 LOCK.permissions.json
+LOCK-CACHE.*
 
 # Cloud-sync conflict artifacts
 *-conflict-*

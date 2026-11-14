@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+- Technical hygiene (Path A, `2026-11-14`):
+  - Consolidated `[tool.pytest.ini_options]` in `pyproject.toml` (`pythonpath = ["."]`, `xfail_strict = true`, `"references"` in `norecursedirs`) and removed redundant `pytest.ini` to eliminate pytest config-override warnings.
+  - Declared explicit zero-runtime `dependencies = []`, `[project.optional-dependencies] dev`, and `"Code of Conduct"` URL in `pyproject.toml` while preserving frozen package version `1.0.5` (`T-20260920-167562623`) and PEP 639 `license = "MIT"`.
+  - Untracked `MARKETING-LOG.txt` from git (`git rm --cached`) while preserving it locally (`T-20260926-455218633`), added `*MARKETING-LOG.txt`, agent directory, coverage, and lock-cache exclusions to `.gitignore`, and removed `MARKETING-LOG.txt` links from `pyproject.toml` and `llms.txt`.
+  - Hardened `.github/workflows/ci.yml` (`workflow_dispatch`, `compileall`, `git diff --check`, `pip check`), guarded `.github/workflows/auto-assign.yml` against bot PRs, and added `.github/ISSUE_TEMPLATE/{bug_report,feature_request}.md`.
+  - Added bilingual German section to `CODE_OF_CONDUCT.md`, added `llm.txt` compatibility pointer, refreshed `llms.txt` (`Last-checked: 2026-11-14`) and `README.md` / `README_de.md` API/migration notes, and expanded contract tests in `tests/test_metadata.py`.
+
 - PB-11 (BACH #3994): `NoteStore` can now replace the BACH Denkarium. Additive columns `is_archived`, `archived_reason`, `archived_at`, `legacy_id` are migrated when an existing database is opened; new `archive()`, `unarchive()`, `delete()`, `import_entry()` (keeps foreign timestamps, idempotent per `legacy_id`); `list_entries()`/`search()` hide archived entries unless `include_archived=True`; entry types accept the aliases `denkarium` (note) and `logbuch` (logbook); `Entry` and `stats()` expose the new fields; `promote()` can record `promoted_id`.
 - Added the one-off migration `python -m llm_note.migrate_denkarium SOURCE_DB TARGET_DB` (dry run by default; `--apply --snapshot-dir` snapshots the source table, imports, aborts on a count mismatch; the source table is only read).
 - The package version stays frozen at `1.0.5` (see RELEASE_GATE.md); a `1.1.0` bump needs a separate release decision.

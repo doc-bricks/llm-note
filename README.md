@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10-3.13](https://img.shields.io/badge/Python-3.10%20--%203.13-blue.svg)](pyproject.toml)
 [![Platform: Windows | Linux | macOS](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](pyproject.toml)
-[![Docs updated: 2026-11-01](https://img.shields.io/badge/Docs-updated-2026--11--01-blue.svg)](CHANGELOG.md)
+[![Docs updated: 2026-11-14](https://img.shields.io/badge/Docs-updated-2026--11--14-blue.svg)](CHANGELOG.md)
 [![Contributing: Guide](https://img.shields.io/badge/Contributing-Guide-blue.svg)](CONTRIBUTING.md)
 [![Dependencies: 0 Stdlib Only](https://img.shields.io/badge/Dependencies-0%20(Stdlib)-brightgreen.svg)](THIRD_PARTY_LICENSES.md)
 [![Code Style: Ruff](https://img.shields.io/badge/Code%20Style-Ruff-000000.svg)](https://github.com/astral-sh/ruff)
@@ -384,8 +384,10 @@ matches = notes.search("deterministic")
 for match in matches:
     print(f"Found: {match.content} [{match.category}]")
 
-# 4. Promote a thought to a task
+# 4. Promote a thought to a task, or archive / unarchive / delete entries
 notes.promote(entry.id, target="task")
+notes.archive(entry.id, reason="completed")
+notes.unarchive(entry.id)
 
 # 5. Coordinate plain-text notebooks
 notebooks = FileNotebookStore("notebooks")
@@ -393,6 +395,9 @@ notebooks.write("Draft release announcement\n#NB: Marketing")
 transferred = notebooks.transfer_marked_entries()
 print(f"Transferred {transferred} entries to topic notebooks.")
 ```
+
+> [!TIP]
+> Migrating from a legacy BACH `denkarium_entries` table: `python -m llm_note.migrate_denkarium SOURCE_DB TARGET_DB` (dry-run by default; pass `--apply --snapshot-dir <dir>` to snapshot and import idempotently via `NoteStore.import_entry()`).
 
 ---
 
