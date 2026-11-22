@@ -4,8 +4,14 @@ import json
 import re
 import subprocess
 import sys
-import tomllib
 from pathlib import Path
+
+import pytest
+
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10 has no tomllib in the stdlib
+    tomllib = None
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -36,6 +42,8 @@ def test_version_consistency():
 
 def test_pep621_compliance_and_urls():
     """Verify PEP 621/639 compliance, URLs, classifiers, and test settings in pyproject.toml."""
+    if tomllib is None:
+        pytest.skip("tomllib requires Python 3.11+")
     pyproject_text = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
     data = tomllib.loads(pyproject_text)
     project = data["project"]
